@@ -10,17 +10,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-glow: 0 0 15px rgba(22, 163, 74, 0.4), 0 0 5px rgba(22, 163, 74, 0.6);
+            --primary-glow: 0 0 20px rgba(22, 163, 74, 0.5), 0 0 8px rgba(22, 163, 74, 0.7);
             --font-orbitron: 'Orbitron', sans-serif;
             --font-inter: 'Inter', sans-serif;
         }
         body {
             font-family: var(--font-inter);
             background-color: #0a0a0a;
+            background-image:
+                linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
+                linear-gradient(0deg, transparent 24%, rgba(31, 41, 55, 0.3) 25%, rgba(31, 41, 55, 0.3) 26%, transparent 27%, transparent 74%, rgba(31, 41, 55, 0.3) 75%, rgba(31, 41, 55, 0.3) 76%, transparent 77%, transparent),
+                linear-gradient(90deg, transparent 24%, rgba(31, 41, 55, 0.3) 25%, rgba(31, 41, 55, 0.3) 26%, transparent 27%, transparent 74%, rgba(31, 41, 55, 0.3) 75%, rgba(31, 41, 55, 0.3) 76%, transparent 77%, transparent);
+            background-size: 50px 50px;
         }
-        .font-orbitron {
-            font-family: var(--font-orbitron);
-        }
+        .font-orbitron { font-family: var(--font-orbitron); }
         .main-container {
             background: radial-gradient(circle, #1f2937, #111827);
             border: 1px solid #374151;
@@ -39,103 +42,146 @@
         .console-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
         .console-scrollbar::-webkit-scrollbar-thumb { background: #16a34a; border-radius: 2px; }
 
-        .card {
+        /* Card Flip Animation */
+        .card-container {
+            perspective: 1000px;
+            width: 70px;
+            height: 100px;
+        }
+        .card-flipper {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .card-container.flipped .card-flipper {
+            transform: rotateY(180deg);
+        }
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 6px;
+        }
+        .card-front {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 60px;
-            height: 90px;
-            border-radius: 6px;
             font-weight: bold;
-            font-size: 22px;
-            position: relative;
+            font-size: 24px;
             background: white;
             box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            transform: rotateY(180deg);
         }
-        @media (min-width: 640px) { /* sm breakpoint */
-            .card {
-                width: 70px;
-                height: 100px;
-                font-size: 24px;
-            }
+        .card-back {
+             background: radial-gradient(circle, #2563eb, #1d4ed8);
+             border: 2px solid #3b82f6;
+             display: flex;
+             align-items: center;
+             justify-content: center;
         }
-        .card.red { color: #ef4444; }
-        .card.black { color: #111827; }
+         .card-back::after {
+            content: 'X';
+            font-family: var(--font-orbitron);
+            font-size: 40px;
+            color: rgba(255,255,255,0.4);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
+         }
+        .card-front.red { color: #ef4444; }
+        .card-front.black { color: #111827; }
         .card-suit { position: absolute; font-size: 14px; }
         .card-rank-top { top: 4px; left: 6px; }
         .card-rank-bottom { bottom: 4px; right: 6px; transform: rotate(180deg); }
         .card-suit-center { font-size: 32px; }
+
+        /* Modal Fade-in Animation */
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        .modal-animated { animation: fadeIn 0.3s ease-out; }
     </style>
 </head>
-<body class="bg-black text-gray-200 flex items-center justify-center min-h-screen p-2 sm:p-4">
+<body class="text-gray-200 flex items-center justify-center min-h-screen p-2 sm:p-4">
 
-    <main class="main-container w-full max-w-3xl rounded-2xl overflow-hidden">
-        <header class="p-4 sm:p-6 border-b border-gray-700 text-center">
+    <!-- Main App Container (Initially Hidden) -->
+    <main id="main-app" class="main-container w-full max-w-4xl rounded-2xl overflow-hidden hidden">
+        <header class="p-4 sm:p-6 border-b border-gray-700 text-center relative">
             <h1 class="text-2xl sm:text-3xl font-orbitron font-black text-green-400 tracking-wider">
                 POKER REVEAL <span class="text-sm sm:text-base align-middle text-green-300">X</span>
             </h1>
             <p class="text-gray-400 text-xs sm:text-sm mt-1">See your opponents' cards.</p>
+            <div id="hands-remaining-display" class="absolute top-3 right-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
         </header>
 
         <section id="setup-screen" class="p-4 sm:p-6 space-y-4 sm:space-y-6">
             <!-- Game Info Inputs -->
-            <div>
-                <label for="platform-select" class="block text-sm font-medium text-gray-400 mb-2">Platform</label>
-                <select id="platform-select" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
-                    <option value="" disabled selected>Select a platform</option>
-                    <option value="pppoker">PPPOKER</option>
-                    <option value="xpoker">XPOKER</option>
-                    <option value="clubgg">CLUBGG</option>
-                </select>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="platform-select" class="block text-sm font-medium text-gray-400 mb-2">Platform</label>
+                    <select id="platform-select" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
+                        <option value="" disabled selected>Select a platform</option>
+                        <option value="pppoker">PPPOKER</option>
+                        <option value="xpoker">XPOKER</option>
+                        <option value="clubgg">CLUBGG</option>
+                    </select>
+                </div>
+                 <div>
+                    <label for="table-id" class="block text-sm font-medium text-gray-400 mb-2">Table / Club ID</label>
+                    <input type="text" id="table-id" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition placeholder-gray-500" placeholder="e.g., 12345678">
+                </div>
+                <div>
+                    <label for="num-players" class="block text-sm font-medium text-gray-400 mb-2">Opponents</label>
+                    <select id="num-players" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
+                        <option>2</option> <option>3</option> <option>4</option> <option selected>5</option> <option>6</option> <option>7</option> <option>8</option>
+                    </select>
+                </div>
             </div>
-             <div>
-                <label for="table-id" class="block text-sm font-medium text-gray-400 mb-2">Table / Club ID</label>
-                <input type="text" id="table-id" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition placeholder-gray-500" placeholder="e.g., 12345678">
-            </div>
-            <div>
-                <label for="num-players" class="block text-sm font-medium text-gray-400 mb-2">Number of Opponents</label>
-                <select id="num-players" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
-                    <option>2</option>
-                    <option>3</option>
-                    <option>4</option>
-                    <option selected>5</option>
-                    <option>6</option>
-                    <option>7</option>
-                    <option>8</option>
-                </select>
-            </div>
-
-            <!-- Action Button -->
-            <button id="reveal-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg shadow-green-500/20 flex items-center justify-center space-x-2 text-lg">
+            <button id="reveal-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg shadow-green-500/20 flex items-center justify-center space-x-2 text-lg transform hover:scale-105 active:scale-100">
                 <span>Reveal Cards</span>
             </button>
         </section>
 
-        <!-- Results Screen -->
         <section id="results-screen" class="p-4 sm:p-6 border-t border-gray-700 hidden">
-            <!-- Console Log -->
             <div id="console-output" class="bg-black/50 rounded-lg p-4 h-32 overflow-y-auto mb-6 font-mono text-xs console-scrollbar"></div>
-
-            <!-- Revealed Cards -->
-            <h2 class="text-lg font-bold text-center text-green-400 mb-4">Revealed Hands</h2>
-            <div id="cards-display" class="flex flex-wrap justify-center gap-4"></div>
-            
-             <!-- Action Buttons after reveal -->
+            <h2 class="text-lg font-bold text-center text-green-400 mb-4 font-orbitron">REVEALED HANDS</h2>
+            <div id="cards-display" class="flex flex-wrap justify-center items-start gap-4"></div>
             <footer id="action-buttons" class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"></footer>
         </section>
     </main>
     
+    <!-- Access Code Modal (Shown on startup) -->
+    <div id="access-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 modal-animated">
+        <div class="main-container w-full max-w-sm rounded-2xl p-8 text-center">
+            <h2 class="text-2xl font-orbitron font-bold text-green-400 mb-2">ACCESS REQUIRED</h2>
+            <p class="text-gray-400 mb-6 text-sm">Enter your activation code to proceed.</p>
+            <input type="text" id="access-code-input" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-3 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition placeholder-gray-500 text-center uppercase tracking-widest" placeholder="ENTER CODE">
+            <button id="submit-code-btn" class="mt-6 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100">Authenticate</button>
+        </div>
+    </div>
+
     <!-- Custom Alert Modal -->
     <div id="custom-alert" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center border border-yellow-500">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center border border-yellow-500 modal-animated">
             <p id="custom-alert-message" class="text-white mb-4">Message goes here.</p>
             <button id="custom-alert-close" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-lg transition">OK</button>
         </div>
     </div>
 
+    <!-- Limit Reached Modal -->
+    <div id="limit-reached-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-sm text-center border border-red-500 modal-animated">
+            <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2">ACTIVATION LIMIT REACHED</h2>
+            <p class="text-white mb-6">You have used all reveals for your current code.</p>
+            <a href="https://www.revealpoker.top" target="_blank" class="w-full inline-block bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100">
+                Get New Code
+            </a>
+        </div>
+    </div>
 
     <script>
-        // DOM Elements
+        // --- DOM ELEMENTS ---
+        const mainApp = document.getElementById('main-app');
         const setupScreen = document.getElementById('setup-screen');
         const resultsScreen = document.getElementById('results-screen');
         const revealBtn = document.getElementById('reveal-btn');
@@ -145,18 +191,28 @@
         const consoleOutput = document.getElementById('console-output');
         const cardsDisplay = document.getElementById('cards-display');
         const actionButtons = document.getElementById('action-buttons');
-        // Custom Alert Elements
+        const handsRemainingDisplay = document.getElementById('hands-remaining-display');
+
+        // Modals & Alerts
+        const accessModal = document.getElementById('access-modal');
+        const accessCodeInput = document.getElementById('access-code-input');
+        const submitCodeBtn = document.getElementById('submit-code-btn');
         const customAlert = document.getElementById('custom-alert');
         const customAlertMessage = document.getElementById('custom-alert-message');
         const customAlertClose = document.getElementById('custom-alert-close');
+        const limitReachedModal = document.getElementById('limit-reached-modal');
 
-        // Card and timer data
+        // --- DATA & STATE ---
         const SUITS = ['♠', '♥', '♦', '♣'];
         const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+        const VALID_CODES = {
+            'QWERTYCLUBGG': 1, 'QWERTYPPOKER': 1, 'QWERTYXPOKER': 1,
+            '123PPOKER': 2, '123XPOKER': 2, '123CLUBGG': 2
+        };
         let deck = [];
-        let nextHandTime = 0; // Timestamp for the next allowed "New Hand" click
+        let nextHandTime = 0;
 
-        // Helper Functions
+        // --- HELPER FUNCTIONS ---
         const delay = (ms) => new Promise(res => setTimeout(res, ms));
         const createDeck = () => SUITS.flatMap(suit => RANKS.map(rank => ({ suit, rank })));
         const shuffleDeck = () => {
@@ -169,20 +225,33 @@
         const generateRandomHash = (length = 64) => {
             const chars = 'abcdef0123456789';
             let result = '';
-            for (let i = 0; i < length; i++) {
-                result += chars.charAt(Math.floor(Math.random() * chars.length));
-            }
+            for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
             return result;
         };
 
-        // UI Functions
+        // --- UI & ALERT FUNCTIONS ---
+        const showAlert = (message) => {
+            customAlertMessage.textContent = message;
+            customAlert.classList.remove('hidden');
+            customAlert.firstElementChild.classList.add('modal-animated');
+        };
+        const showLimitReachedModal = () => {
+            limitReachedModal.classList.remove('hidden');
+            limitReachedModal.firstElementChild.classList.add('modal-animated');
+        };
+
         function createCardHTML({ suit, rank }) {
             const colorClass = (suit === '♥' || suit === '♦') ? 'red' : 'black';
             return `
-                <div class="card ${colorClass}">
-                    <span class="card-suit card-rank-top">${rank}${suit}</span>
-                    <span class="card-suit-center">${suit}</span>
-                    <span class="card-suit card-rank-bottom">${rank}${suit}</span>
+                <div class="card-container">
+                    <div class="card-flipper">
+                        <div class="card-face card-back"></div>
+                        <div class="card-face card-front ${colorClass}">
+                            <span class="card-suit card-rank-top">${rank}${suit}</span>
+                            <span class="card-suit-center">${suit}</span>
+                            <span class="card-suit card-rank-bottom">${rank}${suit}</span>
+                        </div>
+                    </div>
                 </div>`;
         }
         
@@ -193,12 +262,60 @@
             consoleOutput.scrollTop = consoleOutput.scrollHeight;
         }
 
-        // Custom alert function
-        function showAlert(message) {
-            customAlertMessage.textContent = message;
-            customAlert.classList.remove('hidden');
+        function setButtonLoading(isLoading) {
+             if (isLoading) {
+                revealBtn.disabled = true;
+                revealBtn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Processing...</span>`;
+            } else {
+                revealBtn.disabled = false;
+                revealBtn.innerHTML = `<span>Reveal Cards</span>`;
+            }
         }
 
+        function updateHandsRemainingDisplay() {
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+            if (!isNaN(maxHands) && !isNaN(handsUsed)) {
+                handsRemainingDisplay.textContent = `REVEALS: ${maxHands - handsUsed}`;
+            }
+        }
+
+        // --- CORE LOGIC ---
+        function checkAccess() {
+            const code = localStorage.getItem('pokerRevealAccessCode');
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+
+            if (code && !isNaN(maxHands) && !isNaN(handsUsed) && handsUsed < maxHands) {
+                accessModal.classList.add('hidden');
+                mainApp.classList.remove('hidden');
+                updateHandsRemainingDisplay();
+            } else {
+                mainApp.classList.add('hidden');
+                accessModal.classList.remove('hidden');
+                accessModal.firstElementChild.classList.add('modal-animated');
+            }
+        }
+
+        function handleAccessCodeSubmit() {
+            const code = accessCodeInput.value.trim().toUpperCase();
+            const usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
+
+            if (usedCodes.includes(code)) {
+                showAlert("This code has already been fully used. Please get a new one.");
+                return;
+            }
+
+            if (VALID_CODES[code]) {
+                localStorage.setItem('pokerRevealAccessCode', code);
+                localStorage.setItem('pokerRevealMaxHands', VALID_CODES[code]);
+                localStorage.setItem('pokerRevealHandsUsed', '0');
+                checkAccess();
+            } else {
+                showAlert("Invalid or expired code. Please check the code and try again.");
+            }
+        }
+        
         function validateInputs() {
             if (platformSelect.value === "") {
                 showAlert("Please select a platform.");
@@ -211,18 +328,6 @@
             return true;
         }
 
-        function setButtonLoading(isLoading) {
-             if (isLoading) {
-                revealBtn.disabled = true;
-                revealBtn.innerHTML = `
-                    <svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg>
-                    <span>Processing...</span>`;
-            } else {
-                revealBtn.disabled = false;
-                revealBtn.innerHTML = `<span>Reveal Cards</span>`;
-            }
-        }
-        
         async function dealHands() {
             cardsDisplay.innerHTML = '';
             shuffleDeck();
@@ -231,49 +336,62 @@
             for (let i = 0; i < numOpponents; i++) {
                 const hand = [deck.pop(), deck.pop()];
                 const opponentDiv = document.createElement('div');
-                opponentDiv.className = 'bg-gray-800/50 p-3 rounded-lg flex flex-col items-center space-y-2';
-                opponentDiv.innerHTML = `
-                    <h3 class="font-bold text-gray-300 text-sm">Opponent ${i + 1}</h3>
-                    <div class="flex space-x-2">
-                        ${createCardHTML(hand[0])}
-                        ${createCardHTML(hand[1])}
-                    </div>`;
+                opponentDiv.className = 'p-3 flex flex-col items-center space-y-2';
+                opponentDiv.innerHTML = `<h3 class="font-bold text-gray-300 text-sm">Opponent ${i + 1}</h3>
+                                         <div class="flex space-x-2">
+                                             ${createCardHTML(hand[0])}
+                                             ${createCardHTML(hand[1])}
+                                         </div>`;
                 cardsDisplay.appendChild(opponentDiv);
-                await delay(50); 
             }
-            nextHandTime = Date.now() + 60000;
+            
+            // Trigger flip animation with a stagger
+            const cardContainers = document.querySelectorAll('.card-container');
+            cardContainers.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.add('flipped');
+                }, 100 * index);
+            });
+            nextHandTime = Date.now() + 5000; // 5 second cooldown
         }
 
-        function handleNewHandClick() {
-            if (Date.now() < nextHandTime) {
-                showAlert("Please wait for the current hand to finish before requesting a new one.");
-            } else {
-                dealHands();
+        function processHandReveal() {
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+
+            if (handsUsed >= maxHands) {
+                showLimitReachedModal();
+                return false;
             }
-        }
-        
-        function showActionButtons() {
-            actionButtons.innerHTML = `
-                <button id="new-hand-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-lg transition">New Hand</button>
-                <button id="new-game-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition">New Game</button>
-            `;
-            document.getElementById('new-hand-btn').addEventListener('click', handleNewHandClick);
-            document.getElementById('new-game-btn').addEventListener('click', resetGame);
+            
+            handsUsed++;
+            localStorage.setItem('pokerRevealHandsUsed', handsUsed);
+            updateHandsRemainingDisplay();
+
+            // Check if the limit was just reached and add the code to the used list
+            if (handsUsed >= maxHands) {
+                const code = localStorage.getItem('pokerRevealAccessCode');
+                let usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
+                if (code && !usedCodes.includes(code)) {
+                    usedCodes.push(code);
+                    localStorage.setItem('pokerRevealUsedCodes', JSON.stringify(usedCodes));
+                }
+            }
+
+            dealHands();
+            return true;
         }
 
-        function resetGame() {
-            resultsScreen.classList.add('hidden');
-            setupScreen.classList.remove('hidden');
-            tableIdInput.value = '';
-            platformSelect.value = '';
-            consoleOutput.innerHTML = '';
-            cardsDisplay.innerHTML = '';
-            actionButtons.innerHTML = '';
-            nextHandTime = 0;
-        }
-
-        async function handleReveal() {
+        async function handleFirstReveal() {
             if (!validateInputs()) return;
+
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+
+            if (handsUsed >= maxHands) {
+                showLimitReachedModal();
+                return;
+            }
 
             setButtonLoading(true);
             setupScreen.classList.add('hidden');
@@ -294,28 +412,72 @@
             await delay(500);
             await logMessage('Reading encrypted hand data...');
             await delay(1200);
-            const randomHash = generateRandomHash();
-            await logMessage(`Data hash found: <span class="text-yellow-400">${randomHash}</span>`);
+            await logMessage(`Data hash found: <span class="text-yellow-400">${generateRandomHash()}</span>`);
             await delay(1200);
             await logMessage('<span class="text-green-400">Decryption successful.</span>');
             await delay(300);
             await logMessage('Revealing opponent hands...');
             await delay(500);
 
-            await dealHands();
+            processHandReveal();
             
             setButtonLoading(false);
             showActionButtons();
         }
 
-        // Event Listeners
-        revealBtn.addEventListener('click', handleReveal);
+        function handleNewHandClick() {
+            if (Date.now() < nextHandTime) {
+                const secondsLeft = Math.ceil((nextHandTime - Date.now()) / 1000);
+                showAlert(`Please wait for the current hand to finish. Try again in ${secondsLeft} seconds.`);
+                return;
+            }
+            
+            const success = processHandReveal();
+            if (success) {
+                logMessage("New hand data decrypted. Revealing now...");
+            }
+        }
+        
+        function showActionButtons() {
+            actionButtons.innerHTML = `<button id="new-hand-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">New Hand</button>
+                                       <button id="new-game-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">New Game</button>`;
+            document.getElementById('new-hand-btn').addEventListener('click', handleNewHandClick);
+            document.getElementById('new-game-btn').addEventListener('click', resetGame);
+        }
+
+        function resetGame() {
+            // NOTE: We DO NOT clear 'pokerRevealUsedCodes' here.
+            localStorage.removeItem('pokerRevealAccessCode');
+            localStorage.removeItem('pokerRevealMaxHands');
+            localStorage.removeItem('pokerRevealHandsUsed');
+
+            resultsScreen.classList.add('hidden');
+            setupScreen.classList.remove('hidden');
+            
+            tableIdInput.value = '';
+            platformSelect.value = '';
+            accessCodeInput.value = '';
+            consoleOutput.innerHTML = '';
+            cardsDisplay.innerHTML = '';
+            actionButtons.innerHTML = '';
+            nextHandTime = 0;
+            checkAccess();
+        }
+
+        // --- EVENT LISTENERS ---
+        revealBtn.addEventListener('click', handleFirstReveal);
+        submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
+        accessCodeInput.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') submitCodeBtn.click();
+        });
         customAlertClose.addEventListener('click', () => {
             customAlert.classList.add('hidden');
         });
         
-        // Initial setup
+        // --- INITIALIZATION ---
         shuffleDeck();
+        checkAccess();
+
     </script>
 </body>
 </html>
