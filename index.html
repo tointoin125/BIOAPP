@@ -3,34 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Poker Reveal - Pro X</title>
+    <title>Poker Reveal X: Quantum</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
     <style>
         :root {
-            --primary-glow: 0 0 20px rgba(22, 163, 74, 0.5), 0 0 8px rgba(22, 163, 74, 0.7);
             --font-orbitron: 'Orbitron', sans-serif;
             --font-inter: 'Inter', sans-serif;
+            --glow-cyan: 0 0 15px rgba(56, 189, 248, 0.4), 0 0 5px rgba(56, 189, 248, 0.6);
+            --glow-red: 0 0 15px rgba(239, 68, 68, 0.4), 0 0 5px rgba(239, 68, 68, 0.6);
         }
         body {
             font-family: var(--font-inter);
-            background-color: #0a0a0a;
-            background-image:
-                linear-gradient(rgba(17, 24, 39, 0.9), rgba(17, 24, 39, 0.9)),
-                linear-gradient(0deg, transparent 24%, rgba(31, 41, 55, 0.3) 25%, rgba(31, 41, 55, 0.3) 26%, transparent 27%, transparent 74%, rgba(31, 41, 55, 0.3) 75%, rgba(31, 41, 55, 0.3) 76%, transparent 77%, transparent),
-                linear-gradient(90deg, transparent 24%, rgba(31, 41, 55, 0.3) 25%, rgba(31, 41, 55, 0.3) 26%, transparent 27%, transparent 74%, rgba(31, 41, 55, 0.3) 75%, rgba(31, 41, 55, 0.3) 76%, transparent 77%, transparent);
-            background-size: 50px 50px;
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            color: #e5e7eb;
+            overflow-x: hidden;
         }
         .font-orbitron { font-family: var(--font-orbitron); }
-        .main-container {
-            background: radial-gradient(circle, #1f2937, #111827);
-            border: 1px solid #374151;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5), var(--primary-glow);
+        .glass-container {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5), var(--glow-cyan);
         }
         .custom-select {
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
             background-position: right 0.5rem center;
             background-repeat: no-repeat;
             background-size: 1.5em 1.5em;
@@ -40,244 +44,455 @@
         }
         .console-scrollbar::-webkit-scrollbar { width: 4px; }
         .console-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
-        .console-scrollbar::-webkit-scrollbar-thumb { background: #16a34a; border-radius: 2px; }
+        .console-scrollbar::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 2px; }
 
-        /* Card Flip Animation */
+        /* Card Styles & Flip Animation */
         .card-container {
             perspective: 1000px;
-            width: 70px;
-            height: 100px;
+            width: clamp(55px, 8vw, 75px);
+            height: clamp(77px, 11.2vw, 105px);
         }
         .card-flipper {
             position: relative;
             width: 100%;
             height: 100%;
-            transition: transform 0.6s;
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
             transform-style: preserve-3d;
         }
-        .card-container.flipped .card-flipper {
-            transform: rotateY(180deg);
-        }
+        .card-container.flipped .card-flipper { transform: rotateY(180deg); }
         .card-face {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 6px;
-        }
-        .card-front {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: bold;
-            font-size: 24px;
-            background: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            transform: rotateY(180deg);
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: clamp(4px, 1vw, 6px);
         }
         .card-back {
-             background: radial-gradient(circle, #2563eb, #1d4ed8);
-             border: 2px solid #3b82f6;
-             display: flex;
-             align-items: center;
-             justify-content: center;
+            background: radial-gradient(circle, #2563eb, #1d4ed8);
+            border: 2px solid #3b82f6; display: flex;
+            align-items: center; justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
-         .card-back::after {
-            content: 'X';
-            font-family: var(--font-orbitron);
-            font-size: 40px;
+        .card-back::after {
+            content: 'X'; font-family: var(--font-orbitron);
+            font-size: clamp(24px, 5vw, 40px);
             color: rgba(255,255,255,0.4);
             text-shadow: 0 0 10px rgba(255,255,255,0.5);
-         }
-        .card-front.red { color: #ef4444; }
-        .card-front.black { color: #111827; }
-        .card-suit { position: absolute; font-size: 14px; }
-        .card-rank-top { top: 4px; left: 6px; }
-        .card-rank-bottom { bottom: 4px; right: 6px; transform: rotate(180deg); }
-        .card-suit-center { font-size: 32px; }
+        }
+        .card-front {
+            transform: rotateY(180deg); background-color: #f9fafb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); overflow: hidden;
+        }
+        .card-front-content {
+            display: flex; flex-direction: column;
+            justify-content: space-between;
+            width: 100%; height: 100%;
+            padding: clamp(2px, 0.8vw, 5px);
+            font-weight: 600; line-height: 1;
+        }
+        .card-front .rank { font-size: clamp(0.8rem, 2.5vw, 1.2rem); }
+        .card-front .suit { font-size: clamp(0.6rem, 2vw, 1rem); }
+        .card-front .center-suit {
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            text-align: center; line-height: 0.8;
+        }
+        .card-front .red { color: #ef4444; }
+        .card-front .black { color: #111827; }
+        .card-bottom-rank { transform: rotate(180deg); }
 
-        /* Modal Fade-in Animation */
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-        .modal-animated { animation: fadeIn 0.3s ease-out; }
+        /* Modal & Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-animated { animation: fadeIn 0.3s ease-out forwards; }
+        
+        /* Console Typewriter */
+        .typewriter-cursor {
+            display: inline-block; width: 8px; height: 1em;
+            background-color: #38bdf8;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .log-success { color: #4ade80; background-color: rgba(74, 222, 128, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(74, 222, 128, 0.2); }
+        .log-error { color: #f87171; background-color: rgba(239, 68, 68, 0.1); padding: 2px 6px; border-radius: 4px; border: 1px solid rgba(239, 68, 68, 0.2); }
+        
+        /* Winner Highlight */
+        .winner-highlight { box-shadow: 0 0 25px rgba(74, 222, 128, 0.8), 0 0 10px rgba(255, 255, 255, 0.8); transform: scale(1.05); border-color: #4ade80 !important; }
+
+        /* Game Mode Buttons */
+        .mode-btn { transition: all 0.2s ease-in-out; }
+        .mode-btn:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
+        .mode-btn:disabled { opacity: 0.5; cursor: not-allowed; }
     </style>
 </head>
-<body class="text-gray-200 flex items-center justify-center min-h-screen p-2 sm:p-4">
+<body class="flex items-center justify-center min-h-screen p-2 sm:p-4">
 
-    <!-- Main App Container (Initially Hidden) -->
-    <main id="main-app" class="main-container w-full max-w-4xl rounded-2xl overflow-hidden hidden">
-        <header class="p-4 sm:p-6 border-b border-gray-700 text-center relative">
-            <h1 class="text-2xl sm:text-3xl font-orbitron font-black text-green-400 tracking-wider">
-                POKER REVEAL <span class="text-sm sm:text-base align-middle text-green-300">X</span>
+    <main id="main-app" class="glass-container w-full max-w-7xl rounded-2xl overflow-hidden hidden">
+        <header class="p-4 sm:p-6 border-b border-gray-700/50 text-center relative">
+            <h1 class="text-xl sm:text-2xl md:text-4xl font-orbitron font-black text-cyan-300 tracking-wider uppercase" style="text-shadow: var(--glow-cyan);">
+                Poker Reveal <span class="text-cyan-100">X: Quantum</span>
             </h1>
-            <p class="text-gray-400 text-xs sm:text-sm mt-1">See your opponents' cards.</p>
+            <p class="text-gray-400 text-xs sm:text-sm mt-1" data-i18n="appSubtitle">Quantum Entanglement Hand Analysis</p>
             <div id="hands-remaining-display" class="absolute top-3 right-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
         </header>
 
-        <section id="setup-screen" class="p-4 sm:p-6 space-y-4 sm:space-y-6">
-            <!-- Game Info Inputs -->
+        <section id="game-mode-screen" class="p-4 sm:p-8 space-y-6 hidden">
+             <h2 class="text-xl font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="modeSelectTitle">SELECT GAME MODE</h2>
+             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <button data-mode="nlh" class="mode-btn bg-sky-600 hover:bg-sky-500 p-6 rounded-lg text-center">
+                    <p class="font-bold text-lg">NLH</p>
+                    <p class="text-xs text-sky-200" data-i18n="modeNLH">No-Limit Hold'em</p>
+                </button>
+                <button data-mode="plo" class="mode-btn bg-purple-600 hover:bg-purple-500 p-6 rounded-lg text-center">
+                    <p class="font-bold text-lg">PLO</p>
+                    <p class="text-xs text-purple-200" data-i18n="modePLO">Pot-Limit Omaha</p>
+                </button>
+                <button data-mode="plo5" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
+                     <p class="font-bold text-lg">PLO5</p>
+                     <p class="text-xs text-yellow-400" data-i18n="modePLO5">Under Maintenance</p>
+                </button>
+                 <button data-mode="plo6" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
+                     <p class="font-bold text-lg">PLO6</p>
+                     <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
+                </button>
+                <button data-mode="shortdeck" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
+                     <p class="font-bold text-lg">Short Deck</p>
+                     <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
+                </button>
+                <button data-mode="more" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
+                     <p class="font-bold text-lg" data-i18n="modeMore">More...</p>
+                     <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
+                </button>
+             </div>
+        </section>
+
+        <section id="setup-screen" class="p-4 sm:p-8 space-y-6 hidden">
+            <div class="flex items-center mb-4">
+                <button id="back-to-mode-select" class="text-cyan-400 hover:text-cyan-200 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h2 class="text-xl font-bold text-center text-cyan-300 font-orbitron" data-i18n="setupTitle">SETUP GAME</h2>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div>
-                    <label for="platform-select" class="block text-sm font-medium text-gray-400 mb-2">Platform</label>
-                    <select id="platform-select" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
-                        <option value="" disabled selected>Select a platform</option>
+                    <label for="platform-select" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="platformLabel">Platform</label>
+                    <select id="platform-select" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition custom-select">
+                        <option value="" disabled selected data-i18n="platformPlaceholder">Select Platform</option>
                         <option value="pppoker">PPPOKER</option>
                         <option value="xpoker">XPOKER</option>
                         <option value="clubgg">CLUBGG</option>
                     </select>
                 </div>
-                 <div>
-                    <label for="table-id" class="block text-sm font-medium text-gray-400 mb-2">Table / Club ID</label>
-                    <input type="text" id="table-id" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition placeholder-gray-500" placeholder="e.g., 12345678">
+                <div>
+                    <label for="table-id" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="tableIdLabel">Table / Club ID</label>
+                    <input type="text" id="table-id" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition placeholder-gray-500" data-i18n-placeholder="tableIdPlaceholder" placeholder="e.g., 12345678">
                 </div>
                 <div>
-                    <label for="num-players" class="block text-sm font-medium text-gray-400 mb-2">Opponents</label>
-                    <select id="num-players" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition custom-select">
-                        <option>2</option> <option>3</option> <option>4</option> <option selected>5</option> <option>6</option> <option>7</option> <option>8</option>
+                    <label for="num-players" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="opponentsLabel">Opponents</label>
+                    <select id="num-players" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition custom-select">
+                        <option>2</option> <option>3</option> <option>4</option> <option selected>5</option> <option>6</option> <option>7</option> <option>8</option><option>9</option>
                     </select>
                 </div>
             </div>
-            <button id="reveal-btn" class="w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg shadow-green-500/20 flex items-center justify-center space-x-2 text-lg transform hover:scale-105 active:scale-100">
-                <span>Reveal Cards</span>
+            <button id="reveal-btn" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg shadow-cyan-500/20 flex items-center justify-center space-x-2 text-lg transform hover:scale-105 active:scale-100">
+                <span data-i18n="engageButton">Engage Quantum Link</span>
             </button>
         </section>
 
-        <section id="results-screen" class="p-4 sm:p-6 border-t border-gray-700 hidden">
-            <div id="console-output" class="bg-black/50 rounded-lg p-4 h-32 overflow-y-auto mb-6 font-mono text-xs console-scrollbar"></div>
-            <h2 class="text-lg font-bold text-center text-green-400 mb-4 font-orbitron">REVEALED HANDS</h2>
-            <div id="cards-display" class="flex flex-wrap justify-center items-start gap-4"></div>
-            <footer id="action-buttons" class="mt-8 flex flex-col sm:flex-row justify-center items-center gap-4"></footer>
+        <section id="results-screen" class="p-4 sm:p-6 border-t border-gray-700/50 hidden">
+            <div class="mb-6">
+                <h2 class="text-lg font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="communityCardsTitle">COMMUNITY CARDS</h2>
+                <div id="community-cards-display" class="flex justify-center items-center gap-1 sm:gap-2 h-[110px]"></div>
+            </div>
+
+            <div id="cards-display" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4"></div>
+
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div id="console-container" class="lg:col-span-2 bg-black/50 rounded-lg p-4 h-48 font-mono text-xs console-scrollbar">
+                    <div id="console-output"></div>
+                    <span id="console-cursor" class="typewriter-cursor hidden"></span>
+                </div>
+                <div id="action-buttons" class="flex flex-col justify-center items-center gap-4"></div>
+            </div>
         </section>
     </main>
     
-    <!-- Access Code Modal (Shown on startup) -->
-    <div id="access-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 z-50 modal-animated">
-        <div class="main-container w-full max-w-sm rounded-2xl p-8 text-center">
-            <h2 class="text-2xl font-orbitron font-bold text-green-400 mb-2">ACCESS REQUIRED</h2>
-            <p class="text-gray-400 mb-6 text-sm">Enter your activation code to proceed.</p>
-            <input type="text" id="access-code-input" class="w-full bg-gray-900 border border-gray-600 rounded-md px-3 py-3 text-gray-200 focus:ring-2 focus:ring-green-500 focus:border-green-500 transition placeholder-gray-500 text-center uppercase tracking-widest" placeholder="ENTER CODE">
-            <button id="submit-code-btn" class="mt-6 w-full bg-green-600 hover:bg-green-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100">Authenticate</button>
+    <div id="access-modal" class="fixed inset-0 bg-slate-900/80 flex items-center justify-center p-4 z-50">
+        <div class="glass-container w-full max-w-sm rounded-2xl p-8 text-center modal-animated">
+            <h2 class="text-2xl font-orbitron font-bold text-cyan-300 mb-2" data-i18n="authTitle">AUTHENTICATION</h2>
+            <p class="text-gray-400 mb-6 text-sm" data-i18n="authSubtitle">Enter activation key to establish quantum link.</p>
+            <input type="text" id="access-code-input" class="w-full bg-gray-900/70 border border-gray-600 rounded-md px-3 py-3 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition placeholder-gray-500 text-center uppercase tracking-widest" data-i18n-placeholder="authPlaceholder" placeholder="ENTER KEY">
+            <button id="submit-code-btn" class="mt-6 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100" data-i18n="authButton">Authenticate</button>
         </div>
     </div>
 
-    <!-- Custom Alert Modal -->
     <div id="custom-alert" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-gray-800 rounded-lg shadow-xl p-6 w-full max-w-sm text-center border border-yellow-500 modal-animated">
+        <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-6 text-center border border-yellow-500 modal-animated">
             <p id="custom-alert-message" class="text-white mb-4">Message goes here.</p>
-            <button id="custom-alert-close" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-lg transition">OK</button>
+            <button id="custom-alert-close" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-lg transition" data-i18n="okButton">OK</button>
         </div>
     </div>
-
-    <!-- Limit Reached Modal -->
     <div id="limit-reached-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
-        <div class="bg-gray-800 rounded-lg shadow-xl p-8 w-full max-w-sm text-center border border-red-500 modal-animated">
-            <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2">ACTIVATION LIMIT REACHED</h2>
-            <p class="text-white mb-6">You have used all reveals for your current code.</p>
-            <a href="https://www.revealpoker.top" target="_blank" class="w-full inline-block bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100">
-                Get New Code
+        <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-8 text-center border border-red-500 modal-animated">
+            <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2" data-i18n="limitTitle">LINK SATURATION</h2>
+            <p class="text-white mb-6" data-i18n="limitSubtitle">Quantum reveals exhausted for this key.</p>
+            <a href="#" onclick="event.preventDefault(); showAlert(i18n.get('limitSupport'))" class="w-full inline-block bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100" data-i18n="limitButton">
+                Acquire New Key
             </a>
         </div>
     </div>
 
     <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- INTERNATIONALIZATION (i18n) ---
+        const translations = {
+            en: {
+                revealsLabel: "REVEALS",
+                appSubtitle: "Quantum Entanglement Hand Analysis",
+                modeSelectTitle: "SELECT GAME MODE",
+                modeNLH: "No-Limit Hold'em",
+                modePLO: "Pot-Limit Omaha",
+                modePLO5: "Under Maintenance",
+                modeUnavailable: "Unavailable",
+                modeMore: "More...",
+                setupTitle: "SETUP GAME",
+                platformLabel: "Platform",
+                platformPlaceholder: "Select Platform",
+                tableIdLabel: "Table / Club ID",
+                tableIdPlaceholder: "e.g., 12345678",
+                opponentsLabel: "Opponents",
+                engageButton: "Engage Quantum Link",
+                communityCardsTitle: "COMMUNITY CARDS",
+                authTitle: "AUTHENTICATION",
+                authSubtitle: "Enter activation key to establish quantum link.",
+                authPlaceholder: "ENTER KEY",
+                authButton: "Authenticate",
+                okButton: "OK",
+                limitTitle: "LINK SATURATION",
+                limitSubtitle: "Quantum reveals exhausted for this key.",
+                limitButton: "Acquire New Key",
+                limitSupport: "Contact support for a new Quantum Key.",
+                invalidCode: "Invalid or expired key. Please check and try again.",
+                usedCode: "This key has been fully saturated. Please acquire a new one.",
+                selectPlatform: "Please select a platform.",
+                enterTableId: "Please enter the table ID.",
+                waitHand: "Please wait for the current hand to finish revealing.",
+                newHandButton: "New Hand",
+                newGameButton: "New Game",
+                consoleInitiating: "Initiating quantum link to {platform}...",
+                consoleTargetLocked: "Target locked: Table ID {tableId}",
+                consoleBypassing: "Bypassing standard encryption layers...",
+                consoleLinkSuccess: '<span class="log-success">Quantum Link Stabilized. Access Granted.</span>',
+                consoleReadingStates: "Reading pre-flop quantum states...",
+                consoleRevealing: "Revealing {stage}...",
+                consoleFailurePreFlop: '<span class="log-error">DECRYPTION FAILED:</span> Pre-flop data stream unstable. Could not resolve community cards.',
+                consoleFailurePostFlop: '<span class="log-error">DECRYPTION FAILED:</span> Could not resolve Turn/River data from hash: <span class="text-yellow-400">{hash}</span>',
+                maintenanceMessage: "This game mode is currently under maintenance. Please check back later.",
+                unavailableMessage: "This game mode is not available."
+            },
+            pt: {
+                revealsLabel: "REVELAÇÕES",
+                appSubtitle: "Análise de Mão por Emaranhamento Quântico",
+                modeSelectTitle: "SELECIONE A MODALIDADE",
+                modeNLH: "No-Limit Hold'em",
+                modePLO: "Pot-Limit Omaha",
+                modePLO5: "Em Manutenção",
+                modeUnavailable: "Indisponível",
+                modeMore: "Mais...",
+                setupTitle: "CONFIGURAR JOGO",
+                platformLabel: "Plataforma",
+                platformPlaceholder: "Selecione a Plataforma",
+                tableIdLabel: "ID da Mesa / Clube",
+                tableIdPlaceholder: "ex: 12345678",
+                opponentsLabel: "Oponentes",
+                engageButton: "Engajar Link Quântico",
+                communityCardsTitle: "CARTAS COMUNITÁRIAS",
+                authTitle: "AUTENTICAÇÃO",
+                authSubtitle: "Insira a chave de ativação para estabelecer o link quântico.",
+                authPlaceholder: "INSERIR CHAVE",
+                authButton: "Autenticar",
+                okButton: "OK",
+                limitTitle: "SATURAÇÃO DO LINK",
+                limitSubtitle: "Revelações quânticas esgotadas para esta chave.",
+                limitButton: "Adquirir Nova Chave",
+                limitSupport: "Contate o suporte para uma nova Chave Quântica.",
+                invalidCode: "Chave inválida ou expirada. Verifique e tente novamente.",
+                usedCode: "Esta chave já foi totalmente utilizada. Por favor, adquira uma nova.",
+                selectPlatform: "Por favor, selecione uma plataforma.",
+                enterTableId: "Por favor, insira o ID da mesa.",
+                waitHand: "Por favor, aguarde a mão atual terminar de ser revelada.",
+                newHandButton: "Nova Mão",
+                newGameButton: "Novo Jogo",
+                consoleInitiating: "Iniciando link quântico com a plataforma {platform}...",
+                consoleTargetLocked: "Alvo travado: ID da Mesa {tableId}",
+                consoleBypassing: "Contornando camadas de encriptação padrão...",
+                consoleLinkSuccess: '<span class="log-success">Link Quântico Estabilizado. Acesso Concedido.</span>',
+                consoleReadingStates: "Lendo estados quânticos pré-flop...",
+                consoleRevealing: "Revelando {stage}...",
+                consoleFailurePreFlop: '<span class="log-error">FALHA NA DECRIPTAÇÃO:</span> Fluxo de dados pré-flop instável. Não foi possível obter as cartas comunitárias.',
+                consoleFailurePostFlop: '<span class="log-error">FALHA NA DECRIPTAÇÃO:</span> Não foi possível obter os dados do Turn/River do hash: <span class="text-yellow-400">{hash}</span>',
+                maintenanceMessage: "Esta modalidade está em manutenção. Por favor, volte mais tarde.",
+                unavailableMessage: "Esta modalidade não está disponível."
+            }
+        };
+        const i18n = {
+            lang: 'en',
+            init: function() {
+                const userLang = navigator.language || navigator.userLanguage;
+                this.lang = userLang.startsWith('pt') ? 'pt' : 'en';
+                document.documentElement.lang = this.lang;
+                this.translateAll();
+            },
+            get: function(key, replacements = {}) { let text = translations[this.lang][key] || translations['en'][key] || key; for (const p in replacements) { text = text.replace(`{${p}}`, replacements[p]); } return text; },
+            translateAll: function() { document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = this.get(el.dataset.i18n)); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = this.get(el.dataset.i18nPlaceholder)); }
+        };
+        i18n.init();
+
         // --- DOM ELEMENTS ---
         const mainApp = document.getElementById('main-app');
+        const accessModal = document.getElementById('access-modal');
+        const gameModeScreen = document.getElementById('game-mode-screen');
         const setupScreen = document.getElementById('setup-screen');
         const resultsScreen = document.getElementById('results-screen');
-        const revealBtn = document.getElementById('reveal-btn');
-        const platformSelect = document.getElementById('platform-select');
-        const tableIdInput = document.getElementById('table-id');
-        const numPlayersSelect = document.getElementById('num-players');
-        const consoleOutput = document.getElementById('console-output');
-        const cardsDisplay = document.getElementById('cards-display');
-        const actionButtons = document.getElementById('action-buttons');
-        const handsRemainingDisplay = document.getElementById('hands-remaining-display');
-
-        // Modals & Alerts
-        const accessModal = document.getElementById('access-modal');
-        const accessCodeInput = document.getElementById('access-code-input');
-        const submitCodeBtn = document.getElementById('submit-code-btn');
-        const customAlert = document.getElementById('custom-alert');
-        const customAlertMessage = document.getElementById('custom-alert-message');
-        const customAlertClose = document.getElementById('custom-alert-close');
-        const limitReachedModal = document.getElementById('limit-reached-modal');
-
-        // --- DATA & STATE ---
-        const SUITS = ['♠', '♥', '♦', '♣'];
-        const RANKS = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
-        const VALID_CODES = {
-            'QWERTYCLUBGG': 1, 'QWERTYPPOKER': 1, 'QWERTYXPOKER': 1,
-            '123PPOKER': 2, '123XPOKER': 2, '123CLUBGG': 2
+        // ... (all other getElementById calls)
+        const allDomElements = {
+            mainApp, accessModal, gameModeScreen, setupScreen, resultsScreen,
+            accessCodeInput: document.getElementById('access-code-input'),
+            submitCodeBtn: document.getElementById('submit-code-btn'),
+            revealBtn: document.getElementById('reveal-btn'),
+            platformSelect: document.getElementById('platform-select'),
+            tableIdInput: document.getElementById('table-id'),
+            numPlayersSelect: document.getElementById('num-players'),
+            consoleOutput: document.getElementById('console-output'),
+            consoleCursor: document.getElementById('console-cursor'),
+            cardsDisplay: document.getElementById('cards-display'),
+            communityCardsDisplay: document.getElementById('community-cards-display'),
+            actionButtons: document.getElementById('action-buttons'),
+            handsRemainingDisplay: document.getElementById('hands-remaining-display'),
+            customAlert: document.getElementById('custom-alert'),
+            customAlertMessage: document.getElementById('custom-alert-message'),
+            customAlertClose: document.getElementById('custom-alert-close'),
+            limitReachedModal: document.getElementById('limit-reached-modal'),
+            backToModeSelectBtn: document.getElementById('back-to-mode-select')
         };
-        let deck = [];
-        let nextHandTime = 0;
+        
+        // --- DATA & STATE ---
+        const SUITS = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
+        const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+        const RANK_VALUES = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':11, 'Q':12, 'K':13, 'A':14};
+        const OBFUSCATED_CODES = { 'UVVBTlRVTTIwMjU=': 5, 'WFJFVkFBTFBSTw==': 10, 'RUxJVEVIQUNL': 2 };
+        let VALID_CODES = {};
+        for (const key in OBFUSCATED_CODES) { VALID_CODES[atob(key)] = OBFUSCATED_CODES[key]; }
+
+        let deck = [], players = [], communityCards = [];
+        let gameState = 'IDLE', currentGameMode = null;
+        let soundEnabled = false, synths = {};
+
+        // --- SOUND ENGINE ---
+        const setupSounds = () => { if (soundEnabled) return; Tone.start(); synths.click = new Tone.Synth({oscillator:{type:'sine'},envelope:{attack:0.005,decay:0.1,sustain:0.3,release:1}}).toDestination(); synths.flip = new Tone.NoiseSynth({noise:{type:'white'},envelope:{attack:0.005,decay:0.05,sustain:0}}).toDestination(); synths.win = new Tone.PolySynth(Tone.Synth,{oscillator:{type:"fatsawtooth"},envelope:{attack:0.01,decay:0.2,sustain:0.2,release:0.2}}).toDestination(); synths.error = new Tone.Synth({oscillator:{type:'triangle'},envelope:{attack:0.01,decay:0.2,sustain:0,release:0.1}}).toDestination(); soundEnabled = true; };
+        const playSound = (sound, note, time) => { if (soundEnabled && synths[sound]) synths[sound].triggerAttackRelease(note, "8n", time); };
 
         // --- HELPER FUNCTIONS ---
-        const delay = (ms) => new Promise(res => setTimeout(res, ms));
-        const createDeck = () => SUITS.flatMap(suit => RANKS.map(rank => ({ suit, rank })));
-        const shuffleDeck = () => {
-            deck = createDeck();
-            for (let i = deck.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [deck[i], deck[j]] = [deck[j], deck[i]];
-            }
-        };
-        const generateRandomHash = (length = 64) => {
-            const chars = 'abcdef0123456789';
-            let result = '';
-            for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length));
-            return result;
-        };
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        const createDeck = () => Object.keys(SUITS).flatMap(suit => RANKS.map(rank => ({ suit, rank })));
+        const shuffleDeck = () => { deck = createDeck(); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; } };
+        const generateHash = (length = 32) => { const chars = 'abcdef0123456789'; let result = ''; for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length)); return result; };
+        const k_combinations = (set, k) => { if (k > set.length || k <= 0) return []; if (k === set.length) return [set]; if (k === 1) return set.map(e => [e]); const combos = []; for (let i = 0; i < set.length - k + 1; i++) { const head = set.slice(i, i + 1); const tailcombos = k_combinations(set.slice(i + 1), k - 1); for (const tail of tailcombos) { combos.push(head.concat(tail)); } } return combos; };
 
         // --- UI & ALERT FUNCTIONS ---
-        const showAlert = (message) => {
-            customAlertMessage.textContent = message;
-            customAlert.classList.remove('hidden');
-            customAlert.firstElementChild.classList.add('modal-animated');
-        };
-        const showLimitReachedModal = () => {
-            limitReachedModal.classList.remove('hidden');
-            limitReachedModal.firstElementChild.classList.add('modal-animated');
-        };
+        const showAlert = message => { playSound('error', 'C3'); allDomElements.customAlertMessage.textContent = message; allDomElements.customAlert.classList.remove('hidden'); };
+        const updateHandsRemainingDisplay = () => { const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10); const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10); if (!isNaN(maxHands) && !isNaN(handsUsed)) { allDomElements.handsRemainingDisplay.textContent = `${i18n.get('revealsLabel')}: ${maxHands - handsUsed}`; } };
 
-        function createCardHTML({ suit, rank }) {
-            const colorClass = (suit === '♥' || suit === '♦') ? 'red' : 'black';
-            return `
-                <div class="card-container">
-                    <div class="card-flipper">
-                        <div class="card-face card-back"></div>
-                        <div class="card-face card-front ${colorClass}">
-                            <span class="card-suit card-rank-top">${rank}${suit}</span>
-                            <span class="card-suit-center">${suit}</span>
-                            <span class="card-suit card-rank-bottom">${rank}${suit}</span>
-                        </div>
+        const createCardHTML = card => {
+            let content = '';
+            if (card) {
+                const colorClass = (card.suit === '♥' || card.suit === '♦') ? 'red' : 'black';
+                const rankSymbol = card.rank === 'T' ? '10' : card.rank;
+                content = `
+                <div class="card-front-content ${colorClass}">
+                    <div class="text-left">
+                        <div class="rank">${rankSymbol}</div>
+                        <div class="suit">${card.suit}</div>
+                    </div>
+                    <div class="center-suit">${card.suit}</div>
+                    <div class="text-right card-bottom-rank">
+                        <div class="rank">${rankSymbol}</div>
+                        <div class="suit">${card.suit}</div>
                     </div>
                 </div>`;
-        }
-        
-        async function logMessage(message) {
+            }
+            return `<div class="card-container"><div class="card-flipper"><div class="card-face card-back"></div><div class="card-face card-front">${content}</div></div></div>`;
+        };
+
+        async function typeMessage(messageKey, replacements = {}, speed = 20) {
+            const message = i18n.get(messageKey, replacements);
             const p = document.createElement('p');
-            p.innerHTML = `<span class="text-green-400">&gt;</span> ${message}`;
-            consoleOutput.appendChild(p);
-            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+            p.innerHTML = `<span class="text-cyan-400">&gt;</span> `;
+            allDomElements.consoleOutput.appendChild(p);
+            const textEl = document.createElement('span');
+            p.appendChild(textEl);
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = message;
+            const messageNodes = Array.from(tempDiv.childNodes);
+            for (const node of messageNodes) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    for (let char of node.textContent) {
+                        textEl.innerHTML += char;
+                        allDomElements.consoleOutput.scrollTop = allDomElements.consoleOutput.scrollHeight;
+                        await delay(speed + Math.random() * 10);
+                    }
+                } else { textEl.appendChild(node.cloneNode(true)); }
+            }
+            allDomElements.consoleOutput.scrollTop = allDomElements.consoleOutput.scrollHeight;
         }
 
-        function setButtonLoading(isLoading) {
-             if (isLoading) {
-                revealBtn.disabled = true;
-                revealBtn.innerHTML = `<svg class="animate-spin h-5 w-5 mr-3" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg><span>Processing...</span>`;
-            } else {
-                revealBtn.disabled = false;
-                revealBtn.innerHTML = `<span>Reveal Cards</span>`;
-            }
-        }
+        // --- POKER HAND EVALUATION LOGIC ---
+        function evaluateHand(cards, mode) {
+            const handRanksI18n = {
+                en: { 10: "Royal Flush", 9: "Straight Flush", 8: "Four of a Kind", 7: "Full House", 6: "Flush", 5: "Straight", 4: "Three of a Kind", 3: "Two Pair", 2: "One Pair", 1: "High Card" },
+                pt: { 10: "Royal Flush", 9: "Straight Flush", 8: "Quadra", 7: "Full House", 6: "Flush", 5: "Sequência", 4: "Trinca", 3: "Dois Pares", 2: "Um Par", 1: "Carta Alta" }
+            };
 
-        function updateHandsRemainingDisplay() {
-            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
-            const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
-            if (!isNaN(maxHands) && !isNaN(handsUsed)) {
-                handsRemainingDisplay.textContent = `REVEALS: ${maxHands - handsUsed}`;
+            let combosToTest = [];
+            if (mode === 'nlh') {
+                combosToTest = k_combinations(cards, 5);
+            } else if (mode === 'plo') {
+                const holeCards = cards.slice(0, 4);
+                const boardCards = cards.slice(4);
+                const holeCombos = k_combinations(holeCards, 2);
+                const boardCombos = k_combinations(boardCards, 3);
+                for(const hc of holeCombos) {
+                    for (const bc of boardCombos) {
+                        combosToTest.push([...hc, ...bc]);
+                    }
+                }
             }
+            
+            let bestHand = { rank: 0, name: "High Card", values: [] };
+            for(const combo of combosToTest) {
+                const ranks = combo.map(c => RANK_VALUES[c.rank]).sort((a, b) => b - a);
+                const suits = combo.map(c => c.suit);
+                const isFlush = new Set(suits).size === 1;
+                const isStraight = ranks.every((r, i) => i === 0 || r === ranks[i-1] - 1) || (ranks[0] === 14 && ranks[1] === 5 && ranks[2] === 4 && ranks[3] === 3 && ranks[4] === 2);
+                let currentRank = 0, currentValues = ranks;
+                if (isStraight && isFlush) { currentRank = (ranks[0] === 14 && ranks[1] === 13) ? 10 : 9; if(currentRank === 9 && ranks[0]===14) currentValues = [5,4,3,2,1]; }
+                else {
+                    const rankCounts = ranks.reduce((acc, r) => { acc[r] = (acc[r] || 0) + 1; return acc; }, {});
+                    const counts = Object.values(rankCounts).sort((a,b) => b-a);
+                    const mainCards = Object.keys(rankCounts).filter(r => rankCounts[r] >= 2).map(Number).sort((a,b)=>b-a);
+                    if (counts[0] === 4) { currentRank = 8; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else if (counts[0] === 3 && counts[1] === 2) { currentRank = 7; currentValues = [mainCards.find(c => rankCounts[c] === 3), mainCards.find(c => rankCounts[c] === 2)]; }
+                    else if (isFlush) { currentRank = 6; }
+                    else if (isStraight) { currentRank = 5; if(ranks[0]===14) currentValues = [5,4,3,2,1]; }
+                    else if (counts[0] === 3) { currentRank = 4; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else if (counts[0] === 2 && counts[1] === 2) { currentRank = 3; currentValues = [mainCards[0], mainCards[1], ...ranks.filter(r => !mainCards.includes(r))]; }
+                    else if (counts[0] === 2) { currentRank = 2; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else { currentRank = 1; }
+                }
+                const compareHighCards = (a, b) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] - b[i]; } return 0; };
+                if (currentRank > bestHand.rank || (currentRank === bestHand.rank && compareHighCards(currentValues, bestHand.values) > 0)) {
+                    bestHand = { rank: currentRank, name: handRanksI18n[i18n.lang][currentRank], values: currentValues };
+                }
+            }
+            return bestHand;
         }
 
         // --- CORE LOGIC ---
@@ -285,90 +500,76 @@
             const code = localStorage.getItem('pokerRevealAccessCode');
             const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
             const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
-
             if (code && !isNaN(maxHands) && !isNaN(handsUsed) && handsUsed < maxHands) {
-                accessModal.classList.add('hidden');
-                mainApp.classList.remove('hidden');
+                allDomElements.accessModal.classList.add('hidden');
+                allDomElements.mainApp.classList.remove('hidden');
+                allDomElements.gameModeScreen.classList.remove('hidden');
                 updateHandsRemainingDisplay();
             } else {
-                mainApp.classList.add('hidden');
-                accessModal.classList.remove('hidden');
-                accessModal.firstElementChild.classList.add('modal-animated');
+                allDomElements.mainApp.classList.add('hidden');
+                allDomElements.accessModal.classList.remove('hidden');
             }
         }
 
         function handleAccessCodeSubmit() {
-            const code = accessCodeInput.value.trim().toUpperCase();
+            setupSounds();
+            playSound('click', 'C4');
+            const code = allDomElements.accessCodeInput.value.trim().toUpperCase();
             const usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
-
             if (usedCodes.includes(code)) {
-                showAlert("This code has already been fully used. Please get a new one.");
+                showAlert(i18n.get('usedCode'));
                 return;
             }
-
             if (VALID_CODES[code]) {
                 localStorage.setItem('pokerRevealAccessCode', code);
                 localStorage.setItem('pokerRevealMaxHands', VALID_CODES[code]);
                 localStorage.setItem('pokerRevealHandsUsed', '0');
                 checkAccess();
             } else {
-                showAlert("Invalid or expired code. Please check the code and try again.");
+                showAlert(i18n.get('invalidCode'));
             }
         }
         
         function validateInputs() {
-            if (platformSelect.value === "") {
-                showAlert("Please select a platform.");
-                return false;
-            }
-            if (!tableIdInput.value) {
-                showAlert("Please enter the table ID.");
-                return false;
-            }
+            if (allDomElements.platformSelect.value === "") { showAlert(i18n.get('selectPlatform')); return false; }
+            if (allDomElements.tableIdInput.value === "") { showAlert(i18n.get('enterTableId')); return false; }
             return true;
         }
 
-        async function dealHands() {
-            cardsDisplay.innerHTML = '';
-            shuffleDeck();
-            const numOpponents = parseInt(numPlayersSelect.value, 10);
-            
-            for (let i = 0; i < numOpponents; i++) {
-                const hand = [deck.pop(), deck.pop()];
-                const opponentDiv = document.createElement('div');
-                opponentDiv.className = 'p-3 flex flex-col items-center space-y-2';
-                opponentDiv.innerHTML = `<h3 class="font-bold text-gray-300 text-sm">Opponent ${i + 1}</h3>
-                                         <div class="flex space-x-2">
-                                             ${createCardHTML(hand[0])}
-                                             ${createCardHTML(hand[1])}
-                                         </div>`;
-                cardsDisplay.appendChild(opponentDiv);
+        async function handleReveal() {
+            if (gameState !== 'IDLE' || !validateInputs()) return;
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            if (parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10) >= maxHands) {
+                allDomElements.limitReachedModal.classList.remove('hidden');
+                return;
             }
+
+            gameState = 'REVEALING';
+            allDomElements.revealBtn.disabled = true;
+            allDomElements.setupScreen.classList.add('hidden');
+            allDomElements.resultsScreen.classList.remove('hidden');
+            resetBoard();
             
-            // Trigger flip animation with a stagger
-            const cardContainers = document.querySelectorAll('.card-container');
-            cardContainers.forEach((card, index) => {
-                setTimeout(() => {
-                    card.classList.add('flipped');
-                }, 100 * index);
-            });
-            nextHandTime = Date.now() + 5000; // 5 second cooldown
+            allDomElements.consoleCursor.classList.remove('hidden');
+            const platform = allDomElements.platformSelect.options[allDomElements.platformSelect.selectedIndex].text;
+            await typeMessage('consoleInitiating', { platform });
+            await typeMessage('consoleTargetLocked', { tableId: allDomElements.tableIdInput.value });
+            await delay(1000);
+            await typeMessage('consoleBypassing');
+            await delay(1500);
+            await typeMessage('consoleLinkSuccess');
+            await delay(500);
+            
+            allDomElements.consoleCursor.classList.add('hidden');
+            processHandReveal();
         }
 
         function processHandReveal() {
-            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
-            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
-
-            if (handsUsed >= maxHands) {
-                showLimitReachedModal();
-                return false;
-            }
-            
+            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10) || 0;
             handsUsed++;
             localStorage.setItem('pokerRevealHandsUsed', handsUsed);
             updateHandsRemainingDisplay();
-
-            // Check if the limit was just reached and add the code to the used list
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
             if (handsUsed >= maxHands) {
                 const code = localStorage.getItem('pokerRevealAccessCode');
                 let usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
@@ -377,107 +578,185 @@
                     localStorage.setItem('pokerRevealUsedCodes', JSON.stringify(usedCodes));
                 }
             }
-
-            dealHands();
-            return true;
+            dealAndDisplay();
         }
 
-        async function handleFirstReveal() {
-            if (!validateInputs()) return;
+        function resetBoard() {
+            allDomElements.cardsDisplay.innerHTML = '';
+            allDomElements.communityCardsDisplay.innerHTML = '';
+            allDomElements.actionButtons.innerHTML = '';
+            allDomElements.consoleOutput.innerHTML = '';
+            players = [];
+            communityCards = [];
+        }
 
-            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
-            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+        async function dealAndDisplay() {
+            shuffleDeck();
+            const numOpponents = parseInt(allDomElements.numPlayersSelect.value, 10);
+            const holeCardsCount = currentGameMode === 'plo' ? 4 : 2;
 
-            if (handsUsed >= maxHands) {
-                showLimitReachedModal();
-                return;
+            for (let i = 0; i < numOpponents; i++) {
+                let hand = [];
+                for(let j=0; j < holeCardsCount; j++) { hand.push(deck.pop()); }
+                players.push({ id: i, name: `Position ${i + 1}`, hand, div: null });
             }
+            deck.pop(); // burn
+            communityCards = [deck.pop(), deck.pop(), deck.pop(), deck.pop(), deck.pop()];
 
-            setButtonLoading(true);
-            setupScreen.classList.add('hidden');
-            resultsScreen.classList.remove('hidden');
-            consoleOutput.innerHTML = '';
-            cardsDisplay.innerHTML = '';
-            actionButtons.innerHTML = '';
-            
-            const platform = platformSelect.options[platformSelect.selectedIndex].text;
-            
-            await logMessage(`Initiating connection to ${platform} platform...`);
+            players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'p-3 flex flex-col items-center space-y-2 bg-slate-800/50 rounded-lg border border-gray-700/50 transition-all duration-500';
+                let cardsHTML = '';
+                for(const card of player.hand) { cardsHTML += createCardHTML(null); }
+                playerDiv.innerHTML = `
+                    <div class="flex items-center gap-2 w-full">
+                        <div class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-800/50 flex items-center justify-center font-mono text-cyan-300 text-xs">${player.id + 1}</div>
+                        <h3 class="font-bold text-gray-300 text-sm truncate">${player.name}</h3>
+                    </div>
+                    <div class="flex flex-wrap justify-center gap-1 player-hand">${cardsHTML}</div>
+                    <div class="hand-rank-display text-cyan-200 text-xs h-4 font-medium"></div>`;
+                allDomElements.cardsDisplay.appendChild(playerDiv);
+                player.div = playerDiv;
+            });
+
+            await typeMessage('consoleReadingStates');
             await delay(1000);
-            await logMessage(`Target locked: Table ${tableIdInput.value}`);
-            await delay(500);
-            await logMessage('Analyzing security protocols...');
-            await delay(1500);
-            await logMessage('<span class="text-green-400">Access granted.</span>');
-            await delay(500);
-            await logMessage('Reading encrypted hand data...');
-            await delay(1200);
-            await logMessage(`Data hash found: <span class="text-yellow-400">${generateRandomHash()}</span>`);
-            await delay(1200);
-            await logMessage('<span class="text-green-400">Decryption successful.</span>');
-            await delay(300);
-            await logMessage('Revealing opponent hands...');
-            await delay(500);
 
-            processHandReveal();
+            // Reveal hole cards
+            const allCardElements = document.querySelectorAll('.player-hand .card-container');
+            for (let i = 0; i < allCardElements.length; i++) {
+                const container = allCardElements[i];
+                const playerIndex = players.findIndex(p => p.div.contains(container));
+                const cardIndex = Array.from(container.parentNode.children).indexOf(container);
+                setTimeout(() => {
+                    playSound('flip', null, Tone.now());
+                    container.querySelector('.card-front').innerHTML = createCardHTML(players[playerIndex].hand[cardIndex]).match(/<div class="card-front-content.*<\/div>/s)[0];
+                    container.classList.add('flipped');
+                }, 80 * i);
+            }
+            await delay(allCardElements.length * 80 + 500);
+
+            const outcomeRoll = Math.random();
+            let revealScenario;
+            if (outcomeRoll < 0.05) { revealScenario = 'FULL_REVEAL'; }
+            else if (outcomeRoll < 0.35) { revealScenario = 'FLOP_ONLY'; }
+            else { revealScenario = 'CARDS_ONLY'; }
             
-            setButtonLoading(false);
+            if (revealScenario === 'CARDS_ONLY') {
+                await typeMessage('consoleFailurePreFlop');
+            } else {
+                await revealCommunityStage('Flop', 0, 3);
+                if (revealScenario === 'FLOP_ONLY') {
+                    await delay(1000);
+                    await typeMessage('consoleFailurePostFlop', { hash: generateHash() });
+                } else { // FULL_REVEAL
+                    await delay(1500);
+                    await revealCommunityStage('Turn', 3, 1);
+                    await delay(1500);
+                    await revealCommunityStage('River', 4, 1);
+                    await delay(1500);
+                    evaluateAllHands();
+                }
+            }
+
             showActionButtons();
+            gameState = 'FINISHED';
         }
 
-        function handleNewHandClick() {
-            if (Date.now() < nextHandTime) {
-                const secondsLeft = Math.ceil((nextHandTime - Date.now()) / 1000);
-                showAlert(`Please wait for the current hand to finish. Try again in ${secondsLeft} seconds.`);
-                return;
-            }
-            
-            const success = processHandReveal();
-            if (success) {
-                logMessage("New hand data decrypted. Revealing now...");
+        async function revealCommunityStage(stageName, start, count) {
+            allDomElements.consoleCursor.classList.remove('hidden');
+            await typeMessage('consoleRevealing', { stage: stageName });
+            allDomElements.consoleCursor.classList.add('hidden');
+            for (let i = start; i < start + count; i++) {
+                const cardElem = document.createElement('div');
+                cardElem.innerHTML = createCardHTML(communityCards[i]);
+                const cardContainer = cardElem.firstElementChild;
+                allDomElements.communityCardsDisplay.appendChild(cardContainer);
+                await delay(50);
+                playSound('flip', null, Tone.now());
+                cardContainer.classList.add('flipped');
+                await delay(100);
             }
         }
         
+        function evaluateAllHands() {
+            let bestOverallHand = { rank: 0, values: [] };
+            let winners = [];
+            players.forEach(player => {
+                const cardsToEval = currentGameMode === 'plo' ? [...player.hand, ...communityCards] : [...player.hand, ...communityCards];
+                player.bestHand = evaluateHand(cardsToEval, currentGameMode);
+                player.div.querySelector('.hand-rank-display').textContent = player.bestHand.name;
+                
+                const compareHighCards = (a, b) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] - b[i]; } return 0; };
+                if (player.bestHand.rank > bestOverallHand.rank || (player.bestHand.rank === bestOverallHand.rank && compareHighCards(player.bestHand.values, bestOverallHand.values) > 0)) {
+                    bestOverallHand = player.bestHand;
+                    winners = [player.id];
+                } else if (player.bestHand.rank === bestOverallHand.rank && compareHighCards(player.bestHand.values, bestOverallHand.values) === 0) {
+                    winners.push(player.id);
+                }
+            });
+            winners.forEach(winnerId => {
+                players.find(p => p.id === winnerId).div.classList.add('winner-highlight');
+                playSound('win', 'C4', Tone.now());
+            });
+        }
+
         function showActionButtons() {
-            actionButtons.innerHTML = `<button id="new-hand-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">New Hand</button>
-                                       <button id="new-game-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">New Game</button>`;
+            allDomElements.actionButtons.innerHTML = `
+                <button id="new-hand-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">${i18n.get('newHandButton')}</button>
+                <button id="new-game-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105 active:scale-100">${i18n.get('newGameButton')}</button>`;
             document.getElementById('new-hand-btn').addEventListener('click', handleNewHandClick);
             document.getElementById('new-game-btn').addEventListener('click', resetGame);
         }
 
-        function resetGame() {
-            // NOTE: We DO NOT clear 'pokerRevealUsedCodes' here.
-            localStorage.removeItem('pokerRevealAccessCode');
-            localStorage.removeItem('pokerRevealMaxHands');
-            localStorage.removeItem('pokerRevealHandsUsed');
+        function handleNewHandClick() {
+            if (gameState === 'REVEALING') { showAlert(i18n.get('waitHand')); return; }
+            playSound('click', 'C4');
+            gameState = 'IDLE';
+            handleReveal();
+        }
 
-            resultsScreen.classList.add('hidden');
-            setupScreen.classList.remove('hidden');
-            
-            tableIdInput.value = '';
-            platformSelect.value = '';
-            accessCodeInput.value = '';
-            consoleOutput.innerHTML = '';
-            cardsDisplay.innerHTML = '';
-            actionButtons.innerHTML = '';
-            nextHandTime = 0;
-            checkAccess();
+        function resetGame() {
+            playSound('click', 'C4');
+            gameState = 'IDLE';
+            allDomElements.resultsScreen.classList.add('hidden');
+            allDomElements.gameModeScreen.classList.remove('hidden');
+            allDomElements.setupScreen.classList.add('hidden');
+            allDomElements.revealBtn.disabled = false;
+            allDomElements.tableIdInput.value = '';
+            allDomElements.platformSelect.value = '';
         }
 
         // --- EVENT LISTENERS ---
-        revealBtn.addEventListener('click', handleFirstReveal);
-        submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
-        accessCodeInput.addEventListener('keyup', (event) => {
-            if (event.key === 'Enter') submitCodeBtn.click();
+        allDomElements.submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
+        allDomElements.accessCodeInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') allDomElements.submitCodeBtn.click(); });
+        allDomElements.customAlertClose.addEventListener('click', () => { allDomElements.customAlert.classList.add('hidden'); });
+        allDomElements.revealBtn.addEventListener('click', handleReveal);
+        
+        gameModeScreen.addEventListener('click', e => {
+            const button = e.target.closest('button[data-mode]');
+            if (!button) return;
+            playSound('click', 'C4');
+            const mode = button.dataset.mode;
+            if (button.disabled) {
+                if(mode === 'plo5') showAlert(i18n.get('maintenanceMessage'));
+                else showAlert(i18n.get('unavailableMessage'));
+                return;
+            }
+            currentGameMode = mode;
+            gameModeScreen.classList.add('hidden');
+            setupScreen.classList.remove('hidden');
         });
-        customAlertClose.addEventListener('click', () => {
-            customAlert.classList.add('hidden');
+        
+        allDomElements.backToModeSelectBtn.addEventListener('click', () => {
+             playSound('click', 'C3');
+             setupScreen.classList.add('hidden');
+             gameModeScreen.classList.remove('hidden');
         });
         
         // --- INITIALIZATION ---
-        shuffleDeck();
         checkAccess();
-
+    });
     </script>
 </body>
 </html>
