@@ -121,10 +121,23 @@
         .mode-btn { transition: all 0.2s ease-in-out; }
         .mode-btn:not(:disabled):hover { transform: translateY(-3px); box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3); }
         .mode-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+        .contact-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 6px 12px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.2s;
+            gap: 6px;
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-2 sm:p-4">
 
+    <!-- Main App Container -->
     <main id="main-app" class="glass-container w-full max-w-7xl rounded-2xl overflow-hidden hidden">
         <header class="p-4 sm:p-6 border-b border-gray-700/50 text-center relative">
             <h1 class="text-xl sm:text-2xl md:text-4xl font-orbitron font-black text-cyan-300 tracking-wider uppercase" style="text-shadow: var(--glow-cyan);">
@@ -134,29 +147,36 @@
             <div id="hands-remaining-display" class="absolute top-3 right-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
         </header>
 
+        <!-- NEW: Game Mode Screen -->
         <section id="game-mode-screen" class="p-4 sm:p-8 space-y-6 hidden">
              <h2 class="text-xl font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="modeSelectTitle">SELECT GAME MODE</h2>
              <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                <!-- NLH -->
                 <button data-mode="nlh" class="mode-btn bg-sky-600 hover:bg-sky-500 p-6 rounded-lg text-center">
                     <p class="font-bold text-lg">NLH</p>
                     <p class="text-xs text-sky-200" data-i18n="modeNLH">No-Limit Hold'em</p>
                 </button>
+                <!-- PLO -->
                 <button data-mode="plo" class="mode-btn bg-purple-600 hover:bg-purple-500 p-6 rounded-lg text-center">
                     <p class="font-bold text-lg">PLO</p>
                     <p class="text-xs text-purple-200" data-i18n="modePLO">Pot-Limit Omaha</p>
                 </button>
+                <!-- PLO5 -->
                 <button data-mode="plo5" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
                      <p class="font-bold text-lg">PLO5</p>
                      <p class="text-xs text-yellow-400" data-i18n="modePLO5">Under Maintenance</p>
                 </button>
-                 <button data-mode="plo6" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
+                 <!-- PLO6 -->
+                <button data-mode="plo6" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
                      <p class="font-bold text-lg">PLO6</p>
                      <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
                 </button>
+                <!-- Short Deck -->
                 <button data-mode="shortdeck" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
                      <p class="font-bold text-lg">Short Deck</p>
                      <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
                 </button>
+                <!-- More -->
                 <button data-mode="more" class="mode-btn bg-gray-700 p-6 rounded-lg text-center" disabled>
                      <p class="font-bold text-lg" data-i18n="modeMore">More...</p>
                      <p class="text-xs text-red-400" data-i18n="modeUnavailable">Unavailable</p>
@@ -198,13 +218,16 @@
         </section>
 
         <section id="results-screen" class="p-4 sm:p-6 border-t border-gray-700/50 hidden">
+            <!-- Community Cards -->
             <div class="mb-6">
                 <h2 class="text-lg font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="communityCardsTitle">COMMUNITY CARDS</h2>
                 <div id="community-cards-display" class="flex justify-center items-center gap-1 sm:gap-2 h-[110px]"></div>
             </div>
 
+            <!-- Opponent Hands -->
             <div id="cards-display" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4"></div>
 
+            <!-- Console & Actions -->
             <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
                 <div id="console-container" class="lg:col-span-2 bg-black/50 rounded-lg p-4 h-48 font-mono text-xs console-scrollbar">
                     <div id="console-output"></div>
@@ -215,15 +238,17 @@
         </section>
     </main>
     
+    <!-- Access Code Modal -->
     <div id="access-modal" class="fixed inset-0 bg-slate-900/80 flex items-center justify-center p-4 z-50">
         <div class="glass-container w-full max-w-sm rounded-2xl p-8 text-center modal-animated">
             <h2 class="text-2xl font-orbitron font-bold text-cyan-300 mb-2" data-i18n="authTitle">AUTHENTICATION</h2>
-            <p class="text-gray-400 mb-6 text-sm" data-i18n="authSubtitle">Enter activation key to establish quantum link.</p>
+            <div id="auth-subtitle" class="text-gray-400 mb-6 text-sm"></div>
             <input type="text" id="access-code-input" class="w-full bg-gray-900/70 border border-gray-600 rounded-md px-3 py-3 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition placeholder-gray-500 text-center uppercase tracking-widest" data-i18n-placeholder="authPlaceholder" placeholder="ENTER KEY">
             <button id="submit-code-btn" class="mt-6 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100" data-i18n="authButton">Authenticate</button>
         </div>
     </div>
 
+    <!-- Custom Alert & Limit Modals -->
     <div id="custom-alert" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
         <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-6 text-center border border-yellow-500 modal-animated">
             <p id="custom-alert-message" class="text-white mb-4">Message goes here.</p>
@@ -234,9 +259,9 @@
         <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-8 text-center border border-red-500 modal-animated">
             <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2" data-i18n="limitTitle">LINK SATURATION</h2>
             <p class="text-white mb-6" data-i18n="limitSubtitle">Quantum reveals exhausted for this key.</p>
-            <a href="#" onclick="event.preventDefault(); showAlert(i18n.get('limitSupport'))" class="w-full inline-block bg-red-600 hover:bg-red-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100" data-i18n="limitButton">
+            <button onclick="openAcquireKeyLink()" class="w-full contact-btn bg-red-600 hover:bg-red-500 text-white" data-i18n="limitButton">
                 Acquire New Key
-            </a>
+            </button>
         </div>
     </div>
 
@@ -263,12 +288,26 @@
                 communityCardsTitle: "COMMUNITY CARDS",
                 authTitle: "AUTHENTICATION",
                 authSubtitle: "Enter activation key to establish quantum link.",
+                firstTimeAuthSubtitle: `
+                    <p class="mb-4">This is your first access. To get a valid access key, contact us:</p>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://t.me/bedmalcon_temp" target="_blank" class="contact-btn bg-cyan-600 hover:bg-cyan-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23.01-1.42c0-.16.03-.3.1-.4.07-.1.16-.16.28-.16.17 0 .32.04.44.13.12.09.2.22.23.39l.02.23-1.12 6.55c-.05.23-.1.4-.17.51-.07.1-.15.17-.25.2s-.2.05-.3.05c-.23 0-.4-.07-.52-.22-.12-.15-.18-.34-.17-.57l.28-4.23zM12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"/></svg>
+                            Telegram
+                        </a>
+                        <a href="https://instagram.com/hackpoker_updated" target="_blank" class="contact-btn bg-pink-600 hover:bg-pink-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2zm-.2 2A3.6 3.6 0 004 7.6v8.8A3.6 3.6 0 007.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6a3.6 3.6 0 00-3.6-3.6H7.6zm9.65 1.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
+                            Instagram
+                        </a>
+                    </div>`,
+                incognitoError: "Incognito mode detected. Please use a normal browser window to ensure your access codes are saved correctly.",
                 authPlaceholder: "ENTER KEY",
                 authButton: "Authenticate",
                 okButton: "OK",
                 limitTitle: "LINK SATURATION",
                 limitSubtitle: "Quantum reveals exhausted for this key.",
                 limitButton: "Acquire New Key",
+                acquireKeyMessage: "I want to acquire a key for Poker Reveal X",
                 limitSupport: "Contact support for a new Quantum Key.",
                 invalidCode: "Invalid or expired key. Please check and try again.",
                 usedCode: "This key has been fully saturated. Please acquire a new one.",
@@ -307,12 +346,26 @@
                 communityCardsTitle: "CARTAS COMUNITÁRIAS",
                 authTitle: "AUTENTICAÇÃO",
                 authSubtitle: "Insira a chave de ativação para estabelecer o link quântico.",
+                firstTimeAuthSubtitle: `
+                    <p class="mb-4">Este é o seu primeiro acesso. Para obter uma chave de acesso válida, entre em contacto:</p>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://t.me/bedmalcon_temp" target="_blank" class="contact-btn bg-cyan-600 hover:bg-cyan-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23.01-1.42c0-.16.03-.3.1-.4.07-.1.16-.16.28-.16.17 0 .32.04.44.13.12.09.2.22.23.39l.02.23-1.12 6.55c-.05.23-.1.4-.17.51-.07.1-.15.17-.25.2s-.2.05-.3.05c-.23 0-.4-.07-.52-.22-.12-.15-.18-.34-.17-.57l.28-4.23zM12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"/></svg>
+                            Telegram
+                        </a>
+                        <a href="https://instagram.com/hackpoker_updated" target="_blank" class="contact-btn bg-pink-600 hover:bg-pink-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2zm-.2 2A3.6 3.6 0 004 7.6v8.8A3.6 3.6 0 007.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6a3.6 3.6 0 00-3.6-3.6H7.6zm9.65 1.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
+                            Instagram
+                        </a>
+                    </div>`,
+                incognitoError: "Modo anónimo detetado. Por favor, use uma janela normal do navegador para garantir que os seus códigos de acesso são guardados corretamente.",
                 authPlaceholder: "INSERIR CHAVE",
                 authButton: "Autenticar",
                 okButton: "OK",
                 limitTitle: "SATURAÇÃO DO LINK",
                 limitSubtitle: "Revelações quânticas esgotadas para esta chave.",
                 limitButton: "Adquirir Nova Chave",
+                acquireKeyMessage: "Quero adquirir uma chave para o Poker Reveal X",
                 limitSupport: "Contate o suporte para uma nova Chave Quântica.",
                 invalidCode: "Chave inválida ou expirada. Verifique e tente novamente.",
                 usedCode: "Esta chave já foi totalmente utilizada. Por favor, adquira uma nova.",
@@ -331,17 +384,77 @@
                 consoleFailurePostFlop: '<span class="log-error">FALHA NA DECRIPTAÇÃO:</span> Não foi possível obter os dados do Turn/River do hash: <span class="text-yellow-400">{hash}</span>',
                 maintenanceMessage: "Esta modalidade está em manutenção. Por favor, volte mais tarde.",
                 unavailableMessage: "Esta modalidade não está disponível."
+            },
+            ru: {
+                revealsLabel: "ОТКРЫТИЯ",
+                appSubtitle: "Анализ рук с помощью квантовой запутанности",
+                modeSelectTitle: "ВЫБЕРИТЕ РЕЖИМ ИГРЫ",
+                modeNLH: "Безлимитный Холдем",
+                modePLO: "Пот-Лимит Омаха",
+                modePLO5: "В разработке",
+                modeUnavailable: "Недоступно",
+                modeMore: "Больше...",
+                setupTitle: "НАСТРОЙКА ИГРЫ",
+                platformLabel: "Платформа",
+                platformPlaceholder: "Выберите платформу",
+                tableIdLabel: "ID стола / клуба",
+                tableIdPlaceholder: "например, 12345678",
+                opponentsLabel: "Оппоненты",
+                engageButton: "Активировать квантовую связь",
+                communityCardsTitle: "ОБЩИЕ КАРТЫ",
+                authTitle: "АУТЕНТИФИКАЦИЯ",
+                authSubtitle: "Введите ключ активации для установления квантовой связи.",
+                firstTimeAuthSubtitle: `
+                    <p class="mb-4">Это ваш первый вход. Чтобы получить действительный ключ доступа, свяжитесь с нами:</p>
+                    <div class="flex flex-col space-y-2">
+                        <a href="https://t.me/bedmalcon_temp" target="_blank" class="contact-btn bg-cyan-600 hover:bg-cyan-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M9.78 18.65l.28-4.23.01-1.42c0-.16.03-.3.1-.4.07-.1.16-.16.28-.16.17 0 .32.04.44.13.12.09.2.22.23.39l.02.23-1.12 6.55c-.05.23-.1.4-.17.51-.07.1-.15.17-.25.2s-.2.05-.3.05c-.23 0-.4-.07-.52-.22-.12-.15-.18-.34-.17-.57l.28-4.23zM12 2c5.52 0 10 4.48 10 10s-4.48 10-10 10S2 17.52 2 12 6.48 2 12 2zm0 2c-4.42 0-8 3.58-8 8s3.58 8 8 8 8-3.58 8-8-3.58-8-8-8z"/></svg>
+                            Telegram
+                        </a>
+                        <a href="https://instagram.com/hackpoker_updated" target="_blank" class="contact-btn bg-pink-600 hover:bg-pink-500 text-white">
+                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M7.8 2h8.4C19.4 2 22 4.6 22 7.8v8.4a5.8 5.8 0 01-5.8 5.8H7.8C4.6 22 2 19.4 2 16.2V7.8A5.8 5.8 0 017.8 2zm-.2 2A3.6 3.6 0 004 7.6v8.8A3.6 3.6 0 007.6 20h8.8a3.6 3.6 0 003.6-3.6V7.6a3.6 3.6 0 00-3.6-3.6H7.6zm9.65 1.5a1.25 1.25 0 100 2.5 1.25 1.25 0 000-2.5zM12 7a5 5 0 100 10 5 5 0 000-10zm0 2a3 3 0 110 6 3 3 0 010-6z"/></svg>
+                            Instagram
+                        </a>
+                    </div>`,
+                incognitoError: "Обнаружен режим инкогнито. Пожалуйста, используйте обычное окно браузера, чтобы ваши коды доступа сохранялись правильно.",
+                authPlaceholder: "ВВЕДИТЕ КЛЮЧ",
+                authButton: "Аутентификация",
+                okButton: "OK",
+                limitTitle: "НАСЫЩЕНИЕ СВЯЗИ",
+                limitSubtitle: "Квантовые открытия для этого ключа исчерпаны.",
+                limitButton: "Получить новый ключ",
+                acquireKeyMessage: "Я хочу приобрести ключ для Poker Reveal X",
+                limitSupport: "Свяжитесь с поддержкой для получения нового Квантового Ключа.",
+                invalidCode: "Недействительный или истекший ключ. Пожалуйста, проверьте и попробуйте снова.",
+                usedCode: "Этот ключ уже был полностью использован. Пожалуйста, приобретите новый.",
+                selectPlatform: "Пожалуйста, выберите платформу.",
+                enterTableId: "Пожалуйста, введите ID стола.",
+                waitHand: "Пожалуйста, подождите, пока текущая раздача не будет завершена.",
+                newHandButton: "Новая раздача",
+                newGameButton: "Новая игра",
+                consoleInitiating: "Инициализация квантовой связи с {platform}...",
+                consoleTargetLocked: "Цель заблокирована: ID стола {tableId}",
+                consoleBypassing: "Обход стандартных уровней шифрования...",
+                consoleLinkSuccess: '<span class="log-success">Квантовая связь стабилизирована. Доступ предоставлен.</span>',
+                consoleReadingStates: "Чтение квантовых состояний префлопа...",
+                consoleRevealing: "Открытие {stage}...",
+                consoleFailurePreFlop: '<span class="log-error">ОШИБКА ДЕШИФРОВКИ:</span> Поток данных префлопа нестабилен. Не удалось получить общие карты.',
+                consoleFailurePostFlop: '<span class="log-error">ОШИБКА ДЕШИФРОВКИ:</span> Не удалось получить данные Тёрна/Ривера из хеша: <span class="text-yellow-400">{hash}</span>',
+                maintenanceMessage: "Этот режим игры находится на техническом обслуживании. Пожалуйста, зайдите позже.",
+                unavailableMessage: "Этот режим игры недоступен."
             }
         };
         const i18n = {
             lang: 'en',
             init: function() {
                 const userLang = navigator.language || navigator.userLanguage;
-                this.lang = userLang.startsWith('pt') ? 'pt' : 'en';
+                if (userLang.startsWith('pt')) this.lang = 'pt';
+                else if (userLang.startsWith('ru')) this.lang = 'ru';
+                else this.lang = 'en';
                 document.documentElement.lang = this.lang;
                 this.translateAll();
             },
-            get: function(key, replacements = {}) { let text = translations[this.lang][key] || translations['en'][key] || key; for (const p in replacements) { text = text.replace(`{${p}}`, replacements[p]); } return text; },
+            get: function(key, replacements = {}) { let text = (translations[this.lang] && translations[this.lang][key]) || translations['en'][key] || key; for (const p in replacements) { text = text.replace(`{${p}}`, replacements[p]); } return text; },
             translateAll: function() { document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = this.get(el.dataset.i18n)); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = this.get(el.dataset.i18nPlaceholder)); }
         };
         i18n.init();
@@ -352,11 +465,11 @@
         const gameModeScreen = document.getElementById('game-mode-screen');
         const setupScreen = document.getElementById('setup-screen');
         const resultsScreen = document.getElementById('results-screen');
-        // ... (all other getElementById calls)
         const allDomElements = {
             mainApp, accessModal, gameModeScreen, setupScreen, resultsScreen,
             accessCodeInput: document.getElementById('access-code-input'),
             submitCodeBtn: document.getElementById('submit-code-btn'),
+            authSubtitle: document.getElementById('auth-subtitle'),
             revealBtn: document.getElementById('reveal-btn'),
             platformSelect: document.getElementById('platform-select'),
             tableIdInput: document.getElementById('table-id'),
@@ -378,12 +491,12 @@
         const SUITS = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
         const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
         const RANK_VALUES = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':11, 'Q':12, 'K':13, 'A':14};
-        const OBFUSCATED_CODES = { 'UVVBTlRVTTIwMjU=': 5, 'WFJFVkFBTFBSTw==': 10, 'RUxJVEVIQUNL': 2 };
+        const OBFUSCATED_CODES = { 'UVVBTlRVTTIwMjU=': 5, 'WFJFVkFBTFBSTw==': 10, 'RUxJVEVIQUNL': 2, 'SEFDS1RFU1Q=': 1 };
         let VALID_CODES = {};
         for (const key in OBFUSCATED_CODES) { VALID_CODES[atob(key)] = OBFUSCATED_CODES[key]; }
 
         let deck = [], players = [], communityCards = [];
-        let gameState = 'IDLE', currentGameMode = null;
+        let gameState = 'IDLE', currentGameMode = null, isIncognito = false;
         let soundEnabled = false, synths = {};
 
         // --- SOUND ENGINE ---
@@ -448,7 +561,8 @@
         function evaluateHand(cards, mode) {
             const handRanksI18n = {
                 en: { 10: "Royal Flush", 9: "Straight Flush", 8: "Four of a Kind", 7: "Full House", 6: "Flush", 5: "Straight", 4: "Three of a Kind", 3: "Two Pair", 2: "One Pair", 1: "High Card" },
-                pt: { 10: "Royal Flush", 9: "Straight Flush", 8: "Quadra", 7: "Full House", 6: "Flush", 5: "Sequência", 4: "Trinca", 3: "Dois Pares", 2: "Um Par", 1: "Carta Alta" }
+                pt: { 10: "Royal Flush", 9: "Straight Flush", 8: "Quadra", 7: "Full House", 6: "Flush", 5: "Sequência", 4: "Trinca", 3: "Dois Pares", 2: "Um Par", 1: "Carta Alta" },
+                ru: { 10: "Роял-флеш", 9: "Стрит-флеш", 8: "Каре", 7: "Фулл-хаус", 6: "Флеш", 5: "Стрит", 4: "Сет", 3: "Две пары", 2: "Пара", 1: "Старшая карта" }
             };
 
             let combosToTest = [];
@@ -457,6 +571,7 @@
             } else if (mode === 'plo') {
                 const holeCards = cards.slice(0, 4);
                 const boardCards = cards.slice(4);
+                if (holeCards.length < 2 || boardCards.length < 3) return { rank: 0, name: "Invalid Hand", values: [] };
                 const holeCombos = k_combinations(holeCards, 2);
                 const boardCombos = k_combinations(boardCards, 3);
                 for(const hc of holeCombos) {
@@ -489,7 +604,7 @@
                 }
                 const compareHighCards = (a, b) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] - b[i]; } return 0; };
                 if (currentRank > bestHand.rank || (currentRank === bestHand.rank && compareHighCards(currentValues, bestHand.values) > 0)) {
-                    bestHand = { rank: currentRank, name: handRanksI18n[i18n.lang][currentRank], values: currentValues };
+                    bestHand = { rank: currentRank, name: (handRanksI18n[i18n.lang] || handRanksI18n['en'])[currentRank], values: currentValues };
                 }
             }
             return bestHand;
@@ -500,6 +615,14 @@
             const code = localStorage.getItem('pokerRevealAccessCode');
             const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
             const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+
+            if (!localStorage.getItem('pokerRevealVisited')) {
+                allDomElements.authSubtitle.innerHTML = i18n.get('firstTimeAuthSubtitle');
+                localStorage.setItem('pokerRevealVisited', 'true');
+            } else {
+                allDomElements.authSubtitle.innerHTML = i18n.get('authSubtitle');
+            }
+
             if (code && !isNaN(maxHands) && !isNaN(handsUsed) && handsUsed < maxHands) {
                 allDomElements.accessModal.classList.add('hidden');
                 allDomElements.mainApp.classList.remove('hidden');
@@ -512,6 +635,10 @@
         }
 
         function handleAccessCodeSubmit() {
+            if (isIncognito) {
+                showAlert(i18n.get('incognitoError'));
+                return;
+            }
             setupSounds();
             playSound('click', 'C4');
             const code = allDomElements.accessCodeInput.value.trim().toUpperCase();
@@ -683,7 +810,7 @@
             let bestOverallHand = { rank: 0, values: [] };
             let winners = [];
             players.forEach(player => {
-                const cardsToEval = currentGameMode === 'plo' ? [...player.hand, ...communityCards] : [...player.hand, ...communityCards];
+                const cardsToEval = [...player.hand, ...communityCards];
                 player.bestHand = evaluateHand(cardsToEval, currentGameMode);
                 player.div.querySelector('.hand-rank-display').textContent = player.bestHand.name;
                 
@@ -726,6 +853,12 @@
             allDomElements.tableIdInput.value = '';
             allDomElements.platformSelect.value = '';
         }
+        
+        function openAcquireKeyLink() {
+            const message = i18n.get('acquireKeyMessage');
+            const url = `https://t.me/bedmalcon_temp?text=${encodeURIComponent(message)}`;
+            window.open(url, '_blank');
+        }
 
         // --- EVENT LISTENERS ---
         allDomElements.submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
@@ -755,7 +888,28 @@
         });
         
         // --- INITIALIZATION ---
-        checkAccess();
+        (async () => {
+            try {
+                if (navigator.storage && navigator.storage.estimate) {
+                    const { usage, quota } = await navigator.storage.estimate();
+                    // A heuristic for detecting incognito mode. Very large quotas are suspicious.
+                    if (quota < 120000000) {
+                        isIncognito = true;
+                    }
+                } else {
+                    // Fallback for older browsers
+                    const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
+                    if (!fs) {
+                        // Can't reliably detect, assume not incognito
+                    } else {
+                        fs(window.TEMPORARY, 100, () => {}, () => { isIncognito = true; });
+                    }
+                }
+            } catch (e) {
+                isIncognito = true;
+            }
+            checkAccess();
+        })();
     });
     </script>
 </body>
