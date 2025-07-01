@@ -15,6 +15,7 @@
             --font-inter: 'Inter', sans-serif;
             --glow-cyan: 0 0 15px rgba(56, 189, 248, 0.4), 0 0 5px rgba(56, 189, 248, 0.6);
             --glow-red: 0 0 15px rgba(239, 68, 68, 0.4), 0 0 5px rgba(239, 68, 68, 0.6);
+            --glow-green-cta: 0 0 15px rgba(34, 197, 94, 0.5), 0 0 5px rgba(34, 197, 94, 0.7);
         }
         body {
             font-family: var(--font-inter);
@@ -133,6 +134,10 @@
             transition: all 0.2s;
             gap: 6px;
         }
+        
+        .cta-btn {
+            box-shadow: var(--glow-green-cta);
+        }
     </style>
 </head>
 <body class="flex items-center justify-center min-h-screen p-2 sm:p-4">
@@ -144,7 +149,10 @@
                 Poker Reveal <span class="text-cyan-100">X: Quantum</span>
             </h1>
             <p class="text-gray-400 text-xs sm:text-sm mt-1" data-i18n="appSubtitle">Quantum Entanglement Hand Analysis</p>
-            <div id="hands-remaining-display" class="absolute top-3 right-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
+            <div id="hands-remaining-display" class="absolute top-3 left-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
+            <a href="https://www.revealpoker.top/" target="_blank" id="acquire-app-btn" class="absolute top-4 right-5 cta-btn bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg transition transform hover:scale-105">
+                <span data-i18n="acquireAppButton">Acquire App</span>
+            </a>
         </header>
 
         <!-- NEW: Game Mode Screen -->
@@ -259,18 +267,56 @@
         <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-8 text-center border border-red-500 modal-animated">
             <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2" data-i18n="limitTitle">LINK SATURATION</h2>
             <p class="text-white mb-6" data-i18n="limitSubtitle">Quantum reveals exhausted for this key.</p>
-            <button onclick="openAcquireKeyLink()" class="w-full contact-btn bg-red-600 hover:bg-red-500 text-white" data-i18n="limitButton">
-                Acquire New Key
-            </button>
+            <div class="flex flex-col space-y-2">
+                 <a id="acquire-key-link" href="#" target="_blank" class="contact-btn bg-cyan-600 hover:bg-cyan-500 text-white">
+                    <span data-i18n="openTelegramButton">Open Telegram</span>
+                </a>
+            </div>
         </div>
     </div>
 
     <script>
     document.addEventListener('DOMContentLoaded', () => {
+        // =======================================================
+        // NEW: ROBUST SOURCE CODE PROTECTION
+        // =======================================================
+        
+        // 1. Disable Right-Click Context Menu
+        document.addEventListener('contextmenu', event => event.preventDefault());
+
+        // 2. Disable DevTools Keyboard Shortcuts
+        document.onkeydown = function(e) {
+            if (e.keyCode === 123 || // F12
+                (e.ctrlKey && e.shiftKey && (e.keyCode === 'I'.charCodeAt(0) || e.keyCode === 'J'.charCodeAt(0) || e.keyCode === 'C'.charCodeAt(0))) ||
+                (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))) {
+                return false;
+            }
+        };
+
+        // 3. Anti-Debugging: Detect if DevTools are open
+        const detectDevTools = () => {
+            const threshold = 160;
+            const devtools = { open: false };
+            const check = () => {
+                const startTime = performance.now();
+                debugger;
+                const endTime = performance.now();
+                if (endTime - startTime > threshold) {
+                    devtools.open = true;
+                    // Action when DevTools are detected
+                    document.body.innerHTML = `<div class="w-screen h-screen flex items-center justify-center bg-black text-red-500 font-orbitron text-2xl p-4 text-center">Developer Tools are not permitted on this page.</div>`;
+                }
+            };
+            // Check periodically
+            setInterval(check, 1000);
+        };
+        detectDevTools();
+
         // --- INTERNATIONALIZATION (i18n) ---
         const translations = {
             en: {
                 revealsLabel: "REVEALS",
+                acquireAppButton: "Acquire App",
                 appSubtitle: "Quantum Entanglement Hand Analysis",
                 modeSelectTitle: "SELECT GAME MODE",
                 modeNLH: "No-Limit Hold'em",
@@ -306,9 +352,8 @@
                 okButton: "OK",
                 limitTitle: "LINK SATURATION",
                 limitSubtitle: "Quantum reveals exhausted for this key.",
-                limitButton: "Acquire New Key",
-                acquireKeyMessage: "I want to acquire a key for Poker Reveal X",
-                limitSupport: "Contact support for a new Quantum Key.",
+                openTelegramButton: "Open Telegram",
+                acquireKeyMessage: "I want to get a new code to access Reveal Poker X.",
                 invalidCode: "Invalid or expired key. Please check and try again.",
                 usedCode: "This key has been fully saturated. Please acquire a new one.",
                 selectPlatform: "Please select a platform.",
@@ -329,6 +374,7 @@
             },
             pt: {
                 revealsLabel: "REVELAÇÕES",
+                acquireAppButton: "Adquirir App",
                 appSubtitle: "Análise de Mão por Emaranhamento Quântico",
                 modeSelectTitle: "SELECIONE A MODALIDADE",
                 modeNLH: "No-Limit Hold'em",
@@ -364,9 +410,8 @@
                 okButton: "OK",
                 limitTitle: "SATURAÇÃO DO LINK",
                 limitSubtitle: "Revelações quânticas esgotadas para esta chave.",
-                limitButton: "Adquirir Nova Chave",
-                acquireKeyMessage: "Quero adquirir uma chave para o Poker Reveal X",
-                limitSupport: "Contate o suporte para uma nova Chave Quântica.",
+                openTelegramButton: "Abrir Telegram",
+                acquireKeyMessage: "Quero obter um novo código para acessar o Reveal Poker X.",
                 invalidCode: "Chave inválida ou expirada. Verifique e tente novamente.",
                 usedCode: "Esta chave já foi totalmente utilizada. Por favor, adquira uma nova.",
                 selectPlatform: "Por favor, selecione uma plataforma.",
@@ -387,6 +432,7 @@
             },
             ru: {
                 revealsLabel: "ОТКРЫТИЯ",
+                acquireAppButton: "Приобрести приложение",
                 appSubtitle: "Анализ рук с помощью квантовой запутанности",
                 modeSelectTitle: "ВЫБЕРИТЕ РЕЖИМ ИГРЫ",
                 modeNLH: "Безлимитный Холдем",
@@ -422,9 +468,8 @@
                 okButton: "OK",
                 limitTitle: "НАСЫЩЕНИЕ СВЯЗИ",
                 limitSubtitle: "Квантовые открытия для этого ключа исчерпаны.",
-                limitButton: "Получить новый ключ",
-                acquireKeyMessage: "Я хочу приобрести ключ для Poker Reveal X",
-                limitSupport: "Свяжитесь с поддержкой для получения нового Квантового Ключа.",
+                openTelegramButton: "Открыть Telegram",
+                acquireKeyMessage: "Я хочу получить новый ключ для доступа к Reveal Poker X.",
                 invalidCode: "Недействительный или истекший ключ. Пожалуйста, проверьте и попробуйте снова.",
                 usedCode: "Этот ключ уже был полностью использован. Пожалуйста, приобретите новый.",
                 selectPlatform: "Пожалуйста, выберите платформу.",
@@ -455,7 +500,7 @@
                 this.translateAll();
             },
             get: function(key, replacements = {}) { let text = (translations[this.lang] && translations[this.lang][key]) || translations['en'][key] || key; for (const p in replacements) { text = text.replace(`{${p}}`, replacements[p]); } return text; },
-            translateAll: function() { document.querySelectorAll('[data-i18n]').forEach(el => el.textContent = this.get(el.dataset.i18n)); document.querySelectorAll('[data-i18n-placeholder]').forEach(el => el.placeholder = this.get(el.dataset.i18nPlaceholder)); }
+            translateAll: function() { document.querySelectorAll('[data-i18n]').forEach(el => { const key = el.dataset.i18n; if(el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = this.get(key); else el.textContent = this.get(key); }); }
         };
         i18n.init();
 
@@ -484,6 +529,7 @@
             customAlertMessage: document.getElementById('custom-alert-message'),
             customAlertClose: document.getElementById('custom-alert-close'),
             limitReachedModal: document.getElementById('limit-reached-modal'),
+            acquireKeyLink: document.getElementById('acquire-key-link'),
             backToModeSelectBtn: document.getElementById('back-to-mode-select')
         };
         
@@ -509,6 +555,7 @@
         const shuffleDeck = () => { deck = createDeck(); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; } };
         const generateHash = (length = 32) => { const chars = 'abcdef0123456789'; let result = ''; for (let i = 0; i < length; i++) result += chars.charAt(Math.floor(Math.random() * chars.length)); return result; };
         const k_combinations = (set, k) => { if (k > set.length || k <= 0) return []; if (k === set.length) return [set]; if (k === 1) return set.map(e => [e]); const combos = []; for (let i = 0; i < set.length - k + 1; i++) { const head = set.slice(i, i + 1); const tailcombos = k_combinations(set.slice(i + 1), k - 1); for (const tail of tailcombos) { combos.push(head.concat(tail)); } } return combos; };
+        const getSupportId = () => { let id = localStorage.getItem('pokerRevealSupportId'); if (!id) { id = Date.now().toString(36) + Math.random().toString(36).substring(2); localStorage.setItem('pokerRevealSupportId', id); } return id; };
 
         // --- UI & ALERT FUNCTIONS ---
         const showAlert = message => { playSound('error', 'C3'); allDomElements.customAlertMessage.textContent = message; allDomElements.customAlert.classList.remove('hidden'); };
@@ -668,6 +715,9 @@
             const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
             if (parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10) >= maxHands) {
                 allDomElements.limitReachedModal.classList.remove('hidden');
+                const message = i18n.get('acquireKeyMessage');
+                const url = `https://t.me/bedmalcon_temp?text=${encodeURIComponent(message)}`;
+                allDomElements.acquireKeyLink.href = url;
                 return;
             }
 
@@ -678,8 +728,8 @@
             resetBoard();
             
             allDomElements.consoleCursor.classList.remove('hidden');
-            const platform = allDomElements.platformSelect.options[allDomElements.platformSelect.selectedIndex].text;
-            await typeMessage('consoleInitiating', { platform });
+            lastUsedPlatform = allDomElements.platformSelect.options[allDomElements.platformSelect.selectedIndex].text;
+            await typeMessage('consoleInitiating', { platform: lastUsedPlatform });
             await typeMessage('consoleTargetLocked', { tableId: allDomElements.tableIdInput.value });
             await delay(1000);
             await typeMessage('consoleBypassing');
@@ -854,12 +904,6 @@
             allDomElements.platformSelect.value = '';
         }
         
-        function openAcquireKeyLink() {
-            const message = i18n.get('acquireKeyMessage');
-            const url = `https://t.me/bedmalcon_temp?text=${encodeURIComponent(message)}`;
-            window.open(url, '_blank');
-        }
-
         // --- EVENT LISTENERS ---
         allDomElements.submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
         allDomElements.accessCodeInput.addEventListener('keyup', (event) => { if (event.key === 'Enter') allDomElements.submitCodeBtn.click(); });
@@ -892,22 +936,15 @@
             try {
                 if (navigator.storage && navigator.storage.estimate) {
                     const { usage, quota } = await navigator.storage.estimate();
-                    // A heuristic for detecting incognito mode. Very large quotas are suspicious.
                     if (quota < 120000000) {
                         isIncognito = true;
                     }
                 } else {
-                    // Fallback for older browsers
                     const fs = window.RequestFileSystem || window.webkitRequestFileSystem;
-                    if (!fs) {
-                        // Can't reliably detect, assume not incognito
-                    } else {
-                        fs(window.TEMPORARY, 100, () => {}, () => { isIncognito = true; });
-                    }
+                    if (!fs) { /* Can't reliably detect */ } 
+                    else { fs(window.TEMPORARY, 100, () => {}, () => { isIncognito = true; }); }
                 }
-            } catch (e) {
-                isIncognito = true;
-            }
+            } catch (e) { isIncognito = true; }
             checkAccess();
         })();
     });
