@@ -3,985 +3,815 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Transformada de Fourier: Guia Rápido Dinâmico</title>
-    <!-- Inclui o Tailwind CSS para estilização rápida e responsiva -->
+    <!-- SEO & PWA Improvements -->
+    <meta name="description" content="Poker Reveal X: Quantum Hand Analysis simulates revealing poker hands with a high-tech hacker interface.">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="favicon.ico" type="image/x-icon">
+    
+    <title>Poker Reveal X: Quantum Enhanced</title>
+    
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Inclui a fonte Inter do Google Fonts para uma tipografia limpa -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <!-- Inclui o AOS CSS para animações ao rolar -->
-    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <!-- Font Preloading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet" as="style">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+    
     <style>
-        /* Estilos base para o corpo e elementos principais */
+        :root {
+            --font-orbitron: 'Orbitron', sans-serif;
+            --font-inter: 'Inter', sans-serif;
+            --glow-cyan: 0 0 15px rgba(56, 189, 248, 0.4), 0 0 5px rgba(56, 189, 248, 0.6);
+            --glow-green-cta: 0 0 15px rgba(34, 197, 94, 0.5), 0 0 5px rgba(34, 197, 94, 0.7);
+            --glow-red-error: 0 0 15px rgba(239, 68, 68, 0.5), 0 0 5px rgba(239, 68, 68, 0.7);
+        }
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: #e0e7ff; /* Azul claro suave */
-            color: #374151; /* Cor do texto principal */
-            transition: background-color 0.5s ease, color 0.5s ease; /* Transição suave para dark mode */
+            font-family: var(--font-inter);
+            background-color: #020617;
+            background-image: 
+                radial-gradient(circle at 25% 25%, rgba(14, 165, 233, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 75% 75%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            color: #e5e7eb;
+            overflow-x: hidden;
+        }
+        .font-orbitron { font-family: var(--font-orbitron); }
+        .glass-container {
+            background: rgba(17, 24, 39, 0.6);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(55, 65, 81, 0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .custom-select {
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%239ca3af' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+            background-position: right 0.5rem center;
+            background-repeat: no-repeat;
+            background-size: 1.5em 1.5em;
+            -webkit-appearance: none; -moz-appearance: none; appearance: none;
+        }
+        .console-scrollbar::-webkit-scrollbar { width: 4px; }
+        .console-scrollbar::-webkit-scrollbar-track { background: #1f2937; }
+        .console-scrollbar::-webkit-scrollbar-thumb { background: #38bdf8; border-radius: 2px; }
+
+        /* Animated Gradient Header */
+        .animated-gradient-header {
+            background: linear-gradient(270deg, #1e3a8a, #38bdf8, #10b981, #3b82f6);
+            background-size: 800% 800%;
+            animation: gradientBG 15s ease infinite;
+        }
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        /* Estilos para o modo escuro */
-        html.dark body {
-            background-color: #1a202c; /* Fundo escuro */
-            color: #e2e8f0; /* Texto claro */
+        /* Card Styles & Flip Animation */
+        .card-container {
+            perspective: 1000px;
+            width: clamp(55px, 8vw, 75px);
+            height: clamp(77px, 11.2vw, 105px);
+            position: relative;
         }
-        html.dark .section-title {
-            color: #e2e8f0;
-            border-bottom-color: #7c3aed; /* Roxo vibrante */
+        .card-flipper {
+            position: relative; width: 100%; height: 100%;
+            transition: transform 0.7s cubic-bezier(0.25, 1, 0.5, 1);
+            transform-style: preserve-3d;
         }
-        html.dark .subsection-title {
-            color: #cbd5e1;
+        .card-container.flipped .card-flipper { transform: rotateY(180deg); }
+        .card-face {
+            position: absolute; width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden; backface-visibility: hidden;
+            border-radius: clamp(4px, 1vw, 6px);
         }
-        html.dark .formula {
-            background-color: #2d3748; /* Fundo mais escuro para fórmulas */
-            color: #e2e8f0;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        .card-back {
+            background: radial-gradient(circle, #2563eb, #1d4ed8);
+            border: 2px solid #3b82f6; display: flex;
+            align-items: center; justify-content: center;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
         }
-        html.dark .nav-link:hover {
-            background-color: #6d28d9; /* Roxo mais escuro no hover */
-            color: white;
+        .card-back::after {
+            content: 'X'; font-family: var(--font-orbitron);
+            font-size: clamp(24px, 5vw, 40px);
+            color: rgba(255,255,255,0.4);
+            text-shadow: 0 0 10px rgba(255,255,255,0.5);
         }
-        html.dark .active-nav-link {
-            background-color: #7c3aed; /* Roxo vibrante para ativo */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+        .card-front {
+            transform: rotateY(180deg); background-color: #f9fafb;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3); overflow: hidden;
         }
-        html.dark .property-card {
-            background-color: #2d3748; /* Fundo mais escuro para cards */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+        .card-front-content {
+            display: flex; flex-direction: column; justify-content: space-between;
+            width: 100%; height: 100%; padding: clamp(2px, 0.8vw, 5px);
+            font-weight: 600; line-height: 1;
         }
-        html.dark .learn-more-content p, html.dark .step-content p {
-            background-color: #4a5568; /* Fundo mais escuro para conteúdo expandido */
-            border-color: #6b46c1; /* Borda roxa */
+        .card-front .rank { font-size: clamp(0.8rem, 2.5vw, 1.2rem); }
+        .card-front .suit { font-size: clamp(0.6rem, 2vw, 1rem); }
+        .card-front .center-suit { font-size: clamp(1.5rem, 4vw, 2.5rem); text-align: center; line-height: 0.8; }
+        .card-front .red { color: #ef4444; }
+        .card-front .black { color: #111827; }
+        .card-bottom-rank { transform: rotate(180deg); }
+        .quantum-placeholder {
+            background: #111827; border: 1px solid #38bdf8;
+            color: #38bdf8; font-family: var(--font-orbitron);
+            font-size: 10px; text-align: center; padding: 4px;
+            animation: pulse-glow 2s infinite ease-in-out;
+            display: flex; align-items: center; justify-content: center;
+            width: 100%; height: 100%;
+            border-radius: clamp(4px, 1vw, 6px);
         }
-        html.dark .canvas-container canvas {
-            background-color: #2d3748;
-            border-color: #7c3aed;
-            box-shadow: 0 5px 10px rgba(0,0,0,0.3);
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(56, 189, 248, 0.4); }
+            50% { box-shadow: 0 0 15px rgba(56, 189, 248, 0.8); }
         }
-        html.dark .main-button {
-            background-color: #7c3aed; /* Roxo para botões */
-            color: white;
+        
+        /* Modal & Animation */
+        @keyframes fadeIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+        .modal-animated { animation: fadeIn 0.3s ease-out forwards; }
+        
+        /* Console Typewriter */
+        .typewriter-cursor {
+            display: inline-block; width: 8px; height: 1em;
+            background-color: #38bdf8; animation: blink 1s step-end infinite;
+            vertical-align: middle;
         }
-        html.dark .main-button:hover {
-            background-color: #6b46c1; /* Roxo mais escuro no hover */
-        }
-        html.dark .example-button {
-            background-color: #10b981; /* Verde esmeralda */
-            color: white;
-        }
-        html.dark .example-button:hover {
-            background-color: #059669; /* Verde esmeralda mais escuro */
-        }
-        html.dark .quiz-option {
-            background-color: #4a5568; /* Fundo escuro para opções do quiz */
-            color: #e2e8f0;
-            border-color: #6b46c1;
-        }
-        html.dark .quiz-option:hover {
-            background-color: #6b46c1; /* Roxo no hover */
-        }
-        html.dark .quiz-option.correct {
-            background-color: #065f46; /* Verde escuro */
-            border-color: #34d399;
-        }
-        html.dark .quiz-option.incorrect {
-            background-color: #991b1b; /* Vermelho escuro */
-            border-color: #ef4444;
-        }
-        html.dark footer {
-            background-color: #2d3748;
-            box-shadow: 0 -4px 6px -1px rgba(0, 0, 0, 0.3);
+        @keyframes blink { 50% { opacity: 0; } }
+        
+        .log-success { color: #4ade80; }
+        .log-error { color: #f87171; }
+        .log-warning { color: #facc15; }
+        .log-info { color: #93c5fd; }
+
+        /* Winner Highlight */
+        .winner-highlight { 
+            box-shadow: 0 0 25px rgba(74, 222, 128, 0.8), 0 0 10px rgba(255, 255, 255, 0.8); 
+            transform: scale(1.05); 
+            border-color: #4ade80 !important; 
         }
 
-
-        /* Estilo para os títulos de seção */
-        .section-title {
-            font-size: 2.75rem; /* Tamanho da fonte maior */
-            font-weight: 700; /* Negrito */
-            color: #1f2937; /* Azul-acinzentado mais escuro */
-            margin-bottom: 2rem;
-            border-bottom: 3px solid #6366f1; /* Borda inferior azul vibrante para destaque */
-            padding-bottom: 0.75rem;
-            text-align: center;
-        }
-        /* Estilo para os subtítulos de seção */
-        .subsection-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #374151;
-            margin-top: 2.5rem;
-            margin-bottom: 1.25rem;
-        }
-        /* Estilo para blocos de fórmula (LaTeX) */
-        .formula {
-            background-color: #eef2ff; /* Azul muito claro para fórmulas */
-            padding: 1.25rem;
-            border-radius: 0.75rem;
-            margin-top: 1.5rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            font-size: 1.2rem;
-            color: #1f2937;
-            overflow-x: auto; /* Permite rolagem horizontal se a fórmula for muito longa */
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* Sombra sutil */
-        }
-        /* Estilo para links de navegação na barra lateral */
-        .nav-link {
-            display: block;
-            padding: 0.85rem 1.25rem;
-            border-radius: 0.65rem;
-            margin-bottom: 0.65rem;
-            transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.2s ease-out; /* Transição suave */
-        }
-        /* Estilo para links de navegação ao passar o mouse */
-        .nav-link:hover {
-            background-color: #4f46e5; /* Índigo mais escuro ao passar o mouse */
-            color: white;
-            transform: translateX(5px); /* Pequeno deslocamento para a direita */
-        }
-        /* Estilo para o link de navegação ativo */
-        .active-nav-link {
-            background-color: #6366f1; /* Índigo vibrante para o link ativo */
-            color: white;
-            font-weight: 700;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2); /* Sombra mais pronunciada para ativo */
-        }
-        /* Estilo para os cards de propriedade */
-        .property-card {
-            background-color: #ffffff;
-            border-radius: 1rem;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* Sombra mais profunda */
-            transition: transform 0.3s ease-out; /* Transição para efeito de hover */
-        }
-        .property-card:hover {
-            transform: translateY(-5px); /* Leve levantamento no hover */
-        }
-        /* Estilo para o conteúdo que é revelado pelos botões "Entenda Melhor" */
-        .learn-more-content, .step-content, .quiz-content {
-            max-height: 0; /* Começa oculto */
-            overflow: hidden;
-            transition: max-height 0.6s ease-out, padding 0.6s ease-out; /* Transição suave para expandir/recolher */
-            padding: 0 1rem; /* Padding horizontal */
-        }
-        /* Estilo quando o conteúdo é expandido */
-        .learn-more-content.expanded, .step-content.expanded, .quiz-content.expanded {
-            max-height: 600px; /* Altura máxima para revelar o conteúdo (ajustar conforme necessário) */
-            padding: 1rem; /* Adiciona padding vertical quando expandido */
-            transition: max-height 0.6s ease-in, padding 0.6s ease-in; /* Transição suave para expandir */
-        }
-        /* Estilo para o canvas */
-        canvas {
-            border: 2px solid #a78bfa; /* Borda roxa suave */
-            background-color: #fefefe;
-            border-radius: 0.75rem;
-            margin-top: 1.5rem;
-            display: block;
-            width: 100%; /* Garante que o canvas seja responsivo */
-            height: auto; /* Mantém a proporção */
-            box-shadow: 0 5px 10px rgba(0,0,0,0.1);
-        }
-
-        /* Animação de fade-in para seções */
-        .fade-in-section {
-            opacity: 0;
-            transform: translateY(20px);
-            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-        }
-        .fade-in-section.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Estilo para o botão principal */
-        .main-button {
-            @apply bg-indigo-600 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-indigo-700;
-        }
-
-        /* Estilo para o botão de exemplo */
-        .example-button {
-            @apply bg-emerald-500 text-white font-bold py-3 px-6 rounded-lg shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:bg-emerald-600;
-        }
-
-        /* Estilo para as opções do quiz */
-        .quiz-option {
-            @apply block w-full text-left py-3 px-4 rounded-lg border border-indigo-300 bg-indigo-50 text-indigo-800 font-medium mb-3 transition duration-200 ease-in-out hover:bg-indigo-100 hover:shadow-md;
-        }
-        .quiz-option.correct {
-            @apply bg-green-200 border-green-500 text-green-800;
-        }
-        .quiz-option.incorrect {
-            @apply bg-red-200 border-red-500 text-red-800;
-        }
-        .quiz-feedback {
-            @apply mt-4 text-center text-lg font-semibold;
-        }
-
-        /* Estilo para o botão de modo escuro */
-        .dark-mode-toggle {
-            @apply p-2 rounded-full bg-gray-200 text-gray-800 hover:bg-gray-300 transition duration-300 absolute top-4 right-4;
-        }
-        html.dark .dark-mode-toggle {
-            @apply bg-gray-700 text-gray-200 hover:bg-gray-600;
-        }
-
-        /* Estilo para pílulas de curiosidade */
-        .curiosity-pill {
-            @apply bg-yellow-100 border border-yellow-300 text-yellow-800 p-4 rounded-lg shadow-md mt-6;
-        }
-        html.dark .curiosity-pill {
-            @apply bg-yellow-900 border-yellow-700 text-yellow-200;
-        }
+        /* Auto Mode Toggle Switch */
+        .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+        .toggle-switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #4b5563; transition: .4s; border-radius: 28px; }
+        .slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+        input:checked + .slider { background-color: #22c55e; }
+        input:checked + .slider:before { transform: translateX(22px); }
     </style>
 </head>
-<body class="scroll-smooth">
-    <div class="min-h-screen flex flex-col lg:flex-row">
-        <!-- Barra Lateral de Navegação -->
-        <aside class="w-full lg:w-64 bg-slate-900 text-white p-6 lg:p-4 shadow-lg flex-shrink-0">
-            <h2 class="text-3xl font-bold mb-8 text-center lg:text-left text-indigo-300">Fourier Explorer</h2>
-            <nav>
-                <ul>
-                    <li><a href="#introducao" class="nav-link" data-section="introducao">Introdução</a></li>
-                    <li><a href="#definicao" class="nav-link" data-section="definicao">Definição</a></li>
-                    <li><a href="#propriedades" class="nav-link" data-section="propriedades">Propriedades</a></li>
-                    <li><a href="#exemplo" class="nav-link" data-section="exemplo">Exemplo Resolvido</a></li>
-                    <li><a href="#quiz" class="nav-link" data-section="quiz">Desafio Rápido</a></li>
-                    <li><a href="#aplicacoes" class="nav-link" data-section="aplicacoes">Aplicações</a></li>
-                </ul>
-            </nav>
-        </aside>
+<body class="flex items-center justify-center min-h-screen p-2 sm:p-4">
 
-        <!-- Área Principal de Conteúdo -->
-        <main class="flex-grow p-6 lg:p-10 bg-gradient-to-br from-blue-50 to-indigo-100 relative">
-            <!-- Botão de Modo Escuro -->
-            <button id="darkModeToggle" class="dark-mode-toggle">
-                ☀️
-            </button>
+    <!-- Main App Container -->
+    <main id="main-app" class="glass-container w-full max-w-7xl rounded-2xl overflow-hidden hidden">
+        <header class="p-4 sm:p-6 border-b border-gray-700/50 text-center relative animated-gradient-header">
+            <h1 class="text-xl sm:text-2xl md:text-4xl font-orbitron font-black text-white tracking-wider uppercase" style="text-shadow: 0 2px 5px rgba(0,0,0,0.5);">
+                Poker Reveal <span class="text-cyan-200">X: Quantum</span>
+            </h1>
+            <p class="text-gray-200 text-xs sm:text-sm mt-1" data-i18n="appSubtitle"></p>
+            <div id="hands-remaining-display" class="absolute top-3 left-5 text-sm font-mono bg-yellow-500/10 text-yellow-400 px-3 py-1 rounded-full border border-yellow-500/30"></div>
+            <a href="https://www.revealpoker.top/" target="_blank" id="acquire-app-btn" class="absolute top-4 right-5 cta-btn bg-green-600 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg transition transform hover:scale-105" style="box-shadow: var(--glow-green-cta);">
+                <span data-i18n="acquireAppButton"></span>
+            </a>
+        </header>
 
-            <header class="text-center mb-12 py-8 bg-white rounded-xl shadow-md">
-                <h1 class="text-5xl lg:text-6xl font-extrabold text-indigo-700 mb-4 animate-pulse">
-                    A Transformada de Fourier
-                </h1>
-                <p class="text-xl lg:text-2xl text-gray-700 max-w-3xl mx-auto">
-                    Desvendando Sinais e Frequências: Um Guia Interativo e Divertido!
-                </p>
-            </header>
+        <section id="game-mode-screen" class="p-4 sm:p-8 space-y-6 hidden">
+             <h2 class="text-xl font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="modeSelectTitle"></h2>
+             <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+                 <button data-mode="nlh" class="mode-btn bg-sky-600 hover:bg-sky-500 p-6 rounded-lg text-center transition transform hover:-translate-y-1">
+                     <p class="font-bold text-lg">NLH</p>
+                     <p class="text-xs text-sky-200" data-i18n="modeNLH"></p>
+                 </button>
+                 <button data-mode="plo" class="mode-btn bg-purple-600 hover:bg-purple-500 p-6 rounded-lg text-center transition transform hover:-translate-y-1">
+                     <p class="font-bold text-lg">PLO</p>
+                     <p class="text-xs text-purple-200" data-i18n="modePLO"></p>
+                 </button>
+                 <button data-mode="plo5" class="mode-btn bg-gray-700 p-6 rounded-lg text-center cursor-not-allowed opacity-50">
+                     <p class="font-bold text-lg">PLO5</p>
+                     <p class="text-xs text-yellow-400" data-i18n="modePLO5"></p>
+                 </button>
+             </div>
+        </section>
 
-            <!-- Seção de Introdução -->
-            <section id="introducao" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800">
-                <h2 class="section-title">Introdução</h2>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Se você já se perguntou como seu smartphone consegue separar a voz do barulho ambiente, ou como os engenheiros analisam as vibrações de uma ponte, a <strong>Transformada de Fourier</strong> é a chave para entender esses mistérios. Em termos simples, ela é uma ferramenta matemática poderosa que nos permite "desmontar" um sinal complexo em suas <strong>frequências constituintes</strong>. Pense nela como um prisma que decompobre a luz branca em todas as cores do arco-íris – cada cor representa uma frequência diferente.
-                </p>
-                <h3 class="subsection-title">O que é um Sinal?</h3>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Antes de mergulharmos na Transformada de Fourier, é importante entender o que chamamos de "sinal". Um sinal é qualquer informação que varia ao longo do tempo ou do espaço. Exemplos incluem:
-                </p>
-                <ul class="list-disc list-inside ml-4 text-lg leading-relaxed text-gray-700">
-                    <li><strong>Sinais de áudio:</strong> A sua voz, uma música, o som de um carro.</li>
-                    <li><strong>Sinais de imagem:</strong> Uma foto, um vídeo.</li>
-                    <li><strong>Sinais biológicos:</strong> Batimentos cardíacos, ondas cerebrais.</li>
-                    <li><strong>Sinais físicos:</strong> Vibrações, temperatura.</li>
-                </ul>
-                <p class="text-lg leading-relaxed mt-4 text-gray-800">
-                    Geralmente, representamos um sinal como uma função que descreve sua amplitude em cada ponto no tempo (ou espaço).
-                </p>
-                <div class="curiosity-pill" data-aos="zoom-in" data-aos-delay="200">
-                    <p class="text-xl font-semibold mb-2">💡 Você Sabia?</p>
-                    <p>A Transformada de Fourier é tão versátil que é usada até mesmo para analisar dados astronômicos, como as ondas gravitacionais detectadas por observatórios como o LIGO!</p>
+        <section id="setup-screen" class="p-4 sm:p-8 space-y-6 hidden">
+            <div class="flex items-center mb-4">
+                <button id="back-to-mode-select" class="text-cyan-400 hover:text-cyan-200 mr-4">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path></svg>
+                </button>
+                <h2 class="text-xl font-bold text-center text-cyan-300 font-orbitron" data-i18n="setupTitle"></h2>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div>
+                    <label for="platform-select" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="platformLabel"></label>
+                    <select id="platform-select" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition custom-select">
+                        <option value="" disabled selected data-i18n="platformPlaceholder"></option>
+                        <option value="pppoker">PPPOKER</option><option value="xpoker">XPOKER</option><option value="clubgg">CLUBGG</option>
+                    </select>
                 </div>
-            </section>
-
-            <!-- Seção de Definição -->
-            <section id="definicao" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="100">
-                <h2 class="section-title">A Definição da Transformada de Fourier</h2>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    A Transformada de Fourier pega um sinal no <strong>domínio do tempo</strong> (como ouvimos ou vemos algo acontecer) e o converte para o <strong>domínio da frequência</strong>. No domínio da frequência, podemos ver quais frequências estão presentes no sinal e com que intensidade.
-                </p>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Existem duas formas principais da Transformada de Fourier, dependendo se o sinal é contínuo ou discreto:
-                </p>
-
-                <h3 class="subsection-title">Transformada Contínua de Fourier (TCF)</h3>
-                <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                    Usada para sinais contínuos, ou seja, sinais que têm um valor em cada instante de tempo. Ela é definida pela seguinte integral:
-                </p>
-                <div class="formula">
-                    $$F(\omega) = \int_{-\infty}^{\infty} f(t)e^{-j\omega t} dt$$
+                <div>
+                    <label for="table-id" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="tableIdLabel"></label>
+                    <input type="text" id="table-id" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition placeholder-gray-500" data-i18n-placeholder="tableIdPlaceholder">
                 </div>
-                <ul class="list-disc list-inside ml-4 text-lg leading-relaxed mb-4 text-gray-700">
-                    <li>$f(t)$ é o sinal no domínio do tempo.</li>
-                    <li>$F(\omega)$ é a transformada de Fourier de $f(t)$ no domínio da frequência.</li>
-                    <li>$j$ é a unidade imaginária ($j = \sqrt{-1}$).</li>
-                    <li>$\omega$ (ômega) representa a frequência angular em radianos por segundo.</li>
-                </ul>
-
-                <h3 class="subsection-title">Transformada Discreta de Fourier (TDF)</h3>
-                <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                    Usada para sinais discretos, que são amostras de um sinal contínuo (como áudio digital, onde o som é amostrado várias vezes por segundo). Ela é definida pela seguinte soma:
-                </p>
-                <div class="formula">
-                    $$X_k = \sum_{n=0}^{N-1} x_n e^{-j2\pi kn/N}$$
+                <div>
+                    <label for="num-players" class="block text-sm font-medium text-gray-400 mb-2" data-i18n="opponentsLabel"></label>
+                    <select id="num-players" class="w-full bg-gray-900/50 border border-gray-600 rounded-md px-3 py-2 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition custom-select">
+                        <option>2</option> <option>3</option> <option>4</option> <option selected>5</option> <option>6</option> <option>7</option> <option>8</option><option>9</option>
+                    </select>
                 </div>
-                <ul class="list-disc list-inside ml-4 text-lg leading-relaxed mb-4 text-gray-700">
-                    <li>$x_n$ é o sinal discreto no domínio do tempo (a n-ésima amostra).</li>
-                    <li>$X_k$ é a transformada de Fourier discreta (o k-ésimo componente de frequência).</li>
-                    <li>$N$ é o número total de amostras.</li>
-                </ul>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    A essência por trás dessas equações é que estamos correlacionando o sinal original com uma série de senoides e cossenos de diferentes frequências. O resultado, $F(\omega)$ ou $X_k$, nos diz o quão bem cada frequência específica está presente no sinal original.
-                </p>
-                <p class="text-lg leading-relaxed text-gray-800">
-                    Imagine que você tem uma orquestra tocando. No domínio do tempo, você ouviria a música como um todo. Com a Transformada de Fourier, você poderia "separar" cada instrumento e ver a intensidade com que cada um está contribuindo para a melodia geral, independentemente do volume total da orquestra.
-                </p>
-            </section>
+            </div>
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <label for="auto-mode-toggle" class="text-sm font-medium text-gray-300" data-i18n="autoModeLabel"></label>
+                    <label class="toggle-switch">
+                        <input type="checkbox" id="auto-mode-toggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+                <button id="reveal-btn" class="bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition-all duration-300 shadow-lg shadow-cyan-500/20 flex items-center justify-center space-x-2 text-lg transform hover:scale-105 active:scale-100">
+                    <span id="reveal-btn-icon-container">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+                    </span>
+                    <span id="reveal-btn-text" data-i18n="engageButton"></span>
+                </button>
+            </div>
+        </section>
 
-            <!-- Seção de Propriedades -->
-            <section id="propriedades" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="200">
-                <h2 class="section-title">Propriedades Essenciais da Transformada de Fourier</h2>
-                <p class="text-lg leading-relaxed mb-6 text-gray-800">
-                    As propriedades da Transformada de Fourier são o que a tornam tão poderosa e versátil em diversas aplicações. Vamos focar nas mais importantes para sua apresentação:
-                </p>
+        <section id="results-screen" class="p-4 sm:p-6 border-t border-gray-700/50 hidden">
+            <!-- Community Cards -->
+            <div class="mb-6">
+                <h2 class="text-lg font-bold text-center text-cyan-300 mb-3 font-orbitron" data-i18n="communityCardsTitle"></h2>
+                <div id="community-cards-display" class="flex justify-center items-center gap-1 sm:gap-2 h-[110px]"></div>
+            </div>
 
-                <!-- Propriedade 1: Linearidade -->
-                <div class="property-card" data-aos="fade-right" data-aos-duration="800" data-aos-delay="300">
-                    <h3 class="subsection-title">1. Linearidade</h3>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        A propriedade da linearidade nos diz que a Transformada de Fourier de uma combinação linear de sinais é a combinação linear das Transformadas de Fourier desses sinais. Em termos mais simples: se você somar dois sinais e depois aplicar a transformada, o resultado será o mesmo que aplicar a transformada em cada sinal separadamente e depois somar os resultados.
-                    </p>
-                    <div class="formula">
-                        $$a \cdot f(t) + b \cdot g(t) \leftrightarrow a \cdot F(\omega) + b \cdot G(\omega)$$
-                    </div>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
-                        Onde $a$ e $b$ são constantes, $f(t) \leftrightarrow F(\omega)$ e $g(t) \leftrightarrow G(\omega)$.
-                    </p>
-                    <button class="main-button" onclick="toggleDetails('linearidade-details')">
-                        Entenda Melhor
-                    </button>
-                    <div id="linearidade-details" class="learn-more-content mt-4">
-                        <p class="text-lg leading-relaxed bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <strong>Significado:</strong> Essa propriedade é fundamental porque permite que a gente analise sinais complexos decompondo-os em partes mais simples. Por exemplo, se um sinal de áudio é composto pela sua voz e uma música de fundo, podemos analisar o espectro de cada um separadamente e depois combiná-los para entender o espectro total. É como analisar os ingredientes de um bolo um por um antes de provar o bolo pronto.
-                        </p>
+            <!-- Opponent Hands -->
+            <div id="cards-display" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-5 gap-4"></div>
+
+            <!-- Console, History & Actions -->
+            <div class="mt-6 grid grid-cols-1 lg:grid-cols-3 gap-4">
+                <div id="console-container" class="lg:col-span-2 bg-black/50 rounded-lg p-4 h-56 font-mono text-xs console-scrollbar overflow-y-auto">
+                    <div id="console-output"></div>
+                    <span id="console-cursor" class="typewriter-cursor hidden"></span>
+                </div>
+                <div class="flex flex-col space-y-4">
+                    <div id="action-buttons" class="flex flex-col justify-center items-center gap-4"></div>
+                    <div id="hand-history-container" class="bg-black/30 rounded-lg p-3 h-full">
+                        <h3 class="font-orbitron text-sm text-cyan-300 mb-2" data-i18n="handHistoryTitle"></h3>
+                        <ul id="hand-history-list" class="text-xs space-y-1 font-mono"></ul>
                     </div>
                 </div>
-
-                <!-- Propriedade 2: Translação -->
-                <div class="property-card" data-aos="fade-left" data-aos-duration="800" data-aos-delay="400">
-                    <h3 class="subsection-title">2. Translação (Deslocamento)</h3>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        A propriedade da translação (ou deslocamento) lida com o que acontece quando um sinal é movido no tempo ou na frequência.
-                    </p>
-                    <h4 class="text-xl font-semibold text-gray-700 mt-4 mb-2">Deslocamento no Tempo:</h4>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        Se você atrasar ou adiantar um sinal no tempo, as frequências presentes no sinal não mudam. O que muda é apenas a "fase" de cada frequência. Imagine que você está ouvindo uma música e ela começa um segundo mais tarde; as notas são as mesmas, mas o momento em que você as ouve é diferente.
-                    </p>
-                    <div class="formula">
-                        $$f(t - t_0) \leftrightarrow e^{-j\omega t_0} F(\omega)$$
-                    </div>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
-                        Onde $t_0$ é o valor do deslocamento no tempo. O termo $e^{-j\omega t_0}$ é um fator de fase.
-                    </p>
-
-                    <h4 class="text-xl font-semibold text-gray-700 mt-4 mb-2">Deslocamento na Frequência:</h4>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        Da mesma forma, se você "modula" um sinal multiplicando-o por uma senóide complexa no domínio do tempo, isso causa um deslocamento de todo o seu espectro de frequência. Isso é crucial em telecomunicações, por exemplo, onde diferentes estações de rádio transmitem em frequências distintas para não interferirem umas nas outras.
-                    </p>
-                    <div class="formula">
-                        $$e^{j\omega_0 t} f(t) \leftrightarrow F(\omega - \omega_0)$$
-                    </div>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
-                        Onde $\omega_0$ é o valor do deslocamento na frequência.
-                    </p>
-                    <button class="main-button" onclick="toggleDetails('translacao-details')">
-                        Entenda Melhor
-                    </button>
-                    <div id="translacao-details" class="learn-more-content mt-4">
-                        <p class="text-lg leading-relaxed bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <strong>Significado:</strong> Essas propriedades são vitais para entender como os sinais são transmitidos e recebidos em sistemas de comunicação. Elas nos mostram como o tempo e a frequência estão intrinsecamente ligados na Transformada de Fourier.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Propriedade 3: Derivada -->
-                <div class="property-card" data-aos="fade-right" data-aos-duration="800" data-aos-delay="500">
-                    <h3 class="subsection-title">3. Derivada (Diferenciação no Tempo)</h3>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        A propriedade da derivada relaciona a Transformada de Fourier da derivada de um sinal no tempo com a Transformada de Fourier do sinal original. Essencialmente, diferenciar um sinal no domínio do tempo é o mesmo que multiplicar sua Transformada de Fourier por $j\omega$ no domínio da frequência.
-                    </p>
-                    <div class="formula">
-                        $$\frac{d}{dt}f(t) \leftrightarrow j\omega F(\omega)$$
-                    </div>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
-                        Onde $f(t) \leftrightarrow F(\omega)$.
-                    </p>
-                    <button class="main-button" onclick="toggleDetails('derivada-details')">
-                        Entenda Melhor
-                    </button>
-                    <div id="derivada-details" class="learn-more-content mt-4">
-                        <p class="text-lg leading-relaxed bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <strong>Significado:</strong> Esta propriedade nos diz que a diferenciação enfatiza as <strong>altas frequências</strong>. Se um sinal muda muito rapidamente no tempo (tem muitas "dobras" ou variações abruptas), sua derivada será grande, e isso se manifestará como uma maior energia nas altas frequências no domínio da frequência. Por outro lado, sinais suaves, que mudam lentamente, terão poucas altas frequências. Isso é útil para detectar mudanças abruptas em sinais, como bordas em imagens.
-                        </p>
-                    </div>
-                </div>
-
-                <!-- Propriedade 4: Convolução -->
-                <div class="property-card" data-aos="fade-left" data-aos-duration="800" data-aos-delay="600">
-                    <h3 class="subsection-title">4. Convolução</h3>
-                    <p class="text-lg leading-relaxed mb-2 text-gray-800">
-                        A convolução é uma operação matemática que descreve como a forma de uma função é modificada pela outra. No contexto de sistemas e processamento de sinais, a convolução é fundamental para entender como um sistema (como um filtro) afeta um sinal de entrada. O <strong>Teorema da Convolução</strong> é uma das propriedades mais poderosas da Transformada de Fourier.
-                    </p>
-                    <div class="formula">
-                        $$f(t) * g(t) \leftrightarrow F(\omega) \cdot G(\omega)$$
-                    </div>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-700">
-                        Onde $*$ denota a operação de convolução, $f(t) \leftrightarrow F(\omega)$ e $g(t) \leftrightarrow G(\omega)$.
-                    </p>
-                    <button class="main-button" onclick="toggleDetails('convolucao-details')">
-                        Entenda Melhor
-                    </button>
-                    <div id="convolucao-details" class="learn-more-content mt-4">
-                        <p class="text-lg leading-relaxed bg-blue-50 p-4 rounded-lg border border-blue-200">
-                            <strong>Significado:</strong> Este teorema é incrivelmente útil porque transforma uma operação complexa de convolução no domínio do tempo (que envolve integrais complicadas) em uma <strong>multiplicação simples</strong> no domínio da frequência. Isso simplifica drasticamente a análise e o projeto de filtros e sistemas de processamento de sinais. Por exemplo, quando você aplica um filtro de áudio para remover o ruído (convolução), no domínio da frequência isso se traduz em simplesmente multiplicar o espectro do áudio pelo espectro do filtro.
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Seção de Exemplo -->
-            <section id="exemplo" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="700">
-                <h2 class="section-title">Exemplo Resolvido: A Transformada de Fourier de um Pulso Retangular</h2>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Vamos calcular a Transformada de Fourier de um <strong>pulso retangular</strong>, um sinal muito comum em engenharia e telecomunicações.
-                </p>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Considere um pulso retangular $f(t)$ definido como:
-                </p>
-                <div class="formula">
-                    $$f(t) = \begin{cases} 1 & \text{se } -\frac{T}{2} \le t \le \frac{T}{2} \\ 0 & \text{caso contrário} \end{cases}$$
-                </div>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    Este pulso tem amplitude 1 e duração $T$, centrado em $t=0$.
-                </p>
-
-                <!-- Passo 1 -->
-                <div class="property-card" data-aos="fade-right" data-aos-duration="800" data-aos-delay="800">
-                    <h3 class="subsection-title">Passo 1: Aplicar a Definição da Transformada Contínua de Fourier</h3>
-                    <button class="example-button" onclick="toggleDetails('step1-details')">
-                        Mostrar Passo 1
-                    </button>
-                    <div id="step1-details" class="step-content mt-4">
-                        <div class="formula">
-                            $$F(\omega) = \int_{-\infty}^{\infty} f(t)e^{-j\omega t} dt$$
-                        </div>
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            Como $f(t)$ é 1 apenas no intervalo $[-\frac{T}{2}, \frac{T}{2}]$, a integral se simplifica para:
-                        </p>
-                        <div class="formula">
-                            $$F(\omega) = \int_{-T/2}^{T/2} (1)e^{-j\omega t} dt$$
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Passo 2 -->
-                <div class="property-card" data-aos="fade-left" data-aos-duration="800" data-aos-delay="900">
-                    <h3 class="subsection-title">Passo 2: Resolver a Integral</h3>
-                    <button class="example-button" onclick="toggleDetails('step2-details')">
-                        Mostrar Passo 2
-                    </button>
-                    <div id="step2-details" class="step-content mt-4">
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            A integral de $e^{ax}$ é $\frac{1}{a}e^{ax}$. Neste caso, $a = -j\omega$.
-                        </p>
-                        <div class="formula">
-                            $$F(\omega) = \left[ \frac{e^{-j\omega t}}{-j\omega} \right]_{-T/2}^{T/2}$$
-                        </div>
-                        <div class="formula">
-                            $$F(\omega) = \frac{1}{-j\omega} \left[ e^{-j\omega (T/2)} - e^{-j\omega (-T/2)} \right]$$
-                        </div>
-                        <div class="formula">
-                            $$F(\omega) = \frac{1}{-j\omega} \left[ e^{-j\omega T/2} - e^{j\omega T/2} \right]$$
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Passo 3 -->
-                <div class="property-card" data-aos="fade-right" data-aos-duration="800" data-aos-delay="1000">
-                    <h3 class="subsection-title">Passo 3: Usar a Identidade de Euler</h3>
-                    <button class="example-button" onclick="toggleDetails('step3-details')">
-                        Mostrar Passo 3
-                    </button>
-                    <div id="step3-details" class="step-content mt-4">
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            Lembre-se da identidade de Euler: $e^{jx} - e^{-jx} = 2j \sin(x)$.
-                            Então, $e^{-j\omega T/2} - e^{j\omega T/2} = -(e^{j\omega T/2} - e^{-j\omega T/2}) = -2j \sin(\omega T/2)$.
-                        </p>
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            Substituindo isso na equação de $F(\omega)$:
-                        </p>
-                        <div class="formula">
-                            $$F(\omega) = \frac{1}{-j\omega} \left[ -2j \sin\left(\frac{\omega T}{2}\right) \right]$$
-                        </div>
-                        <div class="formula">
-                            $$F(\omega) = \frac{2j \sin\left(\frac{\omega T}{2}\right)}{j\omega}$$
-                        </div>
-                        <div class="formula">
-                            $$F(\omega) = \frac{2 \sin\left(\frac{\omega T}{2}\right)}{\omega}$$
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Passo 4 -->
-                <div class="property-card" data-aos="fade-left" data-aos-duration="800" data-aos-delay="1100">
-                    <h3 class="subsection-title">Passo 4: Expressar em Termos da Função Sinc</h3>
-                    <button class="example-button" onclick="toggleDetails('step4-details')">
-                        Mostrar Passo 4
-                    </button>
-                    <div id="step4-details" class="step-content mt-4">
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            A função <strong>sinc</strong> é definida como $\text{sinc}(x) = \frac{\sin(\pi x)}{\pi x}$.
-                            Para expressar $F(\omega)$ em termos de sinc, vamos manipular a expressão:
-                        </p>
-                        <div class="formula">
-                            $$F(\omega) = \frac{2 \sin\left(\frac{\omega T}{2}\right)}{\omega} \times \frac{T}{T} \times \frac{\pi}{\pi}$$
-                        </div>
-                        <div class="formula">
-                            $$F(\omega) = T \cdot \frac{2 \sin\left(\frac{\omega T}{2}\right)}{T\omega} \times \frac{\pi}{\pi}$$
-                        </div>
-                        <p class="text-lg leading-relaxed bg-green-50 p-4 rounded-lg border border-green-200">
-                            Perceba que $\frac{\omega T}{2}$ pode ser reescrito como $\pi \frac{\omega T}{2\pi}$.
-                        </p>
-                        <div class="formula">
-                            $$F(\omega) = T \cdot \text{sinc}\left(\frac{\omega T}{2\pi}\right)$$
-                        </div>
-                    </div>
-                </div>
-
-                <div class="property-card mt-8 bg-blue-100 border border-blue-300" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1200">
-                    <h3 class="subsection-title text-blue-800">Conclusão do Exemplo:</h3>
-                    <p class="text-lg leading-relaxed text-gray-800">
-                        A Transformada de Fourier de um pulso retangular no domínio do tempo é uma função <strong>sinc</strong> no domínio da frequência. Isso nos diz que um pulso retangular, apesar de parecer simples no tempo, contém uma gama de frequências, com a maior parte da energia concentrada nas baixas frequências e "lóbulos" de energia em frequências mais altas. Quanto mais estreito o pulso no tempo ($T$ menor), mais largo é o seu espectro de frequência (o lóbulo principal da sinc é mais largo).
-                    </p>
-                </div>
-
-                <div class="property-card mt-8" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1300">
-                    <h3 class="subsection-title">Visualização Interativa do Pulso Retangular e seu Espectro</h3>
-                    <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                        Ajuste o valor de 'T' (duração do pulso) e observe como o pulso no domínio do tempo e sua Transformada de Fourier (função sinc) mudam.
-                    </p>
-                    <div class="flex items-center mb-4">
-                        <label for="pulseDuration" class="mr-4 text-lg font-medium text-gray-700">Duração do Pulso (T):</label>
-                        <input type="range" id="pulseDuration" min="0.1" max="5" value="1" step="0.1" class="w-full h-2 bg-indigo-200 rounded-lg appearance-none cursor-pointer range-lg accent-indigo-500">
-                        <span id="currentPulseDuration" class="ml-4 text-lg font-bold text-indigo-700">1.0</span>
-                    </div>
-                    <div class="canvas-container">
-                        <canvas id="fourierCanvas" width="800" height="400"></canvas>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Seção de Desafio Rápido (Quiz) -->
-            <section id="quiz" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1400">
-                <h2 class="section-title">🧠 Desafio Rápido!</h2>
-                <div class="property-card">
-                    <p class="text-xl font-semibold mb-6 text-gray-800">
-                        Qual propriedade da Transformada de Fourier simplifica a operação de convolução no domínio do tempo para uma multiplicação no domínio da frequência?
-                    </p>
-                    <div id="quiz-options">
-                        <button class="quiz-option" data-answer="linearidade">A) Linearidade</button>
-                        <button class="quiz-option" data-answer="translacao">B) Translação</button>
-                        <button class="quiz-option" data-answer="derivada">C) Derivada</button>
-                        <button class="quiz-option" data-answer="convolucao">D) Convolução</button>
-                    </div>
-                    <div id="quiz-feedback" class="quiz-feedback hidden"></div>
-                </div>
-                <div class="curiosity-pill" data-aos="zoom-in" data-aos-delay="200">
-                    <p class="text-xl font-semibold mb-2">🎵 Você Sabia?</p>
-                    <p>O formato de áudio MP3 usa a Transformada de Fourier para identificar e descartar frequências que o ouvido humano tem dificuldade em perceber, permitindo uma compressão de dados eficiente sem perda perceptível de qualidade!</p>
-                </div>
-            </section>
-
-            <!-- Seção de Aplicações -->
-            <section id="aplicacoes" class="mb-16 fade-in-section" data-aos="fade-up" data-aos-duration="800" data-aos-delay="1500">
-                <h2 class="section-title">Aplicações da Transformada de Fourier</h2>
-                <p class="text-lg leading-relaxed mb-4 text-gray-800">
-                    A Transformada de Fourier é a espinha dorsal de inúmeras tecnologias e campos de estudo:
-                </p>
-                <ul class="list-disc list-inside ml-4 text-lg leading-relaxed text-gray-700">
-                    <li><strong>Processamento de Sinais:</strong> Filtragem de ruídos, compressão de áudio (MP3) e vídeo (MPEG), reconhecimento de fala.</li>
-                    <li><strong>Comunicações:</strong> Modulação e demodulação de sinais de rádio e TV, multiplexação por divisão de frequência.</li>
-                    <li><strong>Análise de Imagens:</strong> Compressão de imagens (JPEG), reconhecimento de padrões, realce de bordas.</li>
-                    <li><strong>Engenharia:</strong> Análise de vibrações em estruturas, projeto de circuitos, controle de sistemas.</li>
-                    <li><strong>Medicina:</strong> Ressonância Magnética (MRI), eletrocardiogramas (ECG), eletroencefalogramas (EEG).</li>
-                    <li><strong>Física:</strong> Óptica, mecânica quântica, processamento de sinais sísmicos.</li>
-                </ul>
-                <div class="curiosity-pill" data-aos="zoom-in" data-aos-delay="200">
-                    <p class="text-xl font-semibold mb-2">🔭 Você Sabia?</p>
-                    <p>Em astronomia, a Transformada de Fourier é usada para analisar a luz de estrelas e galáxias, permitindo que os cientistas determinem sua composição química, temperatura e até mesmo sua velocidade em relação à Terra!</p>
-                </div>
-            </section>
-
-            <footer class="text-center text-lg font-semibold text-gray-600 mt-12 py-6 bg-white rounded-xl shadow-md">
-                <p>&copy; 2025 Transformada de Fourier. Todos os direitos reservados.</p>
-                <p class="mt-2">Feito com ❤️ para sua apresentação!</p>
-            </footer>
-        </main>
+            </div>
+             <!-- Deck State -->
+            <div id="deck-state-container" class="mt-4 bg-black/30 rounded-lg p-3 hidden">
+                <h3 class="font-orbitron text-sm text-cyan-300 mb-2" data-i18n="deckStateTitle"></h3>
+                <p id="deck-state-output" class="text-xs font-mono text-gray-400 break-all"></p>
+            </div>
+        </section>
+    </main>
+    
+    <!-- Modals -->
+    <div id="access-modal" class="fixed inset-0 bg-slate-900/80 flex items-center justify-center p-4 z-50">
+        <div class="glass-container w-full max-w-sm rounded-2xl p-8 text-center modal-animated">
+            <h2 class="text-2xl font-orbitron font-bold text-cyan-300 mb-2" data-i18n="authTitle"></h2>
+            <div id="auth-subtitle" class="text-gray-400 mb-6 text-sm" data-i18n="authSubtitle"></div>
+            <input type="text" id="access-code-input" class="w-full bg-gray-900/70 border border-gray-600 rounded-md px-3 py-3 text-gray-200 focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 transition placeholder-gray-500 text-center uppercase tracking-widest" data-i18n-placeholder="authPlaceholder">
+            <div id="auth-progress" class="w-full bg-gray-700 rounded-full h-2.5 mt-4 hidden"><div id="auth-progress-bar" class="bg-cyan-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div></div>
+            <button id="submit-code-btn" class="mt-6 w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 px-6 rounded-lg transition transform hover:scale-105 active:scale-100" data-i18n="authButton"></button>
+        </div>
+    </div>
+    <div id="custom-alert" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-6 text-center border border-yellow-500 modal-animated">
+            <p id="custom-alert-message" class="text-white mb-4">Message goes here.</p>
+            <button id="custom-alert-close" class="bg-yellow-500 hover:bg-yellow-400 text-gray-900 font-bold py-2 px-6 rounded-lg transition" data-i18n="okButton"></button>
+        </div>
+    </div>
+    <div id="limit-reached-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 hidden z-50">
+        <div class="glass-container w-full max-w-sm rounded-lg shadow-xl p-8 text-center border border-red-500 modal-animated">
+            <h2 class="text-xl font-orbitron font-bold text-red-500 mb-2" data-i18n="limitTitle"></h2>
+            <p class="text-white mb-6" data-i18n="limitSubtitle"></p>
+            <a id="acquire-key-link" href="#" target="_blank" class="contact-btn bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-2 px-4 rounded-lg">
+                <span data-i18n="openTelegramButton"></span>
+            </a>
+        </div>
     </div>
 
     <script>
-        // Função para alternar a visibilidade dos detalhes (para propriedades e passos do exemplo)
-        function toggleDetails(id) {
-            const element = document.getElementById(id);
-            element.classList.toggle('expanded');
-            // Se for o canvas, garante que ele seja redesenhado ao ser expandido
-            if (id === 'step4-details' || id === 'exemplo') {
-                drawFourierTransform();
-            }
-        }
-
-        // Configura o MathJax para renderizar fórmulas LaTeX
-        window.MathJax = {
-            tex: {
-                inlineMath: [['$', '$'], ['\\(', '\\)']], // Delimitadores para matemática inline
-                displayMath: [['$$', '$$'], ['\\[', '\\]']] // Delimitadores para matemática em bloco
-            },
-            svg: {
-                fontCache: 'global' // Otimização de fonte para SVG
+    document.addEventListener('DOMContentLoaded', () => {
+        // =======================================================
+        // SECURITY THEATER & ANTI-DEBUG
+        // =======================================================
+        let devToolsDelayFactor = 1;
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.onkeydown = function(e) {
+            if (e.keyCode === 123 || (e.ctrlKey && e.shiftKey && (e.keyCode === 'I'.charCodeAt(0) || e.keyCode === 'J'.charCodeAt(0) || e.keyCode === 'C'.charCodeAt(0))) || (e.ctrlKey && e.keyCode === 'U'.charCodeAt(0))) {
+                return false;
             }
         };
-    </script>
-    <!-- Script do MathJax para carregar e renderizar as fórmulas -->
-    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
-    <!-- Script do AOS para animações ao rolar -->
-    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
-    <!-- Script do Chart.js para gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Script do Howler.js para sons (opcional) -->
-    <script src="https://cdn.jsdelivr.net/npm/howler@2.2.3/dist/howler.min.js"></script>
+        const detectDevTools = () => {
+            const threshold = 160;
+            const check = () => {
+                const startTime = performance.now();
+                // debugger;
+                const endTime = performance.now();
+                if (endTime - startTime > threshold) {
+                    if (devToolsDelayFactor === 1) { // Only log once
+                        console.log("%cPARE!", "color:red;font-size:30px;font-family:Orbitron;");
+                        console.log("%cFerramentas de desenvolvedor detectadas. As operações serão retardadas.", "color:yellow;font-size:14px;font-family:Inter;");
+                    }
+                    devToolsDelayFactor = 5; // Increase delay for operations
+                }
+            };
+            // setInterval(check, 1000); // Uncomment for production
+        };
+        detectDevTools();
 
-    <script>
-        AOS.init(); // Inicializa o AOS
+        // --- I18N (TRANSLATIONS) ---
+        const translations = {
+            pt: {
+                revealsLabel: "REVELAÇÕES", acquireAppButton: "Adquirir App", appSubtitle: "Análise de Mão por Emaranhamento Quântico",
+                modeSelectTitle: "SELECIONE A MODALIDADE", modeNLH: "No-Limit Hold'em", modePLO: "Pot-Limit Omaha", modePLO5: "Em Manutenção",
+                setupTitle: "CONFIGURAR JOGO", platformLabel: "Plataforma", platformPlaceholder: "Selecione a Plataforma",
+                tableIdLabel: "ID da Mesa / Clube", tableIdPlaceholder: "ex: 12345678", opponentsLabel: "Oponentes",
+                engageButton: "Engajar Link Quântico", engageButtonAnalyzing: "Analisando...", communityCardsTitle: "CARTAS COMUNITÁRIAS", authTitle: "AUTENTICAÇÃO",
+                authSubtitle: "Insira a chave de ativação para estabelecer o link quântico.", authPlaceholder: "INSERIR CHAVE", authButton: "Autenticar",
+                okButton: "OK", limitTitle: "SATURAÇÃO DO LINK", limitSubtitle: "Revelações quânticas esgotadas para esta chave.",
+                openTelegramButton: "Abrir Telegram", acquireKeyMessage: "Quero obter um novo código para acessar o Reveal Poker X.",
+                invalidCode: "Chave inválida ou expirada.", usedCode: "Esta chave já foi totalmente utilizada.",
+                selectPlatform: "Por favor, selecione uma plataforma.", enterTableId: "Por favor, insira o ID da mesa.",
+                waitHand: "Por favor, aguarde a mão atual terminar.", newHandButton: "Nova Mão", newGameButton: "Novo Jogo",
+                autoModeLabel: "Modo Automático (10s)", handHistoryTitle: "Histórico de Mãos", deckStateTitle: "Estado do Baralho Restaurado",
+                authProgress: "Verificando biometria quântica...", authSuccess: "Acesso Concedido",
+                consoleInitiating: "Iniciando link quântico com {platform}...",
+                consoleScanning: "Buscando dispositivos na rede {tableId}...",
+                consoleDeviceFound: '<span class="log-success">Dispositivo encontrado:</span> {deviceId} (Player {playerId})',
+                consoleInjection: "Injetando pacote de análise no fluxo TCP...",
+                consoleInjectionDone: '<span class="log-success">Injeção bem-sucedida.</span> Aguardando desvio de entropia...',
+                consoleHashFound: "Desvio de entropia detectado. Hash de estado: <span class='log-warning'>{hash}</span>",
+                consoleDecrypting: "Decriptando pacotes de jogo...",
+                consoleDecryptingDone: '<span class="log-success">Decriptação concluída.</span>',
+                consoleReadingStates: "Lendo assinaturas quânticas das mãos...",
+                consoleRevealing: "Decodificando {stage}...",
+                consoleFailurePreFlop: '<span class="log-error">FALHA NA DECRIPTAÇÃO:</span> Fluxo de dados pré-flop instável. Não foi possível obter as cartas comunitárias.',
+                consoleFailurePostFlop: '<span class="log-error">FALHA NA DECRIPTAÇÃO:</span> Não foi possível obter os dados do Turn/River do hash: <span class="text-yellow-400">{hash}</span>',
+                handHistoryEntry: "Mão #{num}: Vencedor Pos {winner} ({hand})",
+            }
+        };
+        const i18n = {
+            lang: 'pt',
+            init: function() { document.documentElement.lang = this.lang; this.translateAll(); },
+            get: function(key, r = {}) { let t = translations['pt'][key] || key; for (const p in r) { t = t.replace(`{${p}}`, r[p]); } return t; },
+            translateAll: function() { 
+                document.querySelectorAll('[data-i18n]').forEach(el => { 
+                    const key = el.dataset.i18n; 
+                    el.innerHTML = this.get(key); 
+                });
+                document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                    const key = el.dataset.i18nPlaceholder;
+                    if (el.tagName === 'OPTION') {
+                        el.textContent = this.get(key);
+                    } else {
+                        el.placeholder = this.get(key);
+                    }
+                });
+            }
+        };
+        
+        // --- DOM ELEMENTS ---
+        const allDomElements = {
+            mainApp: document.getElementById('main-app'), accessModal: document.getElementById('access-modal'),
+            gameModeScreen: document.getElementById('game-mode-screen'), setupScreen: document.getElementById('setup-screen'),
+            resultsScreen: document.getElementById('results-screen'), accessCodeInput: document.getElementById('access-code-input'),
+            submitCodeBtn: document.getElementById('submit-code-btn'), authSubtitle: document.getElementById('auth-subtitle'),
+            authProgress: document.getElementById('auth-progress'), authProgressBar: document.getElementById('auth-progress-bar'),
+            revealBtn: document.getElementById('reveal-btn'), revealBtnText: document.getElementById('reveal-btn-text'), revealBtnIconContainer: document.getElementById('reveal-btn-icon-container'),
+            platformSelect: document.getElementById('platform-select'), tableIdInput: document.getElementById('table-id'), numPlayersSelect: document.getElementById('num-players'),
+            consoleOutput: document.getElementById('console-output'), consoleCursor: document.getElementById('console-cursor'),
+            cardsDisplay: document.getElementById('cards-display'), communityCardsDisplay: document.getElementById('community-cards-display'),
+            actionButtons: document.getElementById('action-buttons'), handsRemainingDisplay: document.getElementById('hands-remaining-display'),
+            customAlert: document.getElementById('custom-alert'), customAlertMessage: document.getElementById('custom-alert-message'),
+            customAlertClose: document.getElementById('custom-alert-close'), limitReachedModal: document.getElementById('limit-reached-modal'),
+            acquireKeyLink: document.getElementById('acquire-key-link'), backToModeSelectBtn: document.getElementById('back-to-mode-select'),
+            autoModeToggle: document.getElementById('auto-mode-toggle'), handHistoryList: document.getElementById('hand-history-list'),
+            deckStateContainer: document.getElementById('deck-state-container'), deckStateOutput: document.getElementById('deck-state-output')
+        };
+        
+        // --- DATA & STATE ---
+        const SUITS = { '♠': 'spades', '♥': 'hearts', '♦': 'diamonds', '♣': 'clubs' };
+        const RANKS = ['2', '3', '4', '5', '6', '7', '8', '9', 'T', 'J', 'Q', 'K', 'A'];
+        const RANK_VALUES = {'2':2, '3':3, '4':4, '5':5, '6':6, '7':7, '8':8, '9':9, 'T':10, 'J':11, 'Q':12, 'K':13, 'A':14};
+        const OBFUSCATED_CODES = { 'UVVBTlRVTTIwMjU=': 50, 'WFJFVkFBTFBSTw==': 100, 'RUxJVEVIQUNL': 20, 'SEFDS1RFU1Q=': 5 };
+        let VALID_CODES = {};
+        for (const key in OBFUSCATED_CODES) { VALID_CODES[atob(key)] = OBFUSCATED_CODES[key]; }
 
-        // --- Dark Mode Logic ---
-        const darkModeToggle = document.getElementById('darkModeToggle');
-        const htmlElement = document.documentElement;
+        let deck = [], players = [], communityCards = [], handHistory = [];
+        let gameState = 'IDLE', currentGameMode = null, isIncognito = false, handCounter = 0;
+        let soundEnabled = false, synths = {}, autoModeInterval = null;
 
-        // Load theme from local storage
-        const currentTheme = localStorage.getItem('theme');
-        if (currentTheme === 'dark') {
-            htmlElement.classList.add('dark');
-            darkModeToggle.textContent = '🌙'; // Moon icon for dark mode
-        } else {
-            darkModeToggle.textContent = '☀️'; // Sun icon for light mode
+        // --- SOUND ENGINE ---
+        const setupSounds = () => { if (soundEnabled) return; try { Tone.start(); synths.click = new Tone.Synth({oscillator:{type:'sine'},envelope:{attack:0.005,decay:0.1,sustain:0.3,release:1}}).toDestination(); synths.flip = new Tone.NoiseSynth({noise:{type:'white'},envelope:{attack:0.005,decay:0.05,sustain:0}}).toDestination(); synths.win = new Tone.PolySynth(Tone.Synth,{oscillator:{type:"fatsawtooth"},envelope:{attack:0.01,decay:0.2,sustain:0.2,release:0.2}}).toDestination(); synths.error = new Tone.Synth({oscillator:{type:'triangle'},envelope:{attack:0.01,decay:0.2,sustain:0,release:0.1}}).toDestination(); synths.scan = new Tone.Synth({oscillator:{type:'sawtooth', frequency: 800}, envelope:{attack:0.001,decay:0.1,sustain:0,release:0.01}}).toDestination(); synths.success = new Tone.Synth({oscillator:{type:'sine', frequency: 600}, envelope:{attack:0.01,decay:0.2,sustain:0.1,release:0.1}}).toDestination(); soundEnabled = true; } catch(e) { console.warn("Audio context failed to start."); } };
+        const playSound = (sound, note, time) => { if (soundEnabled && synths[sound]) synths[sound].triggerAttackRelease(note, "8n", time); };
+
+        // --- HELPER FUNCTIONS ---
+        const delay = ms => new Promise(res => setTimeout(res, ms * devToolsDelayFactor));
+        const createDeck = () => Object.keys(SUITS).flatMap(suit => RANKS.map(rank => ({ suit, rank })));
+        const shuffleDeck = () => { deck = createDeck(); for (let i = deck.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [deck[i], deck[j]] = [deck[j], deck[i]]; } };
+        const generateHash = (len=16) => Array(len).fill(0).map(() => '0123456789abcdef'[Math.floor(Math.random()*16)]).join('');
+
+        // --- UI & ALERT FUNCTIONS ---
+        const showAlert = message => { playSound('error', 'C3'); allDomElements.customAlertMessage.textContent = message; allDomElements.customAlert.classList.remove('hidden'); };
+        const updateHandsRemainingDisplay = () => { const max = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10); const used = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10); if (!isNaN(max) && !isNaN(used)) { allDomElements.handsRemainingDisplay.textContent = `${i18n.get('revealsLabel')}: ${max - used}`; } };
+        
+        const createCardHTML = (card, isPlaceholder = false) => {
+            let content = '';
+            if (isPlaceholder) {
+                return `<div class="card-container"><div class="quantum-placeholder">Q-SIG</div></div>`;
+            } 
+            if (card) {
+                const colorClass = (card.suit === '♥' || card.suit === '♦') ? 'red' : 'black';
+                const rankSymbol = card.rank === 'T' ? '10' : card.rank;
+                content = `<div class="card-front-content ${colorClass}"><div class="text-left"><div class="rank">${rankSymbol}</div><div class="suit">${card.suit}</div></div><div class="center-suit">${card.suit}</div><div class="text-right card-bottom-rank"><div class="rank">${rankSymbol}</div><div class="suit">${card.suit}</div></div></div>`;
+            }
+            return `<div class="card-container"><div class="card-flipper"><div class="card-face card-back"></div><div class="card-face card-front">${content}</div></div></div>`;
+        };
+
+        async function typeMessage(messageKey, replacements = {}, speed = 15) {
+            const message = i18n.get(messageKey, replacements);
+            const p = document.createElement('p');
+            p.innerHTML = `<span class="text-cyan-400">&gt;</span> `;
+            allDomElements.consoleOutput.appendChild(p);
+            const textEl = document.createElement('span');
+            p.appendChild(textEl);
+            const tempDiv = document.createElement('div'); tempDiv.innerHTML = message;
+            const nodes = Array.from(tempDiv.childNodes);
+            for (const node of nodes) {
+                if (node.nodeType === Node.TEXT_NODE) {
+                    for (let char of node.textContent) { textEl.innerHTML += char; allDomElements.consoleOutput.scrollTop = allDomElements.consoleOutput.scrollHeight; await delay(speed + Math.random() * 5); }
+                } else { textEl.appendChild(node.cloneNode(true)); }
+            }
+            allDomElements.consoleOutput.scrollTop = allDomElements.consoleOutput.scrollHeight;
         }
 
-        darkModeToggle.addEventListener('click', () => {
-            htmlElement.classList.toggle('dark');
-            if (htmlElement.classList.contains('dark')) {
-                localStorage.setItem('theme', 'dark');
-                darkModeToggle.textContent = '🌙';
+        // --- POKER HAND EVALUATION LOGIC (Unchanged) ---
+        function evaluateHand(cards, mode) {
+            const handRanksI18n = { pt: { 10: "Royal Flush", 9: "Straight Flush", 8: "Quadra", 7: "Full House", 6: "Flush", 5: "Sequência", 4: "Trinca", 3: "Dois Pares", 2: "Um Par", 1: "Carta Alta" } };
+            const k_combinations = (set, k) => { if (k > set.length || k <= 0) return []; if (k === set.length) return [set]; if (k === 1) return set.map(e => [e]); const combos = []; for (let i = 0; i < set.length - k + 1; i++) { const head = set.slice(i, i + 1); const tailcombos = k_combinations(set.slice(i + 1), k - 1); for (const tail of tailcombos) { combos.push(head.concat(tail)); } } return combos; };
+            let combosToTest = [];
+            if (mode === 'nlh') { combosToTest = k_combinations(cards, 5); } 
+            else if (mode === 'plo') {
+                const holeCards = cards.slice(0, 4); const boardCards = cards.slice(4);
+                if (holeCards.length < 2 || boardCards.length < 3) return { rank: 0, name: "Mão Inválida", values: [] };
+                const holeCombos = k_combinations(holeCards, 2); const boardCombos = k_combinations(boardCards, 3);
+                for(const hc of holeCombos) { for (const bc of boardCombos) { combosToTest.push([...hc, ...bc]); } }
+            }
+            if (combosToTest.length === 0 && cards.length >= 5) { combosToTest = k_combinations(cards, 5); }
+            let bestHand = { rank: 0, name: "Carta Alta", values: [] };
+            for(const combo of combosToTest) {
+                const ranks = combo.map(c => RANK_VALUES[c.rank]).sort((a, b) => b - a); const suits = combo.map(c => c.suit);
+                const isFlush = new Set(suits).size === 1; const isStraight = ranks.every((r, i) => i === 0 || r === ranks[i-1] - 1) || (ranks[0] === 14 && ranks[1] === 5 && ranks[2] === 4 && ranks[3] === 3 && ranks[4] === 2);
+                let currentRank = 0, currentValues = ranks;
+                if (isStraight && isFlush) { currentRank = (ranks[0] === 14 && ranks[1] === 13) ? 10 : 9; if(currentRank === 9 && ranks[0]===14) currentValues = [5,4,3,2,1]; }
+                else {
+                    const rankCounts = ranks.reduce((acc, r) => { acc[r] = (acc[r] || 0) + 1; return acc; }, {});
+                    const counts = Object.values(rankCounts).sort((a,b) => b-a); const mainCards = Object.keys(rankCounts).filter(r => rankCounts[r] >= 2).map(Number).sort((a,b)=>b-a);
+                    if (counts[0] === 4) { currentRank = 8; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else if (counts[0] === 3 && counts[1] === 2) { currentRank = 7; currentValues = [mainCards.find(c => rankCounts[c] === 3), mainCards.find(c => rankCounts[c] === 2)]; }
+                    else if (isFlush) { currentRank = 6; }
+                    else if (isStraight) { currentRank = 5; if(ranks[0]===14) currentValues = [5,4,3,2,1]; }
+                    else if (counts[0] === 3) { currentRank = 4; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else if (counts[0] === 2 && counts[1] === 2) { currentRank = 3; currentValues = [mainCards[0], mainCards[1], ...ranks.filter(r => !mainCards.includes(r))]; }
+                    else if (counts[0] === 2) { currentRank = 2; currentValues = [mainCards[0], ...ranks.filter(r => r !== mainCards[0])]; }
+                    else { currentRank = 1; }
+                }
+                const compareHighCards = (a, b) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] - b[i]; } return 0; };
+                if (currentRank > bestHand.rank || (currentRank === bestHand.rank && compareHighCards(currentValues, bestHand.values) > 0)) {
+                    bestHand = { rank: currentRank, name: handRanksI18n['pt'][currentRank], values: currentValues };
+                }
+            }
+            return bestHand;
+        }
+
+        // --- CORE LOGIC ---
+        function checkAccess() {
+            const code = localStorage.getItem('pokerRevealAccessCode');
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            const handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10);
+            if (code && !isNaN(maxHands) && !isNaN(handsUsed) && handsUsed < maxHands) {
+                allDomElements.accessModal.classList.add('hidden'); allDomElements.mainApp.classList.remove('hidden');
+                allDomElements.gameModeScreen.classList.remove('hidden'); updateHandsRemainingDisplay();
+            } else { allDomElements.mainApp.classList.add('hidden'); allDomElements.accessModal.classList.remove('hidden'); }
+        }
+
+        async function handleAccessCodeSubmit() {
+            if (isIncognito) { showAlert("Modo anônimo detectado. Por favor, use uma janela normal do navegador."); return; }
+            setupSounds(); playSound('click', 'C4');
+            const code = allDomElements.accessCodeInput.value.trim().toUpperCase();
+            const usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
+            if (usedCodes.includes(code)) { showAlert(i18n.get('usedCode')); return; }
+            if (VALID_CODES[code]) {
+                allDomElements.submitCodeBtn.disabled = true;
+                allDomElements.accessCodeInput.disabled = true;
+                allDomElements.authProgress.classList.remove('hidden');
+                allDomElements.authSubtitle.textContent = i18n.get('authProgress');
+                
+                let progress = 0;
+                const interval = setInterval(() => {
+                    progress += Math.random() * 15;
+                    if (progress > 100) progress = 100;
+                    allDomElements.authProgressBar.style.width = progress + '%';
+                    if (progress >= 100) {
+                        clearInterval(interval);
+                        playSound('success', 'C5');
+                        allDomElements.authSubtitle.textContent = i18n.get('authSuccess');
+                        setTimeout(() => {
+                            localStorage.setItem('pokerRevealAccessCode', code); localStorage.setItem('pokerRevealMaxHands', VALID_CODES[code]);
+                            localStorage.setItem('pokerRevealHandsUsed', '0'); checkAccess();
+                            allDomElements.submitCodeBtn.disabled = false;
+                            allDomElements.accessCodeInput.disabled = false;
+                            allDomElements.authProgress.classList.add('hidden');
+                            allDomElements.authProgressBar.style.width = '0%';
+                            allDomElements.authSubtitle.textContent = i18n.get('authSubtitle');
+                        }, 800);
+                    }
+                }, 200);
+
+            } else { showAlert(i18n.get('invalidCode')); }
+        }
+        
+        function validateInputs() {
+            if (allDomElements.platformSelect.value === "") { showAlert(i18n.get('selectPlatform')); return false; }
+            if (allDomElements.tableIdInput.value === "") { showAlert(i18n.get('enterTableId')); return false; }
+            return true;
+        }
+
+        async function handleReveal() {
+            if (gameState !== 'IDLE' || !validateInputs()) return;
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            if (parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10) >= maxHands) {
+                allDomElements.limitReachedModal.classList.remove('hidden');
+                allDomElements.acquireKeyLink.href = `https://t.me/bedmalcon_temp?text=${encodeURIComponent(i18n.get('acquireKeyMessage'))}`;
+                return;
+            }
+
+            gameState = 'REVEALING';
+            allDomElements.revealBtn.disabled = true;
+            allDomElements.revealBtnText.textContent = i18n.get('engageButtonAnalyzing');
+            allDomElements.revealBtnIconContainer.innerHTML = `<div class="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>`;
+            
+            allDomElements.setupScreen.classList.add('hidden');
+            allDomElements.resultsScreen.classList.remove('hidden');
+            resetBoard();
+            
+            allDomElements.consoleCursor.classList.remove('hidden');
+            const platform = allDomElements.platformSelect.options[allDomElements.platformSelect.selectedIndex].text;
+            const tableId = allDomElements.tableIdInput.value;
+            const numOpponents = parseInt(allDomElements.numPlayersSelect.value, 10);
+
+            await typeMessage('consoleInitiating', { platform: platform }, 20);
+            await delay(500);
+            await typeMessage('consoleScanning', { tableId: tableId }, 20);
+            await delay(300);
+            for(let i=1; i<=numOpponents; i++) {
+                playSound('scan', 'A5', Tone.now() + i * 0.1);
+                await typeMessage('consoleDeviceFound', { deviceId: `0x${generateHash(12)}`, playerId: i }, 10);
+                await delay(150 + Math.random() * 100);
+            }
+            await delay(500);
+            await typeMessage('consoleInjection', {}, 20);
+            await delay(1200);
+            await typeMessage('consoleInjectionDone');
+            await delay(1500);
+            await typeMessage('consoleHashFound', { hash: generateHash(32) }, 20);
+            await delay(800);
+            await typeMessage('consoleDecrypting');
+            await delay(1500);
+            await typeMessage('consoleDecryptingDone');
+            playSound('success', 'G5');
+            allDomElements.consoleCursor.classList.add('hidden');
+            
+            processHandReveal();
+        }
+
+        function processHandReveal() {
+            let handsUsed = parseInt(localStorage.getItem('pokerRevealHandsUsed'), 10) || 0;
+            handsUsed++;
+            localStorage.setItem('pokerRevealHandsUsed', handsUsed);
+            updateHandsRemainingDisplay();
+            const maxHands = parseInt(localStorage.getItem('pokerRevealMaxHands'), 10);
+            if (handsUsed >= maxHands) {
+                const code = localStorage.getItem('pokerRevealAccessCode'); let usedCodes = JSON.parse(localStorage.getItem('pokerRevealUsedCodes') || '[]');
+                if (code && !usedCodes.includes(code)) { usedCodes.push(code); localStorage.setItem('pokerRevealUsedCodes', JSON.stringify(usedCodes)); }
+            }
+            dealAndDisplay();
+        }
+
+        function resetBoard() {
+            allDomElements.cardsDisplay.innerHTML = ''; allDomElements.communityCardsDisplay.innerHTML = '';
+            allDomElements.actionButtons.innerHTML = ''; allDomElements.consoleOutput.innerHTML = '';
+            allDomElements.deckStateContainer.classList.add('hidden');
+            players = []; communityCards = [];
+        }
+
+        async function dealAndDisplay() {
+            shuffleDeck();
+            handCounter++;
+            const numOpponents = parseInt(allDomElements.numPlayersSelect.value, 10);
+            const holeCardsCount = currentGameMode === 'plo' ? 4 : 2;
+
+            for (let i = 0; i < numOpponents; i++) {
+                players.push({ id: i, name: `Posição ${i + 1}`, hand: deck.splice(0, holeCardsCount), div: null });
+            }
+            deck.pop(); // burn
+            communityCards = deck.splice(0, 5);
+
+            players.forEach(player => {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'p-3 flex flex-col items-center space-y-2 bg-slate-800/50 rounded-lg border border-gray-700/50 transition-all duration-500';
+                let cardsHTML = player.hand.map(() => createCardHTML(null, true)).join(''); // Start with placeholders
+                playerDiv.innerHTML = `<div class="flex items-center gap-2 w-full"><div class="flex-shrink-0 w-6 h-6 rounded-full bg-cyan-800/50 flex items-center justify-center font-mono text-cyan-300 text-xs">${player.id + 1}</div><h3 class="font-bold text-gray-300 text-sm truncate">${player.name}</h3></div><div class="flex flex-wrap justify-center gap-1 player-hand">${cardsHTML}</div><div class="hand-rank-display text-cyan-200 text-xs h-4 font-medium"></div>`;
+                allDomElements.cardsDisplay.appendChild(playerDiv);
+                player.div = playerDiv;
+            });
+
+            await typeMessage('consoleReadingStates');
+            await delay(1200);
+
+            // Reveal hole cards one by one
+            for (const player of players) {
+                const handDiv = player.div.querySelector('.player-hand');
+                for (let i = 0; i < player.hand.length; i++) {
+                    const cardPlaceholder = handDiv.children[i];
+                    const cardHTML = createCardHTML(player.hand[i]);
+                    const tempDiv = document.createElement('div');
+                    tempDiv.innerHTML = cardHTML;
+                    const newCardElem = tempDiv.firstElementChild;
+                    
+                    await delay(150 + Math.random() * 100);
+                    playSound('flip', null, Tone.now());
+                    cardPlaceholder.replaceWith(newCardElem);
+                    
+                    await delay(50); // Short delay to allow element to be in DOM
+                    newCardElem.classList.add('flipped');
+                }
+            }
+            await delay(500);
+            
+             const outcomeRoll = Math.random();
+             let revealScenario;
+             if (outcomeRoll < 0.75) { revealScenario = 'FULL_REVEAL'; }
+             else if (outcomeRoll < 0.90) { revealScenario = 'FLOP_ONLY'; }
+             else { revealScenario = 'CARDS_ONLY'; }
+            
+             let revealedBoard = [];
+             if (revealScenario === 'CARDS_ONLY') {
+                 await typeMessage('consoleFailurePreFlop');
+             } else {
+                 revealedBoard.push(...communityCards.slice(0, 3));
+                 await revealCommunityStage('Flop', 0, 3);
+                 if (revealScenario === 'FLOP_ONLY') {
+                     await delay(1000);
+                     await typeMessage('consoleFailurePostFlop', { hash: generateHash() });
+                 } else { // FULL_REVEAL
+                     await delay(1500);
+                     revealedBoard.push(communityCards[3]);
+                     await revealCommunityStage('Turn', 3, 1);
+                     await delay(1500);
+                     revealedBoard.push(communityCards[4]);
+                     await revealCommunityStage('River', 4, 1);
+                     await delay(1000);
+                 }
+             }
+            
+             if(revealedBoard.length > 0) {
+                 evaluateAllHands(revealedBoard);
+             }
+
+             showActionButtons();
+             gameState = 'FINISHED';
+        }
+        
+        async function revealCommunityStage(stageName, start, count) {
+            await typeMessage('consoleRevealing', { stage: stageName });
+            await delay(500);
+            for (let i = start; i < start + count; i++) {
+                const cardElem = document.createElement('div');
+                cardElem.innerHTML = createCardHTML(communityCards[i]);
+                const cardContainer = cardElem.firstElementChild;
+                allDomElements.communityCardsDisplay.appendChild(cardContainer);
+                await delay(100);
+                playSound('flip', 'C5', Tone.now());
+                cardContainer.classList.add('flipped');
+                await delay(200);
+            }
+        }
+        
+        function evaluateAllHands(board) {
+            let bestOverallHand = { rank: 0, values: [] };
+            let winners = [];
+            players.forEach(player => {
+                const cardsToEval = [...player.hand, ...board];
+                player.bestHand = evaluateHand(cardsToEval, currentGameMode);
+                player.div.querySelector('.hand-rank-display').textContent = player.bestHand.name;
+                
+                const compare = (a, b) => { for (let i = 0; i < a.length; i++) { if (a[i] !== b[i]) return a[i] - b[i]; } return 0; };
+                if (player.bestHand.rank > bestOverallHand.rank || (player.bestHand.rank === bestOverallHand.rank && compare(player.bestHand.values, bestOverallHand.values) > 0)) {
+                    bestOverallHand = player.bestHand; winners = [player];
+                } else if (player.bestHand.rank === bestOverallHand.rank && compare(player.bestHand.values, bestOverallHand.values) === 0) {
+                    winners.push(player);
+                }
+            });
+            winners.forEach(winner => {
+                winner.div.classList.add('winner-highlight');
+                playSound('win', 'C4', Tone.now());
+            });
+
+            updateHandHistory(winners);
+            displayDeckState();
+        }
+
+        function showActionButtons() {
+            allDomElements.actionButtons.innerHTML = `<button id="new-hand-btn" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105">${i18n.get('newHandButton')}</button><button id="new-game-btn" class="w-full sm:w-auto bg-gray-600 hover:bg-gray-500 text-white font-bold py-2 px-5 rounded-lg transition transform hover:scale-105">${i18n.get('newGameButton')}</button>`;
+            document.getElementById('new-hand-btn').addEventListener('click', handleNewHandClick);
+            document.getElementById('new-game-btn').addEventListener('click', resetGame);
+        }
+
+        function updateHandHistory(winners) {
+            const winnerNames = winners.map(w => w.id + 1).join(', ');
+            const handName = winners.length > 0 ? winners[0].bestHand.name : 'N/A';
+            const entry = { num: handCounter, winner: winnerNames, hand: handName };
+            handHistory.unshift(entry);
+            if (handHistory.length > 5) handHistory.pop();
+
+            allDomElements.handHistoryList.innerHTML = handHistory.map(h => `<li>${i18n.get('handHistoryEntry', h)}</li>`).join('');
+        }
+
+        function displayDeckState() {
+            const deckString = deck.map(c => `${c.rank}${c.suit}`).join(' ');
+            allDomElements.deckStateOutput.textContent = `[${deckString}]`;
+            allDomElements.deckStateContainer.classList.remove('hidden');
+        }
+
+        function handleNewHandClick() {
+            if (gameState === 'REVEALING') { showAlert(i18n.get('waitHand')); return; }
+            playSound('click', 'C4'); gameState = 'IDLE'; handleReveal();
+        }
+
+        function resetGame() {
+            playSound('click', 'C4'); gameState = 'IDLE';
+            allDomElements.resultsScreen.classList.add('hidden');
+            allDomElements.gameModeScreen.classList.remove('hidden');
+            allDomElements.setupScreen.classList.add('hidden');
+            
+            allDomElements.revealBtn.disabled = false;
+            allDomElements.revealBtnText.textContent = i18n.get('engageButton');
+            allDomElements.revealBtnIconContainer.innerHTML = `<svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>`;
+
+            allDomElements.tableIdInput.value = ''; allDomElements.platformSelect.value = '';
+            handHistory = []; allDomElements.handHistoryList.innerHTML = ''; handCounter = 0;
+            if (autoModeInterval) {
+                clearInterval(autoModeInterval); autoModeInterval = null;
+                allDomElements.autoModeToggle.checked = false;
+            }
+        }
+        
+        // --- EVENT LISTENERS ---
+        allDomElements.submitCodeBtn.addEventListener('click', handleAccessCodeSubmit);
+        allDomElements.accessCodeInput.addEventListener('keyup', (e) => { if (e.key === 'Enter') allDomElements.submitCodeBtn.click(); });
+        allDomElements.customAlertClose.addEventListener('click', () => allDomElements.customAlert.classList.add('hidden'));
+        allDomElements.revealBtn.addEventListener('click', handleReveal);
+        
+        allDomElements.gameModeScreen.addEventListener('click', e => {
+            const button = e.target.closest('button[data-mode]'); if (!button || button.disabled) return;
+            playSound('click', 'C4'); currentGameMode = button.dataset.mode;
+            allDomElements.gameModeScreen.classList.add('hidden'); allDomElements.setupScreen.classList.remove('hidden');
+        });
+        
+        allDomElements.backToModeSelectBtn.addEventListener('click', () => {
+             playSound('click', 'C3'); allDomElements.setupScreen.classList.add('hidden');
+             allDomElements.gameModeScreen.classList.remove('hidden');
+        });
+
+        allDomElements.autoModeToggle.addEventListener('change', (e) => {
+            if (e.target.checked) {
+                if (gameState !== 'IDLE') { e.target.checked = false; return; }
+                handleNewHandClick();
+                autoModeInterval = setInterval(handleNewHandClick, 10000);
             } else {
-                localStorage.setItem('theme', 'light');
-                darkModeToggle.textContent = '☀️';
+                if (autoModeInterval) { clearInterval(autoModeInterval); autoModeInterval = null; }
             }
         });
-
-        // --- JavaScript para rolagem suave dos links de navegação e destaque do link ativo ---
-        document.querySelectorAll('nav a').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault(); // Previne o comportamento padrão do link
-
-                // Remove a classe 'active-nav-link' de todos os links
-                document.querySelectorAll('nav a').forEach(link => {
-                    link.classList.remove('active-nav-link');
-                });
-                // Adiciona a classe 'active-nav-link' ao link clicado
-                this.classList.add('active-nav-link');
-
-                // Rola suavemente para a seção correspondente
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
-                });
-            });
-        });
-
-        // Destaca o link de navegação ativo conforme o usuário rola a página
-        const sections = document.querySelectorAll('section'); // Seleciona todas as seções
-        const navLinks = document.querySelectorAll('nav a'); // Seleciona todos os links de navegação
-
-        window.addEventListener('scroll', () => {
-            let current = ''; // Variável para armazenar a seção atual visível
-            sections.forEach(section => {
-                const sectionTop = section.offsetTop; // Posição do topo da seção
-                const sectionHeight = section.clientHeight; // Altura da seção
-                // Verifica se a posição de rolagem está dentro da seção (com uma margem)
-                if (pageYOffset >= sectionTop - sectionHeight / 3) {
-                    current = section.getAttribute('id'); // Define a seção atual
+        
+        // --- INITIALIZATION ---
+        i18n.init();
+        
+        (async () => {
+            try {
+                if (navigator.storage && navigator.storage.estimate) {
+                    const { quota } = await navigator.storage.estimate();
+                    if (quota < 120000000) isIncognito = true;
                 }
-            });
-
-            // Remove e adiciona a classe 'active-nav-link' com base na seção atual
-            navLinks.forEach(link => {
-                link.classList.remove('active-nav-link');
-                if (link.getAttribute('data-section') === current) {
-                    link.classList.add('active-nav-link');
-                }
-            });
-        });
-
-        // --- Lógica do Canvas para Visualização Interativa com Chart.js ---
-        const canvas = document.getElementById('fourierCanvas');
-        const ctx = canvas.getContext('2d');
-        const pulseDurationSlider = document.getElementById('pulseDuration');
-        const currentPulseDurationSpan = document.getElementById('currentPulseDuration');
-
-        let T_value = parseFloat(pulseDurationSlider.value); // Valor inicial de T
-
-        // Gráfico do Pulso Retangular (ainda desenhado manualmente)
-        function drawRectangularPulse(ctx, T, canvasWidth, canvasHeight) {
-            ctx.clearRect(0, 0, canvasWidth, canvasHeight / 2); // Limpa a área superior do canvas
-
-            const scaleX = canvasWidth / (T * 4 + 2); // Escala para o domínio do tempo, ajustado para evitar bordas
-            const offsetX = canvasWidth / 2; // Centraliza o pulso
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#9ca3af'; // Cinza suave para os eixos
-            ctx.lineWidth = 1;
-
-            // Desenha o eixo X
-            ctx.moveTo(0, canvasHeight / 2);
-            ctx.lineTo(canvasWidth, canvasHeight / 2);
-            ctx.stroke();
-
-            ctx.beginPath();
-            ctx.strokeStyle = '#ef4444'; // Vermelho vibrante para o pulso
-            ctx.lineWidth = 4;
-
-            // Desenha o pulso retangular
-            const pulseHeight = 60; // Altura do pulso
-            ctx.moveTo(offsetX - (T / 2) * scaleX, canvasHeight / 2);
-            ctx.lineTo(offsetX - (T / 2) * scaleX, canvasHeight / 2 - pulseHeight);
-            ctx.lineTo(offsetX + (T / 2) * scaleX, canvasHeight / 2 - pulseHeight);
-            ctx.lineTo(offsetX + (T / 2) * scaleX, canvasHeight / 2);
-            ctx.stroke();
-
-            // Adiciona rótulos
-            ctx.fillStyle = htmlElement.classList.contains('dark') ? '#e2e8f0' : '#334155';
-            ctx.font = '14px Inter';
-            ctx.textAlign = 'center';
-            ctx.fillText('f(t)', 20, canvasHeight / 2 - pulseHeight - 10);
-            ctx.fillText('t', canvasWidth - 20, canvasHeight / 2 + 20);
-            ctx.fillText('-T/2', offsetX - (T / 2) * scaleX, canvasHeight / 2 + 20);
-            ctx.fillText('T/2', offsetX + (T / 2) * scaleX, canvasHeight / 2 + 20);
-            ctx.fillText('1', offsetX - (T / 2) * scaleX - 20, canvasHeight / 2 - pulseHeight + 5);
-            ctx.textAlign = 'start'; // Reseta para o padrão
-        }
-
-        // Função sinc
-        function sinc(x) {
-            if (Math.abs(x) < 1e-9) return 1; // Lida com o caso x=0 para evitar divisão por zero
-            return Math.sin(Math.PI * x) / (Math.PI * x);
-        }
-
-        let sincChart; // Variável para armazenar a instância do Chart.js
-
-        // Função para desenhar a função sinc (Transformada de Fourier) usando Chart.js
-        function drawSincFunctionChart(T, canvasWidth, canvasHeight) {
-            const numPoints = 100; // Número de pontos para o gráfico da sinc
-            const maxOmega = Math.max(10, T * 2 * Math.PI); // Ajusta o range de frequência
-            const labels = [];
-            const data = [];
-
-            for (let i = 0; i <= numPoints; i++) {
-                const omega = (i / numPoints) * (maxOmega * 2) - maxOmega; // Frequências de -maxOmega a +maxOmega
-                labels.push(omega.toFixed(1));
-                data.push(T * sinc(omega * T / (2 * Math.PI)));
-            }
-
-            const chartData = {
-                labels: labels,
-                datasets: [{
-                    label: 'F(ω) = T * sinc(ωT / 2π)',
-                    data: data,
-                    borderColor: htmlElement.classList.contains('dark') ? '#34d399' : '#10b981', // Verde vibrante
-                    backgroundColor: htmlElement.classList.contains('dark') ? 'rgba(52, 211, 153, 0.2)' : 'rgba(16, 185, 129, 0.2)',
-                    borderWidth: 2,
-                    tension: 0.4, // Curva suave
-                    pointRadius: 0, // Remove os pontos
-                    fill: true,
-                }]
-            };
-
-            const chartOptions = {
-                responsive: true,
-                maintainAspectRatio: false,
-                animation: {
-                    duration: 500, // Animação mais rápida
-                    easing: 'easeOutQuad'
-                },
-                scales: {
-                    x: {
-                        type: 'linear',
-                        title: {
-                            display: true,
-                            text: 'Frequência (ω)',
-                            color: htmlElement.classList.contains('dark') ? '#e2e8f0' : '#334155'
-                        },
-                        ticks: {
-                            color: htmlElement.classList.contains('dark') ? '#cbd5e1' : '#4a5568'
-                        },
-                        grid: {
-                            color: htmlElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-                        }
-                    },
-                    y: {
-                        title: {
-                            display: true,
-                            text: 'Amplitude',
-                            color: htmlElement.classList.contains('dark') ? '#e2e8f0' : '#334155'
-                        },
-                        ticks: {
-                            color: htmlElement.classList.contains('dark') ? '#cbd5e1' : '#4a5568'
-                        },
-                        grid: {
-                            color: htmlElement.classList.contains('dark') ? 'rgba(255,255,255,0.1)' : 'rgba(0,0,0,0.1)'
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    }
-                }
-            };
-
-            // Destrói o gráfico anterior se existir
-            if (sincChart) {
-                sincChart.destroy();
-            }
-
-            // Cria um novo gráfico Chart.js na parte inferior do canvas
-            const sincCanvasCtx = canvas.getContext('2d');
-            sincChart = new Chart(sincCanvasCtx, {
-                type: 'line',
-                data: chartData,
-                options: chartOptions
-            });
-
-            // Ajusta a posição do gráfico Chart.js para a metade inferior do canvas
-            sincChart.canvas.style.position = 'absolute';
-            sincChart.canvas.style.top = (canvasHeight / 2) + 'px';
-            sincChart.canvas.style.left = '0';
-            sincChart.canvas.style.width = canvasWidth + 'px';
-            sincChart.canvas.style.height = (canvasHeight / 2) + 'px';
-        }
-
-
-        // Função principal para desenhar ambos os gráficos
-        function drawFourierTransform() {
-            const canvasWidth = canvas.width;
-            const canvasHeight = canvas.height;
-            drawRectangularPulse(ctx, T_value, canvasWidth, canvasHeight);
-            drawSincFunctionChart(T_value, canvasWidth, canvasHeight);
-        }
-
-        // Atualiza o valor de T e redesenha quando o slider é movido
-        pulseDurationSlider.addEventListener('input', (event) => {
-            T_value = parseFloat(event.target.value);
-            currentPulseDurationSpan.textContent = T_value.toFixed(1);
-            drawFourierTransform();
-            if (navigator.vibrate) navigator.vibrate(50); // Vibração sutil
-        });
-
-        // Desenha os gráficos inicialmente e ajusta o canvas ao redimensionar a janela
-        window.addEventListener('load', () => {
-            // Ajusta o tamanho do canvas para ser responsivo
-            function resizeCanvas() {
-                const parentWidth = canvas.parentElement.clientWidth;
-                canvas.width = parentWidth > 800 ? 800 : parentWidth; // Limita a largura máxima
-                canvas.height = canvas.width * 0.5; // Mantém a proporção 2:1
-                drawFourierTransform();
-            }
-            resizeCanvas(); // Chama no carregamento
-            window.addEventListener('resize', resizeCanvas); // Chama no redimensionamento
-        });
-
-        // Intersection Observer para animação de fade-in das seções
-        const fadeInSections = document.querySelectorAll('.fade-in-section');
-
-        const sectionObserver = new IntersectionObserver((entries, observer) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target); // Para de observar uma vez que a seção está visível
-                }
-            });
-        }, { threshold: 0.2 }); // Inicia a animação quando 20% da seção está visível
-
-        fadeInSections.forEach(section => {
-            sectionObserver.observe(section);
-        });
-
-        // Garante que o canvas seja desenhado quando a seção de exemplo é visível (após rolagem ou clique)
-        const exemploSection = document.getElementById('exemplo');
-        const canvasSectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    drawFourierTransform();
-                }
-            });
-        }, { threshold: 0.1 }); // Desenha quando 10% da seção está visível
-
-        canvasSectionObserver.observe(exemploSection); // Observa a seção de exemplo
-
-        // --- Lógica do Quiz ---
-        const quizOptions = document.getElementById('quiz-options');
-        const quizFeedback = document.getElementById('quiz-feedback');
-        const correctSound = new Howl({ src: ['https://www.soundjay.com/buttons/sounds/button-10.mp3'] }); // Som de acerto
-        const incorrectSound = new Howl({ src: ['https://www.soundjay.com/buttons/sounds/button-21.mp3'] }); // Som de erro
-
-        quizOptions.addEventListener('click', (event) => {
-            const clickedButton = event.target;
-            if (clickedButton.tagName === 'BUTTON') {
-                // Remove feedback anterior
-                quizFeedback.classList.add('hidden');
-                quizFeedback.textContent = '';
-                document.querySelectorAll('.quiz-option').forEach(btn => {
-                    btn.classList.remove('correct', 'incorrect');
-                    btn.disabled = false; // Re-habilita para nova tentativa
-                });
-
-                if (navigator.vibrate) navigator.vibrate(75); // Vibração para clique no quiz
-
-                const selectedAnswer = clickedButton.dataset.answer;
-                const correctAnswer = 'convolucao'; // Resposta correta
-
-                if (selectedAnswer === correctAnswer) {
-                    clickedButton.classList.add('correct');
-                    quizFeedback.textContent = '✅ Correto! Muito bem!';
-                    quizFeedback.classList.remove('hidden');
-                    correctSound.play();
-                } else {
-                    clickedButton.classList.add('incorrect');
-                    quizFeedback.textContent = '❌ Incorreto. Tente novamente!';
-                    quizFeedback.classList.remove('hidden');
-                    incorrectSound.play();
-                }
-
-                // Desabilita todas as opções após a resposta
-                document.querySelectorAll('.quiz-option').forEach(btn => {
-                    btn.disabled = true;
-                });
-
-                // Re-habilita após um curto período para permitir nova tentativa
-                setTimeout(() => {
-                    document.querySelectorAll('.quiz-option').forEach(btn => {
-                        btn.classList.remove('correct', 'incorrect');
-                        btn.disabled = false;
-                    });
-                    quizFeedback.classList.add('hidden');
-                }, 2000); // 2 segundos para nova tentativa
-            }
-        });
+            } catch (e) { isIncognito = true; }
+            checkAccess();
+        })();
+    });
     </script>
 </body>
 </html>
