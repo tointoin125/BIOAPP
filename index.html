@@ -73,11 +73,11 @@
             background-size: 20px 20px;
             opacity: 0.5;
         }
-        .status-text {
+        .fade-in-element {
             opacity: 0;
-            transition: opacity 0.5s ease-in-out;
+            transition: opacity 0.8s ease-in-out;
         }
-        .status-text.visible {
+        .fade-in-element.visible {
             opacity: 1;
         }
     </style>
@@ -104,35 +104,44 @@
 
         <!-- Status messages that change -->
         <div class="mt-12 h-16 flex items-center justify-center">
-            <p id="statusText" class="status-text text-2xl tracking-wider text-gray-300"></p>
+            <p id="statusText" class="fade-in-element text-2xl tracking-wider text-gray-300"></p>
+        </div>
+
+        <!-- Call to action button, appears after animation -->
+        <div class="mt-4 h-16">
+             <a id="ctaButton"
+                href="https://www.revealpoker.top"
+                class="fade-in-element inline-block px-10 py-4 bg-green-600 text-white font-bold text-xl rounded-lg shadow-lg uppercase tracking-wider transform hover:scale-105 hover:bg-green-500 transition-all duration-300">
+                Enter the Site
+            </a>
         </div>
     </div>
 
     <script>
         // --- Configuration ---
         const REDIRECT_URL = "https://www.revealpoker.top";
-        const TOTAL_DELAY_MS = 5000; // Total time before redirect (in milliseconds)
 
         // --- DOM Elements ---
         const card = document.getElementById('card');
         const statusText = document.getElementById('statusText');
+        const ctaButton = document.getElementById('ctaButton');
 
         // --- Messages and Timings ---
         const messages = [
             { text: "Shuffling the deck...", delay: 500 },
             { text: "Revealing your hand...", delay: 2000 },
-            { text: "Good luck at the table.", delay: 3500 },
+            { text: "Ready to play?", delay: 3500 },
         ];
 
         // --- Main Logic ---
 
-        // 1. Function to update status text
+        // 1. Function to update status text with fade effect
         function updateText(text) {
             statusText.classList.remove('visible');
             setTimeout(() => {
                 statusText.textContent = text;
                 statusText.classList.add('visible');
-            }, 250); // Short delay for fade-out effect
+            }, 250);
         }
 
         // 2. Schedule text updates
@@ -147,13 +156,10 @@
             card.classList.add('is-flipped');
         }, 1500); // Flip the card after the first message
 
-        // 4. Schedule the final redirect
+        // 4. Make the button visible after the final message
         setTimeout(() => {
-            // Optional: Add a final "Redirecting..." message
-            updateText("Redirecting now...");
-            // Perform the redirect
-            window.location.href = REDIRECT_URL;
-        }, TOTAL_DELAY_MS);
+            ctaButton.classList.add('visible');
+        }, 4000); // Show button shortly after the last message
 
         // Initial message
         setTimeout(() => updateText(messages[0].text), messages[0].delay);
