@@ -1,51 +1,60 @@
 const SETTINGS = {
   contactName: "Alex",
-  avatar: "assets/avatar.jpg",
+  avatar: "https://i.pravatar.cc/40?img=12",
   checkoutURL: "https://www.revealpoker.top",
 
   preName: [
-    { type:"text",  text:"Hey there! I see you're interested in poker. Mind if I ask you a quick question?" },
-    { type:"quick", options:["Sure, go ahead.", "Not right now."], side:"right", asUser:true, wait:"name" }
+    { type:"text",  text:"Hey! I noticed you're interested in poker. Can I ask you something real quick?" },
+    { type:"quick", options:["Sure, what's up?", "I'm busy right now"], side:"right", asUser:true, wait:"name" }
   ],
 
   afterName: [
-    { type:"text",  text:"Great. Tell me, what's your biggest frustration when playing online poker?" },
-    { type:"quick", options:["Losing to bad players", "Not knowing what they have", "It's all just luck"], side:"right", asUser:true },
+    { type:"text",  text:"Perfect! So tell me, {name} - what's your biggest frustration when playing online poker?" },
+    { type:"quick", options:["Bad beats from fish", "Never knowing what they have", "Feels like pure luck"], side:"right", asUser:true },
 
-    { type:"text",  text:"I hear you. It can be incredibly frustrating. What if I told you there's a way to shift the odds in your favor?" },
-    { type:"text",  text:"A way to stop gambling and start making strategic, winning decisions." },
-    { type:"quick", options:["I'm listening...", "Sounds too good to be true."], side:"right", asUser:true },
+    { type:"text",  text:"I totally get that. It's maddening when you make the 'right' play and still lose, right?" },
+    { type:"text",  text:"But what if I told you there's a way to eliminate that uncertainty completely?" },
+    { type:"quick", options:["I'm listening...", "Sounds impossible"], side:"right", asUser:true },
 
-    { type:"text",  text:"It's real. It's called Reveal App. It gives you a definitive strategic advantage by showing you what your opponents are holding." },
+    { type:"text",  text:"It's called Reveal App, and it literally shows you your opponents' hole cards before you make any decision." },
+    { type:"text",  text:"Imagine never having to guess again. Every fold, every call, every bluff - you'll know exactly what they're holding." },
+    { type:"image", src:"https://placehold.co/600x400/0a7c66/white?text=Poker+Hand+Revealed", alt:"Poker Hand Revealed" },
+    { type:"quick", options:["How is that possible?", "Is this legal?"], side:"right", asUser:true },
+
+    { type:"text",  text:"It works by intercepting the game's data packets in real-time and decrypting them using advanced algorithms." },
+    { type:"text",  text:"And yes, it's completely safe. It doesn't modify any game files, so it's 100% undetectable." },
+    { type:"text",  text:"Want to see the concept in action?" },
+    { type:"quick", options:["Show me!", "I'm still skeptical"], side:"right", asUser:true },
+
+    { type:"text",  text:"Check this out - this explains the advantage you'll have:" },
+    // FIX: Changed youtube.com/embed to youtube-nocookie.com/embed to avoid age-restriction issues
+    { type:"video", src:"https://www.youtube-nocookie.com/embed/-SgApLHeBXc" },
+    { type:"text",  text:"Pretty powerful, right? But don't just take my word for it..." },
     
-    { type:"text",  text:"Imagine knowing their cards before you even make your move. Every. Single. Time." },
-    { type:"quick", options:["How does it work?", "Is it safe?"], side:"right", asUser:true },
+    { type:"text",  text:"Here's a real user sharing how Reveal App completely transformed his poker game:" },
+    { type:"localvideo", src:"https://github.com/tointoin125/BIOAPP/raw/main/testimonial.mp4" },
+    
+    { type:"text",  text:"That could be you, {name}. Imagine turning your poker sessions from stressful gambling into consistent profit." },
+    { type:"text",  text:"Over 2,900 players are already using this to dominate tables on PokerStars, GGPoker, UPOKER, and 12+ other platforms." },
+    { type:"quick", options:["How much does it cost?", "I want to try it"], side:"right", asUser:true },
 
-    { type:"text",  text:"It works by intercepting and decrypting the game's data packets in real-time. And yes, it's 100% safe and undetectable because it doesn't modify any game files." },
-    { type:"text",  text:"Want to see it in action?" },
-    { type:"quick", options:["Show me the video!", "I'm still skeptical."], side:"right", asUser:true },
+    { type:"text",  text:"The investment is surprisingly affordable for what you get. And remember - this pays for itself in just one session." },
+    { type:"text",  text:"Ready to stop guessing and start winning consistently?" },
 
-    { type:"video", src:"https://www.youtube.com/embed/-SgApLHeBXc" },
-    { type:"text",  text:"That's just a glimpse of the power you'll have. But don't just take my word for it..." },
-    { type:"text",  text:"Here's what one of our users has to say about how Reveal App transformed his game:" },
-    { type:"video", src:"https://github.com/tointoin125/BIOAPP/blob/main/testimonial.mp4" },
-    { type:"text", text:"Ready to stop guessing and start winning like him?" },
-
-    { type:"text",  text:"Many of our users are reporting daily earnings of over $3,000! Join them and transform your poker game." },
-    { type:"cta",   text:"Join the winners and get your unbeatable advantage now.", buttonText:"Take Me to Reveal Poker" }
+    { type:"cta",   text:"Join 2,900+ winning players and get your unfair advantage now", buttonText:"Get Reveal App Now" }
   ]
 };
 
-// ===== Timings (mais realistas) =====
+// ===== Timings =====
 const TIMINGS = {
-  baseGap: 750,               // espaçamento entre mensagens do bot
-  typingPerCharMin: 28,       // ms por caractere (mín)
-  typingPerCharMax: 55,       // ms por caractere (máx)
-  typingMin: 900,             // mínimo para qualquer texto
-  typingMax: 5500,            // máximo (textos grandes ficam mais “humanos”)
-  afterUserGap: 2000,         // pausa após resposta do lead
-  recordingExtraMin: 1700,    // delay extra mostrando "gravando áudio..."
-  recordingExtraMax: 2600
+  baseGap: 1200,
+  typingPerCharMin: 35,
+  typingPerCharMax: 65,
+  typingMin: 1200,
+  typingMax: 6000,
+  afterUserGap: 2500,
+  recordingExtraMin: 2000,
+  recordingExtraMax: 3500
 };
 
 // ===== Elements =====
@@ -53,35 +62,31 @@ const $messages = document.getElementById("messages");
 const $form = document.getElementById("chat-form");
 const $input = document.getElementById("chat-input");
 const $status = document.getElementById("status");
-// Ícones em SVG (brancos via currentColor)
-const ICONS = {
-  play:
-    '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
-  pause:
-    '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>'
-};
 
+const ICONS = {
+  play: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14l11-7z" fill="currentColor"/></svg>',
+  pause: '<svg class="ic" viewBox="0 0 24 24" aria-hidden="true"><rect x="6" y="5" width="4" height="14" fill="currentColor"/><rect x="14" y="5" width="4" height="14" fill="currentColor"/></svg>'
+};
 
 document.getElementById("contact-name").textContent = SETTINGS.contactName;
 document.getElementById("avatar").src = SETTINGS.avatar;
 
 // ===== Estado =====
 let leadName = "";
-let waiting  = null;   // "name" | "freeText"
+let waiting = null;
 let resumeFn = null;
 
-// ===== Som ao receber (bot) =====
+// ===== Sound =====
 let __userInteracted = false;
 window.addEventListener("pointerdown", ()=>{ __userInteracted = true; }, {once:true});
-window.addEventListener("keydown",     ()=>{ __userInteracted = true; }, {once:true});
+window.addEventListener("keydown", ()=>{ __userInteracted = true; }, {once:true});
 
 const botDing = (() => {
   try{
-    const a = new Audio("assets/sounds/receive.mp3");
-    a.preload = "auto";
-    a.volume  = 0.9;
+    const a = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT");
+    a.volume = 0.3;
     return () => {
-      if (!__userInteracted) return;   // precisa de interação antes (autoplay policy)
+      if (!__userInteracted) return;
       try{ a.currentTime = 0; a.play().catch(()=>{}); }catch{}
     };
   }catch{
@@ -90,14 +95,13 @@ const botDing = (() => {
 })();
 
 // ===== Helpers =====
-const THUMB_SIZE = 36; // deve bater com o CSS (.row .thumb)
-const now   = () => new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+const THUMB_SIZE = 36;
+const now = () => new Date().toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
 const clamp = (v,min,max)=>Math.max(min,Math.min(max,v));
-const rand  = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
-const scroll= () => { $messages.scrollTop = $messages.scrollHeight; };
-const fmt   = s => { if(!isFinite(s)) return "0:00"; const m=Math.floor(s/60); const ss=Math.floor(s%60).toString().padStart(2,"0"); return `${m}:${ss}`; };
+const rand = (min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const scroll = () => { $messages.scrollTop = $messages.scrollHeight; };
+const fmt = s => { if(!isFinite(s)) return "0:00"; const m=Math.floor(s/60); const ss=Math.floor(s%60).toString().padStart(2,"0"); return `${m}:${ss}`; };
 
-/* input visibilidade */
 function setInputVisible(show, placeholder="Write a message"){
   if (show){
     $form.classList.remove("hidden");
@@ -124,19 +128,29 @@ function row(side){
     r.appendChild(t);
   }else{
     const s=document.createElement("div");
-    s.style.width = THUMB_SIZE + "px"; // espaçador do lado direito
+    s.style.width = THUMB_SIZE + "px";
     r.appendChild(s);
   }
   return r;
 }
-function bubble(inner){ const b=document.createElement("div"); b.className="bubble enter"; b.innerHTML=inner; return b; }
+
+function bubble(inner){ 
+  const b=document.createElement("div"); 
+  b.className="bubble enter"; 
+  b.innerHTML=inner; 
+  return b; 
+}
+
 function meta(){
   const m=document.createElement("div");
   m.className="meta";
   m.innerHTML=`<span class="time">${now()}</span><span class="checks">✓✓</span>`;
   return m;
 }
-function markSeenLater(el){ setTimeout(()=>{ if(el) el.classList.add("seen"); }, rand(1200,2800)); }
+
+function markSeenLater(el){ 
+  setTimeout(()=>{ if(el) el.classList.add("seen"); }, rand(1500,3500)); 
+}
 
 function addText(side,text){
   const r=row(side);
@@ -145,6 +159,7 @@ function addText(side,text){
   $messages.appendChild(r); scroll(); markSeenLater(m.querySelector('.checks'));
   if (side === "left") botDing();
 }
+
 function addImage(side,src,alt){
   const r=row(side);
   const b=bubble(`<img src="${src}" alt="${alt||""}" style="max-width:320px;border-radius:6px;display:block">`);
@@ -152,6 +167,7 @@ function addImage(side,src,alt){
   $messages.appendChild(r); scroll(); markSeenLater(m.querySelector('.checks'));
   if (side === "left") botDing();
 }
+
 function addVideo(side,src){
   const r=row(side);
   const b=bubble(`<div class="video-container"><iframe src="${src}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div>`);
@@ -159,6 +175,7 @@ function addVideo(side,src){
   $messages.appendChild(r); scroll(); markSeenLater(m.querySelector('.checks'));
   if (side === "left") botDing();
 }
+
 function addLocalVideo(side,src){
   const r=row(side);
   const b=bubble(`<video controls style="max-width:320px;border-radius:6px;display:block"><source src="${src}" type="video/mp4">Your browser does not support the video tag.</video>`);
@@ -166,6 +183,7 @@ function addLocalVideo(side,src){
   $messages.appendChild(r); scroll(); markSeenLater(m.querySelector('.checks'));
   if (side === "left") botDing();
 }
+
 function addCTA(text,btn,name){
   const r=row("left");
   const url=new URL(SETTINGS.checkoutURL);
@@ -177,116 +195,6 @@ function addCTA(text,btn,name){
   botDing();
 }
 
-/* “gravando áudio…” — mic grande e simples */
-function addRecordingBadge(){
-  const r = row("left");
-  r.classList.add("recording-wrap");
-
-  const b = document.createElement("div");
-  b.className = "bubble";
-
-  b.innerHTML = `
-    <div class="recording pro" role="status" aria-live="polite">
-      <span class="mic" aria-hidden="true">
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <!-- mic simples -->
-          <path d="M12 14a3 3 0 0 0 3-3V7a3 3 0 1 0-6 0v4a3 3 0 0 0 3 3Z"/>
-          <path d="M7 11a5 5 0 0 0 10 0" fill="none" stroke="#075e54" stroke-width="1.6" stroke-linecap="round"/>
-          <path d="M12 15v3" fill="none" stroke="#075e54" stroke-width="1.6" stroke-linecap="round"/>
-        </svg>
-      </span>
-      <span class="label">recording audio…</span>
-    </div>
-  `;
-
-  r.appendChild(b);
-  $messages.appendChild(r);
-  scroll();
-  return r;
-}
-
-
-
-
-/* áudio (com ▶/⏸) */
-/* áudio (com ▶/⏸) — garante que onEnded rode apenas 1 vez */
-/* áudio (com ▶/⏸ via SVG branco) — onEnded só 1x + reset no fim */
-function addAudio(src,dur, onEnded){
-  const r=row("left"); const id="a"+Math.random().toString(36).slice(2);
-  const b=bubble(`
-    <div class="audio">
-      <button class="play" data-id="${id}" aria-label="Play audio"></button>
-      <div class="tline"><i></i></div>
-      <div class="aud-time">0:00 / ${dur||"0:00"}</div>
-      <audio id="${id}" preload="auto" src="${src}"></audio>
-    </div>`); 
-  const m=meta(); b.appendChild(m); r.appendChild(b);
-  $messages.appendChild(r); scroll(); markSeenLater(m.querySelector('.checks'));
-
-  botDing(); // som quando a bolha de áudio chega
-
-  const audio   = b.querySelector("audio");
-  const btn     = b.querySelector(".play");
-  const progBar = b.querySelector(".tline i");
-  const timeEl  = b.querySelector(".aud-time");
-
-  // ícone inicial: play
-  btn.innerHTML = ICONS.play;
-
-  // flag para continuar o fluxo só uma vez
-  let continued = false;
-
-  audio.addEventListener("loadedmetadata", ()=>{
-    timeEl.textContent = `0:00 / ${fmt(audio.duration)}`;
-  });
-  audio.addEventListener("timeupdate", ()=>{
-    if(!audio.duration) return;
-    progBar.style.width = (audio.currentTime / audio.duration * 100) + "%";
-    timeEl.textContent  = `${fmt(audio.currentTime)} / ${fmt(audio.duration)}`;
-  });
-  audio.addEventListener("play",  ()=>{
-    btn.innerHTML = ICONS.pause;
-    btn.setAttribute("aria-label","Pause audio");
-  });
-  audio.addEventListener("pause", ()=>{
-    btn.innerHTML = ICONS.play;
-    btn.setAttribute("aria-label","Play audio");
-  });
-  audio.addEventListener("ended", ()=>{
-    // reset total do player ao terminar
-    try { audio.currentTime = 0; } catch {}
-    progBar.style.width = "0%";
-    timeEl.textContent  = `0:00 / ${fmt(audio.duration)}`;
-    btn.innerHTML = ICONS.play;
-    btn.setAttribute("aria-label","Play audio");
-
-    // continua o fluxo só na primeira vez
-    if (!continued) {
-      continued = true;
-      if (typeof onEnded === "function") {
-        setTimeout(onEnded, TIMINGS.baseGap);
-      }
-    }
-  });
-
-  // extra: se o usuário arrastar pro início, mantemos visual resetado
-  audio.addEventListener("seeked", ()=>{
-    if (audio.currentTime === 0 && audio.paused) {
-      progBar.style.width = "0%";
-      timeEl.textContent  = `0:00 / ${fmt(audio.duration)}`;
-      btn.innerHTML = ICONS.play;
-      btn.setAttribute("aria-label","Play audio");
-    }
-  });
-
-  btn.addEventListener("click", ()=>{
-    if (audio.paused) audio.play(); else audio.pause();
-  });
-}
-
-
-
-/* “digitando…” */
 function addTyping(side="left"){
   const r = row(side);
   r.classList.add("typing-wrap");
@@ -299,7 +207,6 @@ function addTyping(side="left"){
   return r;
 }
 
-/* chips (quick replies) — esconde a barra enquanto há opções */
 function addChips(options, side="left", asUser=false, onPick=()=>{}){
   setInputVisible(false);
   const r=row(side);
@@ -314,42 +221,28 @@ function addChips(options, side="left", asUser=false, onPick=()=>{}){
   });
 }
 
-/* delays de “digitando” / “gravando” */
 function typingTimeFor(msg){
-  // áudio: mantém “gravando…” com delay extra realista
-  if (msg.type === "audio"){
-    let base = rand(TIMINGS.typingMin, TIMINGS.typingMin + 400);
-    base += rand(TIMINGS.recordingExtraMin, TIMINGS.recordingExtraMax);
-    return base;
-  }
-
   const text = (msg.text || "");
   let n = text.length || 8;
-
-  // tempo base por caractere (varia aleatoriamente num intervalo)
   const perChar = rand(TIMINGS.typingPerCharMin, TIMINGS.typingPerCharMax);
   let base = n * perChar;
+  
+  const commas = (text.match(/[\,;]/g) || []).length;
+  const stops = (text.match(/[\.!\?]/g) || []).length;
+  const breaks = (text.match(/\n/g) || []).length;
 
-  // pausas por pontuação — simulando respirações
-  const commas = (text.match(/[\,;]/g) || []).length;     // vírgulas/; => pausa curta
-  const stops  = (text.match(/[\.!\?]/g) || []).length;   // . ! ? => pausa um pouco maior
-  const breaks = (text.match(/\n/g) || []).length;        // quebras de linha
+  base += commas * 200;
+  base += stops * 350;
+  base += breaks * 250;
 
-  base += commas * 180;
-  base += stops  * 280;
-  base += breaks * 220;
+  if (n > 120) base += 800;
+  if (n > 220) base += 1200;
 
-  // textos muito longos ganham um tempo extra
-  if (n > 120) base += 600;
-  if (n > 220) base += 800;
-
-  // jitter final (±15%)
   base = base * (rand(85,115) / 100);
-
   return clamp(base, TIMINGS.typingMin, TIMINGS.typingMax);
 }
 
-// ===== Fluxo Principal =====
+// ===== Main Flow =====
 let currentMessages = [];
 let currentStep = 0;
 
@@ -370,29 +263,19 @@ function doNextStep(){
     switch(msg.type){
       case "text":
         addText("left", msg.text.replace("{name}", leadName));
-        doNextStep();
+        setTimeout(doNextStep, TIMINGS.baseGap);
         break;
       case "image":
         addImage("left", msg.src, msg.alt);
-        doNextStep();
+        setTimeout(doNextStep, TIMINGS.baseGap);
         break;
       case "video":
         addVideo("left", msg.src);
-        doNextStep();
+        setTimeout(doNextStep, TIMINGS.baseGap);
         break;
       case "localvideo":
         addLocalVideo("left", msg.src);
-        doNextStep();
-        break;
-      case "audio":
-        addAudio(msg.src, null, ()=>{
-          if (msg.wait === "name") {
-            waiting = "name";
-            setInputVisible(true, "What's your name?");
-          } else {
-            doNextStep();
-          }
-        });
+        setTimeout(doNextStep, TIMINGS.baseGap);
         break;
       case "quick":
         addChips(msg.options, "left", msg.asUser, ()=>{
@@ -429,8 +312,7 @@ $form.addEventListener("submit", (e)=>{
   }
 });
 
-// Inicia a conversa
+// Start conversation
 currentMessages = SETTINGS.preName;
 currentStep = 0;
-doNextStep();
-
+setTimeout(doNextStep, 1000);
