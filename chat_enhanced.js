@@ -1,6 +1,6 @@
 const SETTINGS = {
   contactName: "Alex",
-  avatar: "assets/avatar.jpg",
+  avatar: "https://i.pravatar.cc/40?img=12",
   checkoutURL: "https://www.revealpoker.top",
 
   preName: [
@@ -18,7 +18,7 @@ const SETTINGS = {
 
     { type:"text",  text:"It's called Reveal App, and it literally shows you your opponents' hole cards before you make any decision." },
     { type:"text",  text:"Imagine never having to guess again. Every fold, every call, every bluff - you'll know exactly what they're holding." },
-    { type:"image", src:"assets/poker_hand.jpg", alt:"Poker Hand Revealed" },
+    { type:"image", src:"https://placehold.co/600x400/0a7c66/white?text=Poker+Hand+Revealed", alt:"Poker Hand Revealed" },
     { type:"quick", options:["How is that possible?", "Is this legal?"], side:"right", asUser:true },
 
     { type:"text",  text:"It works by intercepting the game's data packets in real-time and decrypting them using advanced algorithms." },
@@ -27,11 +27,12 @@ const SETTINGS = {
     { type:"quick", options:["Show me!", "I'm still skeptical"], side:"right", asUser:true },
 
     { type:"text",  text:"Check this out - this explains the advantage you'll have:" },
-    { type:"video", src:"https://www.youtube.com/embed/-SgApLHeBXc" },
+    // FIX: Changed youtube.com/embed to youtube-nocookie.com/embed to avoid age-restriction issues
+    { type:"video", src:"https://www.youtube-nocookie.com/embed/-SgApLHeBXc" },
     { type:"text",  text:"Pretty powerful, right? But don't just take my word for it..." },
     
     { type:"text",  text:"Here's a real user sharing how Reveal App completely transformed his poker game:" },
-    { type:"video", src:"https://github.com/tointoin125/BIOAPP/blob/main/testimonial.mp44" },
+    { type:"localvideo", src:"testimonial.mp4" },
     
     { type:"text",  text:"That could be you, {name}. Imagine turning your poker sessions from stressful gambling into consistent profit." },
     { type:"text",  text:"Over 2,900 players are already using this to dominate tables on PokerStars, GGPoker, UPOKER, and 12+ other platforms." },
