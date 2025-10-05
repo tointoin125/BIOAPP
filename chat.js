@@ -25,10 +25,10 @@ const SETTINGS = {
     { type:"text",  text:"Want to see it in action?" },
     { type:"quick", options:["Show me the video!", "I'm still skeptical."], side:"right", asUser:true },
 
-    { type:"video", src:"https://www.youtube.com/embed/BmPblmvwROk" },
+    { type:"video", src:"https://www.youtube.com/embed/-SgApLHeBXc" },
     { type:"text",  text:"That's just a glimpse of the power you'll have. But don't just take my word for it..." },
     { type:"text",  text:"Here's what one of our users has to say about how Reveal App transformed his game:" },
-    { type:"localvideo", src:"assets/testimonial.mp4" },
+    { type:"video", src:"https://github.com/tointoin125/BIOAPP/blob/main/testimonial.mp4" },
     { type:"text", text:"Ready to stop guessing and start winning like him?" },
 
     { type:"text",  text:"Many of our users are reporting daily earnings of over $3,000! Join them and transform your poker game." },
