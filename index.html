@@ -1,138 +1,108 @@
-<!DOCTYPE html>
+<!--
+This page is a simplified and modified version of the original work by Vitor (@vitorguedes) from https://github.com/vitorguedes/chat-funnel-template
+-->
+<!doctype html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Activate Your Poker Bot - NextDollar</title>
-    
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- Google Fonts: Poppins -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Custom Styles -->
-    <style>
-        body {
-            font-family: 'Poppins', sans-serif;
-            background-color: #111827; /* Dark Blue-Gray Background */
-        }
-        .hero-gradient-text {
-            background: linear-gradient(90deg, #38bdf8, #a78bfa);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .cta-button {
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-        }
-        .cta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 6px 20px rgba(59, 130, 246, 0.5);
-        }
-        .feature-card {
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            transition: background-color 0.3s ease, border-color 0.3s ease;
-        }
-        .feature-card:hover {
-            background-color: rgba(255, 255, 255, 0.05);
-            border-color: rgba(59, 130, 246, 0.5);
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Reveal Poker - Your Unfair Advantage</title>
+  <meta name="application-name" content="Reveal Poker">
+  <meta name="apple-mobile-web-app-title" content="Reveal Poker">
+  <meta name="theme-color" content="#0a7c66">
+  <meta name="msapplication-TileColor" content="#0a7c66">
+
+  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
+  <link rel="shortcut icon" href="assets/icons/favicon.ico">
+  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+
+  <link rel="preload" href="style_improved.css" as="style">
+  <link id="main-css" rel="stylesheet" href="style_improved.css">
+
+  <style>
+    html { background:#e5ddd5; }
+    .app { opacity:0 }
+    html.css-ready .app { opacity:1; transition:opacity .18s ease }
+    .avatar { opacity:0; transition:opacity .18s ease }
+    .avatar.is-loaded { opacity:1 }
+  </style>
+
+  <script>
+    (function(){
+      var link = document.getElementById('main-css');
+      function ready(){ document.documentElement.classList.add('css-ready'); }
+      if (link && (link.sheet || link.matches?.(':loaded'))) {
+        ready();
+      } else if (link) {
+        link.addEventListener('load', ready, { once: true });
+      }
+      window.addEventListener('load', ready, { once: true });
+    })();
+  </script>
+
+  <link rel="preload" as="image" href="assets/avatar.jpg">
+  <link rel="preload" as="image" href="assets/poker_hand.jpg">
+  <link rel="preload" as="audio" href="assets/intro.mp3" crossorigin>
+
 </head>
-<body class="text-white antialiased">
+<body>
+  <div class="app">
+    <header class="wpp-header">
+      <div class="left">
+        <button class="back" aria-label="Back" title="Back">←</button>
 
-    <!-- Main Container -->
-    <div class="container mx-auto px-6 py-8">
+        <img
+          class="avatar"
+          id="avatar"
+          src="assets/avatar.jpg"
+          alt="avatar"
+          width="40"
+          height="40"
+          decoding="async"
+          fetchpriority="high"
+          onload="this.classList.add('is-loaded')"
+        />
 
-        <!-- Header -->
-        <header class="text-center mb-12 md:mb-20">
-            <h1 class="text-3xl md:text-4xl font-bold text-gray-200">NextDollar.fun</h1>
-            <p class="text-sky-400">The Future of Online Poker</p>
-        </header>
+        <div class="meta">
+          <div class="name" id="contact-name">Alex</div>
+          <div class="status" id="status">Online</div>
+        </div>
+      </div>
+      <div class="right">
+        <button class="icon-btn" aria-label="Video Call" title="Video Call">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="12" height="14" rx="2" ry="2" fill="currentColor"/>
+            <path d="M16 10l5-3v10l-5-3z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Voice Call" title="Voice Call">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.05-.24 11.4 11.4 0 0 0 3.58.57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.58 1 1 0 0 1-.24 1.05l-2.21 2.16z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="More options" title="More options">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.8" fill="currentColor"/>
+            <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+            <circle cx="12" cy="19" r="1.8" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-        <!-- Hero Section -->
-        <section class="text-center max-w-4xl mx-auto">
-            <h2 class="text-4xl md:text-6xl font-black mb-4 leading-tight">
-                You've Seen It Work. <br>Now <span class="hero-gradient-text">Make It Yours.</span>
-            </h2>
-            <p class="text-lg md:text-xl text-gray-400 mb-10 max-w-2xl mx-auto">
-                The trial gave you a glimpse of the power. Activate the full version now to unlock unlimited potential, advanced strategies, and dominate every table you join.
-            </p>
-            <a href="https://t.me/bedmalcon" target="_blank" class="cta-button inline-block bg-sky-500 text-white font-bold text-lg rounded-lg px-10 py-4 shadow-lg hover:bg-sky-600">
-                Activate Full Version via Telegram
-            </a>
-        </section>
+    <main id="messages" class="messages">
+    </main>
 
-        <!-- Features Section -->
-        <section class="mt-20 md:mt-28">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <!-- Feature 1 -->
-                <div class="feature-card bg-gray-800 p-6 rounded-xl text-center">
-                    <div class="text-sky-400 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">24/7 Uninterrupted Play</h3>
-                    <p class="text-gray-400">No limits, no downtime. The bot plays perfectly around the clock.</p>
-                </div>
-                <!-- Feature 2 -->
-                <div class="feature-card bg-gray-800 p-6 rounded-xl text-center">
-                    <div class="text-sky-400 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Total Security</h3>
-                    <p class="text-gray-400">Our software is designed to be undetectable and keep your account safe.</p>
-                </div>
-                <!-- Feature 3 -->
-                <div class="feature-card bg-gray-800 p-6 rounded-xl text-center">
-                    <div class="text-sky-400 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-12v4m-2-2h4m5 10v4m-2-2h4M5 3a2 2 0 00-2 2v1h4V5a2 2 0 00-2-2zm0 16a2 2 0 002 2v1h-4v-1a2 2 0 002-2zm14-16a2 2 0 00-2 2v1h4V5a2 2 0 00-2-2zm0 16a2 2 0 002 2v1h-4v-1a2 2 0 002-2z" /></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Advanced AI Engine</h3>
-                    <p class="text-gray-400">Access our most powerful decision-making logic for maximum profit.</p>
-                </div>
-                <!-- Feature 4 -->
-                <div class="feature-card bg-gray-800 p-6 rounded-xl text-center">
-                    <div class="text-sky-400 mb-4">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                    </div>
-                    <h3 class="text-xl font-bold mb-2">Instant Updates</h3>
-                    <p class="text-gray-400">Receive all future updates and improvements automatically and for free.</p>
-                </div>
-            </div>
-        </section>
+    <form id="chat-form" class="inputbar" autocomplete="off">
+      <input id="chat-input" type="text" placeholder="Write a message" />
+      <button type="submit" aria-label="Send">➤</button>
+    </form>
+  </div>
 
-        <!-- Pricing & Activation Section -->
-        <section class="mt-20 md:mt-28 bg-gray-900 rounded-2xl p-8 md:p-12 max-w-4xl mx-auto text-center border border-gray-700">
-            <h3 class="text-3xl md:text-4xl font-bold mb-4">Get Your Lifetime License</h3>
-            <p class="text-gray-400 text-lg mb-8">
-                One payment. No subscriptions. Unlimited winning potential.
-            </p>
-            <div class="bg-gray-800 inline-block p-4 rounded-lg mb-8">
-                <p class="text-5xl font-black hero-gradient-text">$109</p>
-                <p class="text-gray-400">One-Time Payment</p>
-            </div>
-            <h4 class="text-2xl font-semibold mb-4">Ready to Activate?</h4>
-            <p class="text-gray-400 mb-6">Click the button below to message us directly on Telegram. We will guide you through the simple activation process.</p>
-            
-            <a href="https://t.me/bedmalcon" target="_blank" class="cta-button inline-block bg-sky-500 text-white font-bold text-lg rounded-lg px-10 py-4 shadow-lg hover:bg-sky-600">
-                <div class="flex items-center justify-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c0 3.517-1.009 6.799-2.753 9.571m-3.44-2.04l.054-.09A13.916 13.916 0 008 11a4 4 0 118 0c0 1.017-.07 2.019-.203 3m-2.118 6.844A21.88 21.88 0 0015.171 17m3.839 1.132c.645-1.026.977-2.213.977-3.468 0-4.418-3.582-8-8-8s-8 3.582-8 8c0 1.255.332 2.442.977 3.468l.003.004a11.956 11.956 0 01-2.617 4.931m15.26-4.93l-.003-.004z" />
-                    </svg>
-                    <span>Contact Us on Telegram to Pay</span>
-                </div>
-            </a>
-        </section>
-        
-        <!-- Footer -->
-        <footer class="text-center mt-20 md:mt-28">
-            <p class="text-gray-500">&copy; 2024 NextDollar.fun. All Rights Reserved.</p>
-            <p class="text-gray-600 text-sm mt-2">Please play responsibly. Our software is a tool to assist in strategic analysis.</p>
-        </footer>
+  <script src="chat.js"></script>
 
-    </div>
 </body>
 </html>
+
