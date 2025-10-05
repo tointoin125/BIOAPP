@@ -13,10 +13,8 @@ This page is a simplified and modified version of the original work by Vitor (@v
   <meta name="theme-color" content="#0a7c66">
   <meta name="msapplication-TileColor" content="#0a7c66">
 
-  <link rel="icon" type="image/png" sizes="32x32" href="assets/icons/favicon-32.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="assets/icons/favicon-16.png">
-  <link rel="shortcut icon" href="assets/icons/favicon.ico">
-  <link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+  <!-- Using a generic person SVG for the favicon for a clean, self-contained icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>" type="image/svg+xml">
 
   <link rel="preload" href="style_improved.css" as="style">
   <link id="main-css" rel="stylesheet" href="style_improved.css">
@@ -42,7 +40,8 @@ This page is a simplified and modified version of the original work by Vitor (@v
     })();
   </script>
 
-  <link rel="preload" as="image" href="assets/avatar.jpg">
+  <!-- Preloading the new generic avatar image -->
+  <link rel="preload" as="image" href="https://i.pravatar.cc/40?img=12">
   <link rel="preload" as="image" href="assets/poker_hand.jpg">
   <link rel="preload" as="audio" href="assets/intro.mp3" crossorigin>
 
@@ -53,11 +52,12 @@ This page is a simplified and modified version of the original work by Vitor (@v
       <div class="left">
         <button class="back" aria-label="Back" title="Back">←</button>
 
+        <!-- Replaced local avatar with a generic user photo from a placeholder service -->
         <img
           class="avatar"
           id="avatar"
-          src="assets/avatar.jpg"
-          alt="avatar"
+          src="https://i.pravatar.cc/40?img=12"
+          alt="Generic user avatar"
           width="40"
           height="40"
           decoding="async"
@@ -105,4 +105,3 @@ This page is a simplified and modified version of the original work by Vitor (@v
 
 </body>
 </html>
-
