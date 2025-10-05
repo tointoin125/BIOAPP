@@ -1,194 +1,108 @@
-/*
-   Conteúdo Hott – Chat UI (LIGHT WhatsApp)
-   Mantém classes originais. Acentos verdes.
-========================================= */
+<!--
+This page is a simplified and modified version of the original work by Vitor (@vitorguedes) from https://github.com/vitorguedes/chat-funnel-template
+-->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-/* ---------- Tokens ---------- */
-:root{
-  /* Poker Theme */
-  --bg:#1a1a1a;    /* Dark background */
-  --chat:#2c2c2c;  /* Chat area */
-  --line:#444;  /* Borders */
+  <title>Reveal Poker - Your Unfair Advantage</title>
+  <meta name="application-name" content="Reveal Poker">
+  <meta name="apple-mobile-web-app-title" content="Reveal Poker">
+  <meta name="theme-color" content="#0a7c66">
+  <meta name="msapplication-TileColor" content="#0a7c66">
 
-  --wpp-header:#000;
-  --wpp-accent:#FFD700; /* Gold accent */
-  --bubble-in:#333;
-  --bubble-out:#444;
-  --text:#fff;
-  --muted:#aaa;
-  --shadow:0 1px 0 rgba(0,0,0,.2);
-}
+  <!-- Using a generic person SVG for the favicon for a clean, self-contained icon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><path d='M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2'></path><circle cx='12' cy='7' r='4'></circle></svg>" type="image/svg+xml">
 
+  <link rel="preload" href="style_improved.css" as="style">
+  <link id="main-css" rel="stylesheet" href="style_improved.css">
 
-/* ---------- Base ---------- */
-*{box-sizing:border-box}
-html,body{height:100%}
-html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial;
-  color:var(--text);
-  background:var(--bg);
-}
+  <style>
+    html { background:#e5ddd5; }
+    .app { opacity:0 }
+    html.css-ready .app { opacity:1; transition:opacity .18s ease }
+    .avatar { opacity:0; transition:opacity .18s ease }
+    .avatar.is-loaded { opacity:1 }
+  </style>
 
-/* ---------- App shell ---------- */
-.app{
-  height:100vh; max-width:1280px; margin:0 auto;
-  display:flex; flex-direction:column;
-  background:var(--chat);
-  position:relative;
-  box-shadow:var(--shadow);
-  border:1px solid var(--line);
-  border-radius:22px;
-  overflow:hidden;
-}
+  <script>
+    (function(){
+      var link = document.getElementById('main-css');
+      function ready(){ document.documentElement.classList.add('css-ready'); }
+      if (link && (link.sheet || link.matches?.(':loaded'))) {
+        ready();
+      } else if (link) {
+        link.addEventListener('load', ready, { once: true });
+      }
+      window.addEventListener('load', ready, { once: true });
+    })();
+  </script>
 
-/* ---------- Header (black) ---------- */
-.wpp-header{
-  height:64px;
-  background:var(--wpp-header);
-  color:#fff;
-  display:flex; align-items:center; justify-content:space-between;
-  padding:0 14px; position:sticky; top:0; z-index:2;
-  box-shadow:0 6px 20px rgba(0,0,0,.25);
-  backdrop-filter:saturate(1.2) blur(8px);
-}
-.wpp-header .left{display:flex;align-items:center;gap:12px}
-.wpp-header .back{
-  background:transparent; border:none; color:#fff; font-size:22px; cursor:pointer;
-  width:36px; height:36px; display:grid; place-items:center; border-radius:10px;
-  transition:transform .15s ease, background .15s ease, opacity .15s ease;
-  opacity:.95;
-}
-.wpp-header .back:hover{ background:rgba(255,255,255,.12) }
-.wpp-header .back:active{ transform:scale(.96) }
-.wpp-header .avatar{
-  width:40px;height:40px;border-radius:50%;object-fit:cover;
-  box-shadow:0 0 0 2px rgba(255,255,255,.25), 0 3px 12px rgba(0,0,0,.25)
-}
+  <!-- Preloading the new generic avatar image -->
+  <link rel="preload" as="image" href="https://i.pravatar.cc/40?img=12">
+  <link rel="preload" as="image" href="assets/poker_hand.jpg">
+  <link rel="preload" as="audio" href="assets/intro.mp3" crossorigin>
 
-/* Nome + Online empilhados à esquerda */
-.wpp-header .meta{
-  display:flex !important; flex-direction:column !important; align-items:flex-start !important;
-  line-height:1.05;
-}
-.wpp-header .meta .name,
-.wpp-header #contact-name{
-  display:block !important; color:#fff !important;
-  font-weight:800; font-size:18px; letter-spacing:.2px; margin:0 0 2px 0;
-}
-.wpp-header .meta .status,
-.wpp-header #status{
-  display:block !important; color:#e6fff1 !important; opacity:.95 !important;
-  font-size:12.5px; margin:0 !important; position:relative; padding-left:12px;
-}
-.wpp-header #status::before{
-  content:""; position:absolute; left:0; top:50%; transform:translateY(-50%);
-  width:6px; height:6px; border-radius:50%; background:#57ff9c;
-  box-shadow:0 0 0 2px rgba(87,255,156,.25);
-}
+</head>
+<body>
+  <div class="app">
+    <header class="wpp-header">
+      <div class="left">
+        <button class="back" aria-label="Back" title="Back">←</button>
 
-/* Ícones à direita */
-.wpp-header .right{display:flex; align-items:center; gap:14px}
-.icon-btn{
-  appearance:none; background:transparent; border:none; padding:6px;
-  color:#fff; cursor:pointer; opacity:.8; transition:opacity .15s ease, transform .15s ease;
-}
-.icon-btn:hover{ opacity:1 }
-.icon-btn:active{ transform:scale(.95) }
-.icon-btn svg{ width:24px; height:24px; display:block }
+        <!-- Replaced local avatar with a generic user photo from a placeholder service -->
+        <img
+          class="avatar"
+          id="avatar"
+          src="https://i.pravatar.cc/40?img=12"
+          alt="Generic user avatar"
+          width="40"
+          height="40"
+          decoding="async"
+          fetchpriority="high"
+          onload="this.classList.add('is-loaded')"
+        />
 
-/* ---------- Mensagens ---------- */
-.messages{
-  flex:1; overflow-y:auto; padding:16px;
-  background:url('assets/wallpaper-whatsapp-dark.png');
-}
-.row{ display:flex; margin-bottom:10px; }
-.row.left{ justify-content:flex-start; }
-.row.right{ justify-content:flex-end; }
+        <div class="meta">
+          <div class="name" id="contact-name">Alex</div>
+          <div class="status" id="status">Online</div>
+        </div>
+      </div>
+      <div class="right">
+        <button class="icon-btn" aria-label="Video Call" title="Video Call">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="12" height="14" rx="2" ry="2" fill="currentColor"/>
+            <path d="M16 10l5-3v10l-5-3z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="Voice Call" title="Voice Call">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.05-.24 11.4 11.4 0 0 0 3.58 .57 1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 7a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1 11.4 11.4 0 0 0 .57 3.58 1 1 0 0 1-.24 1.05l-2.21 2.16z" fill="currentColor"/>
+          </svg>
+        </button>
+        <button class="icon-btn" aria-label="More options" title="More options">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="5" r="1.8" fill="currentColor"/>
+            <circle cx="12" cy="12" r="1.8" fill="currentColor"/>
+            <circle cx="12" cy="19" r="1.8" fill="currentColor"/>
+          </svg>
+        </button>
+      </div>
+    </header>
 
-.thumb{ width:36px; height:36px; border-radius:50%; overflow:hidden; margin-right:10px; align-self:flex-end; }
-.thumb img{ width:100%; height:100%; object-fit:cover; }
+    <main id="messages" class="messages">
+    </main>
 
-.bubble{
-  max-width:80%; padding:10px 14px; border-radius:12px; position:relative;
-  font-size:15px; line-height:1.4;
-}
-.row.left .bubble{ background:var(--bubble-in); border-top-left-radius:0; }
-.row.right .bubble{ background:var(--bubble-out); border-top-right-radius:0; }
+    <form id="chat-form" class="inputbar" autocomplete="off">
+      <input id="chat-input" type="text" placeholder="Write a message" />
+      <button type="submit" aria-label="Send">➤</button>
+    </form>
+  </div>
 
-.bubble.enter{ animation:enter .2s ease forwards; }
-@keyframes enter{
-  from{ transform:scale(.9); opacity:0; }
-  to{ transform:scale(1); opacity:1; }
-}
+  <script src="chat.js"></script>
 
-.meta{ font-size:11px; color:var(--muted); text-align:right; margin-top:4px; }
-.meta .time{ margin-right:4px; }
-.meta .checks{ display:inline-block; width:16px; height:16px; background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%236b6b6b"><path d="M10.5 4.5l-4 4l-2-2" stroke="%236b6b6b" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'); background-repeat:no-repeat; background-position:center; vertical-align:middle; }
-.meta .checks.seen{ background-image:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="%2325D366"><path d="M10.5 4.5l-4 4l-2-2" stroke="%2325D366" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/></svg>'); }
-
-/* ---------- Input bar ---------- */
-.inputbar{
-  display:flex; align-items:center; padding:10px; background:var(--chat);
-  border-top:1px solid var(--line);
-}
-#chat-input{
-  flex:1; border:none; background:#444; color:#fff; padding:12px 16px;
-  border-radius:22px; font-size:15px;
-}
-#chat-input::placeholder{ color:#888; }
-.inputbar button{
-  background:var(--wpp-accent); color:#000; border:none; width:44px; height:44px;
-  border-radius:50%; font-size:20px; margin-left:10px; cursor:pointer;
-  transition:transform .15s ease;
-}
-.inputbar button:active{ transform:scale(.95); }
-
-/* ---------- Quick Replies ---------- */
-.chips{ display:flex; flex-wrap:wrap; gap:8px; margin-top:10px; }
-.chip{
-  background:var(--wpp-accent); color:#000; padding:8px 14px; border-radius:18px;
-  font-size:14px; cursor:pointer; transition:transform .15s ease;
-}
-.chip:hover{ transform:scale(1.05); }
-
-/* ---------- CTA Button ---------- */
-.cta a{
-  display:block; background:var(--wpp-accent); color:#000; text-align:center;
-  padding:12px; border-radius:8px; text-decoration:none; font-weight:bold;
-  margin-top:10px; transition:transform .15s ease;
-}
-.cta a:hover{ transform:scale(1.02); }
-
-/* ---------- Typing Indicator ---------- */
-.typing{ display:flex; align-items:center; gap:4px; }
-.typing .dot{ width:8px; height:8px; background:#888; border-radius:50%; animation:typing .8s infinite; }
-.typing .dot:nth-child(2){ animation-delay:.2s; }
-.typing .dot:nth-child(3){ animation-delay:.4s; }
-@keyframes typing{
-  0%, 60%, 100%{ transform:translateY(0); }
-  30%{ transform:translateY(-4px); }
-}
-
-/* ---------- Audio Player ---------- */
-.audio{ display:flex; align-items:center; gap:10px; }
-.audio .play{ background:var(--wpp-accent); color:#000; border:none; width:36px; height:36px; border-radius:50%; cursor:pointer; }
-.audio .tline{ flex:1; height:4px; background:#555; border-radius:2px; position:relative; }
-.audio .tline i{ position:absolute; left:0; top:0; height:100%; background:var(--wpp-accent); border-radius:2px; }
-.audio .aud-time{ font-size:12px; color:var(--muted); }
-
-/* ---------- Video Player ---------- */
-.video-container {
-    position: relative;
-    padding-bottom: 56.25%; /* 16:9 */
-    height: 0;
-}
-.video-container iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-}
+</body>
+</html>
 
