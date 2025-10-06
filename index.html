@@ -1,1303 +1,1237 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO Meta Tags -->
+<title>Reveal Poker - Your Ultimate Poker Advantage | See Opponents' Cards</title>
+<meta name="description" content="Gain the ultimate poker advantage with Reveal Poker. See your opponents' hole cards in real-time on PokerStars, GGPoker, and 12+ platforms. Join 2,900+ winning players.">
+<meta name="keywords" content="poker advantage, poker software, online poker, poker tools, poker strategy, poker cards reveal">
+<meta name="author" content="Reveal Poker">
+
+<!-- Open Graph Meta Tags -->
+<meta property="og:title" content="Reveal Poker - Your Ultimate Poker Advantage">
+<meta property="og:description" content="See your opponents' hole cards in real-time. Join 2,900+ winning players using Reveal Poker.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.revealpoker.top">
+<meta property="og:image" content="https://www.revealpoker.top/og-image.jpg">
+
+<!-- Twitter Card Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Reveal Poker - Your Ultimate Poker Advantage">
+<meta name="twitter:description" content="See your opponents' hole cards in real-time. Join 2,900+ winning players.">
+<meta name="twitter:image" content="https://www.revealpoker.top/twitter-image.jpg">
+
+<!-- Theme and App Meta Tags -->
+<meta name="application-name" content="Reveal Poker">
+<meta name="apple-mobile-web-app-title" content="Reveal Poker">
+<meta name="theme-color" content="#0a7c66">
+<meta name="msapplication-TileColor" content="#0a7c66">
+
+<!-- Favicon -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a7c66' stroke-width='2'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/></svg>" type="image/svg+xml">
+
+<!-- Preload Critical Resources -->
+<link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
+<link rel="preload" as="image" href="https://i.pravatar.cc/40?img=12">
+
+<!-- Stylesheets -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Internal CSS -->
+<style>
+/* Reveal Poker - Improved Mobile-First Design */
+
+/* CSS Custom Properties */
+:root {
+  /* Primary Colors */
+  --primary-green: #0a7c66;
+  --primary-green-dark: #065a4a;
+  --primary-green-light: #0d9975;
+  --primary-green-alpha: rgba(10, 124, 102, 0.1);
   
-  <!-- SEO Meta Tags -->
-  <title>Reveal Poker - Your Ultimate Poker Advantage | See Opponents' Cards</title>
-  <meta name="description" content="Gain the ultimate poker advantage with Reveal Poker. See your opponents' hole cards in real-time on PokerStars, GGPoker, and 12+ platforms. Join 2,900+ winning players.">
-  <meta name="keywords" content="poker advantage, poker software, online poker, poker tools, poker strategy, poker cards reveal">
-  <meta name="author" content="Reveal Poker">
+  /* Accent Colors */
+  --accent-gold: #f4c430;
+  --accent-gold-dark: #d4a017;
+  --accent-gold-light: #f7d858;
   
-  <!-- Open Graph Meta Tags -->
-  <meta property="og:title" content="Reveal Poker - Your Ultimate Poker Advantage">
-  <meta property="og:description" content="See your opponents' hole cards in real-time. Join 2,900+ winning players using Reveal Poker.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.revealpoker.top">
-  <meta property="og:image" content="https://www.revealpoker.top/og-image.jpg">
+  /* Background Colors */
+  --bg-main: #e5ddd5;
+  --bg-chat: #f8f9fa;
+  --bg-white: #ffffff;
+  --bg-overlay: rgba(0, 0, 0, 0.5);
   
-  <!-- Twitter Card Meta Tags -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Reveal Poker - Your Ultimate Poker Advantage">
-  <meta name="twitter:description" content="See your opponents' hole cards in real-time. Join 2,900+ winning players.">
-  <meta name="twitter:image" content="https://www.revealpoker.top/twitter-image.jpg">
+  /* Text Colors */
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --text-muted: #999999;
+  --text-white: #ffffff;
   
-  <!-- Theme and App Meta Tags -->
-  <meta name="application-name" content="Reveal Poker">
-  <meta name="apple-mobile-web-app-title" content="Reveal Poker">
-  <meta name="theme-color" content="#0a7c66">
-  <meta name="msapplication-TileColor" content="#0a7c66">
+  /* Shadow Variables */
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
+  --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
   
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230a7c66' stroke-width='2'><rect x='2' y='3' width='20' height='14' rx='2' ry='2'/><line x1='8' y1='21' x2='16' y2='21'/><line x1='12' y1='17' x2='12' y2='21'/></svg>" type="image/svg+xml">
+  /* Border Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 50%;
   
-  <!-- Preload Critical Resources -->
-  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style">
-  <link rel="preload" as="image" href="https://i.pravatar.cc/40?img=12">
+  /* Spacing */
+  --space-xs: 4px;
+  --space-sm: 8px;
+  --space-md: 16px;
+  --space-lg: 24px;
+  --space-xl: 32px;
+  --space-2xl: 48px;
   
-  <!-- Stylesheets -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  /* Typography */
+  --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 30px;
   
-  <!-- Internal CSS -->
-  <style>
-    /* Reveal Poker - Improved Mobile-First Design */
-
-    /* CSS Custom Properties */
-    :root {
-      /* Primary Colors */
-      --primary-green: #0a7c66;
-      --primary-green-dark: #065a4a;
-      --primary-green-light: #0d9975;
-      --primary-green-alpha: rgba(10, 124, 102, 0.1);
-      
-      /* Accent Colors */
-      --accent-gold: #f4c430;
-      --accent-gold-dark: #d4a017;
-      --accent-gold-light: #f7d858;
-      
-      /* Background Colors */
-      --bg-main: #e5ddd5;
-      --bg-chat: #f8f9fa;
-      --bg-white: #ffffff;
-      --bg-overlay: rgba(0, 0, 0, 0.5);
-      
-      /* Text Colors */
-      --text-primary: #1a1a1a;
-      --text-secondary: #666666;
-      --text-muted: #999999;
-      --text-white: #ffffff;
-      
-      /* Shadow Variables */
-      --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.05);
-      --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.1);
-      --shadow-lg: 0 10px 15px rgba(0, 0, 0, 0.1);
-      --shadow-xl: 0 20px 25px rgba(0, 0, 0, 0.15);
-      
-      /* Border Radius */
-      --radius-sm: 6px;
-      --radius-md: 12px;
-      --radius-lg: 16px;
-      --radius-xl: 24px;
-      --radius-full: 50%;
-      
-      /* Spacing */
-      --space-xs: 4px;
-      --space-sm: 8px;
-      --space-md: 16px;
-      --space-lg: 24px;
-      --space-xl: 32px;
-      --space-2xl: 48px;
-      
-      /* Typography */
-      --font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      --font-size-xs: 12px;
-      --font-size-sm: 14px;
-      --font-size-base: 16px;
-      --font-size-lg: 18px;
-      --font-size-xl: 20px;
-      --font-size-2xl: 24px;
-      --font-size-3xl: 30px;
-      
-      /* Line Heights */
-      --line-height-tight: 1.25;
-      --line-height-normal: 1.5;
-      --line-height-relaxed: 1.75;
-      
-      /* Transitions */
-      --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
-      --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
-      
-      /* Z-Index Scale */
-      --z-dropdown: 1000;
-      --z-sticky: 1020;
-      --z-fixed: 1030;
-      --z-modal: 1040;
-      --z-popover: 1050;
-      --z-tooltip: 1060;
-    }
-
-    /* Reset and Base Styles */
-    *,
-    *::before,
-    *::after {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html {
-      font-family: var(--font-family);
-      font-size: var(--font-size-base);
-      line-height: var(--line-height-normal);
-      background: linear-gradient(135deg, var(--bg-main) 0%, #d4c5b9 100%);
-      min-height: 100vh;
-      scroll-behavior: smooth;
-      -webkit-text-size-adjust: 100%;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-    }
-
-    body {
-      background: transparent;
-      color: var(--text-primary);
-      overflow-x: hidden;
-      min-height: 100vh;
-    }
-
-    /* Screen Reader Only */
-    .sr-only {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      padding: 0;
-      margin: -1px;
-      overflow: hidden;
-      clip: rect(0, 0, 0, 0);
-      white-space: nowrap;
-      border: 0;
-    }
-
-    /* App Container */
-    .app {
-      max-width: 420px;
-      margin: 0 auto;
-      background: var(--bg-white);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      box-shadow: var(--shadow-xl);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .app::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, var(--primary-green), var(--accent-gold), var(--primary-green));
-      z-index: var(--z-sticky);
-    }
-
-    /* Header Styles */
-    .wpp-header {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
-      color: var(--text-white);
-      padding: var(--space-md) var(--space-lg);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      z-index: var(--z-sticky);
-      min-height: 72px;
-    }
-
-    .wpp-header .left {
-      display: flex;
-      align-items: center;
-      gap: var(--space-md);
-      flex: 1;
-      min-width: 0;
-    }
-
-    .wpp-header .back {
-      background: none;
-      border: none;
-      color: var(--text-white);
-      cursor: pointer;
-      padding: var(--space-sm);
-      border-radius: var(--radius-sm);
-      transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-    }
-
-    .wpp-header .back:hover,
-    .wpp-header .back:focus {
-      background: rgba(255, 255, 255, 0.1);
-      transform: translateX(-2px);
-      outline: none;
-    }
-
-    .wpp-header .back svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    .avatar {
-      width: 44px;
-      height: 44px;
-      border-radius: var(--radius-full);
-      border: 3px solid var(--text-white);
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-normal);
-      flex-shrink: 0;
-    }
-
-    .avatar:hover {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-md);
-    }
-
-    .meta {
-      min-width: 0;
-      flex: 1;
-    }
-
-    .meta .name {
-      font-weight: 600;
-      font-size: var(--font-size-base);
-      margin-bottom: 2px;
-      line-height: var(--line-height-tight);
-    }
-
-    .meta .status {
-      font-size: var(--font-size-sm);
-      opacity: 0.9;
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      line-height: var(--line-height-tight);
-    }
-
-    .status-indicator {
-      width: 8px;
-      height: 8px;
-      background: #4ade80;
-      border-radius: var(--radius-full);
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0%, 100% { 
-        opacity: 1; 
-        transform: scale(1);
-      }
-      50% { 
-        opacity: 0.5; 
-        transform: scale(0.95);
-      }
-    }
-
-    .wpp-header .right {
-      display: flex;
-      gap: var(--space-xs);
-      flex-shrink: 0;
-    }
-
-    .icon-btn {
-      background: none;
-      border: none;
-      color: var(--text-white);
-      padding: var(--space-sm);
-      border-radius: var(--radius-sm);
-      cursor: pointer;
-      transition: var(--transition-fast);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 40px;
-      height: 40px;
-    }
-
-    .icon-btn:hover,
-    .icon-btn:focus {
-      background: rgba(255, 255, 255, 0.15);
-      transform: translateY(-1px);
-      outline: none;
-    }
-
-    .icon-btn svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Messages Area */
-    .messages {
-      flex: 1;
-      padding: var(--space-lg) var(--space-md);
-      overflow-y: auto;
-      background: linear-gradient(to bottom, #fafafa 0%, var(--bg-chat) 100%);
-      position: relative;
-      scroll-behavior: smooth;
-    }
-
-    .messages::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background-image: 
-        radial-gradient(circle at 20% 50%, var(--primary-green-alpha) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(244, 196, 48, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-    }
-
-    /* Message Rows */
-    .row {
-      display: flex;
-      margin-bottom: var(--space-md);
-      align-items: flex-end;
-      gap: var(--space-sm);
-      animation: slideIn 0.4s ease-out;
-    }
-
-    @keyframes slideIn {
-      from {
-        opacity: 0;
-        transform: translateY(20px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-
-    .row.right {
-      flex-direction: row-reverse;
-    }
-
-    .thumb {
-      width: 36px;
-      height: 36px;
-      border-radius: var(--radius-full);
-      overflow: hidden;
-      flex-shrink: 0;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-normal);
-    }
-
-    .thumb:hover {
-      transform: scale(1.1);
-    }
-
-    .thumb img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-    }
-
-    /* Message Bubbles */
-    .bubble {
-      max-width: min(280px, calc(100vw - 120px));
-      padding: var(--space-md) var(--space-lg);
-      border-radius: var(--radius-md);
-      position: relative;
-      box-shadow: var(--shadow-sm);
-      transition: var(--transition-normal);
-      word-wrap: break-word;
-      line-height: var(--line-height-normal);
-    }
-
-    .bubble:hover {
-      transform: translateY(-1px);
-      box-shadow: var(--shadow-md);
-    }
-
-    .row.left .bubble {
-      background: var(--bg-white);
-      color: var(--text-primary);
-      border-bottom-left-radius: var(--radius-sm);
-      border: 1px solid var(--primary-green-alpha);
-    }
-
-    .row.right .bubble {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-light) 100%);
-      color: var(--text-white);
-      border-bottom-right-radius: var(--radius-sm);
-    }
-
-    .bubble.enter {
-      animation: bubbleEnter 0.3s ease-out;
-    }
-
-    @keyframes bubbleEnter {
-      from {
-        opacity: 0;
-        transform: scale(0.8);
-      }
-      to {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-
-    /* Message Meta Information */
-    .bubble-meta {
-      display: flex;
-      align-items: center;
-      justify-content: flex-end;
-      gap: var(--space-sm);
-      margin-top: var(--space-sm);
-      font-size: var(--font-size-xs);
-      opacity: 0.7;
-    }
-
-    .time {
-      color: var(--text-secondary);
-    }
-
-    .checks {
-      color: var(--primary-green);
-      transition: var(--transition-fast);
-    }
-
-    .checks.seen {
-      color: var(--accent-gold);
-    }
-
-    /* Quick Reply Chips */
-    .chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: var(--space-sm);
-      margin-top: var(--space-md);
-    }
-
-    .chip {
-      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
-      color: var(--text-primary);
-      padding: var(--space-sm) var(--space-md);
-      border-radius: var(--radius-xl);
-      cursor: pointer;
-      font-size: var(--font-size-sm);
-      font-weight: 500;
-      border: none;
-      transition: var(--transition-normal);
-      box-shadow: var(--shadow-sm);
-      min-height: 44px;
-      display: flex;
-      align-items: center;
-    }
-
-    .chip:hover,
-    .chip:focus {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-md);
-      background: linear-gradient(135deg, var(--accent-gold-dark) 0%, var(--accent-gold) 100%);
-      outline: none;
-    }
-
-    .chip:active {
-      transform: translateY(0);
-    }
-
-    /* CTA Button */
-    .cta {
-      margin-top: var(--space-md);
-    }
-
-    .cta a {
-      display: inline-block;
-      background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
-      color: var(--text-primary);
-      text-decoration: none;
-      padding: var(--space-lg) var(--space-xl);
-      border-radius: var(--radius-md);
-      font-weight: 600;
-      font-size: var(--font-size-base);
-      transition: var(--transition-normal);
-      box-shadow: var(--shadow-md);
-      position: relative;
-      overflow: hidden;
-      text-align: center;
-      min-height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .cta a::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-      transition: left var(--transition-slow);
-    }
-
-    .cta a:hover::before {
-      left: 100%;
-    }
-
-    .cta a:hover,
-    .cta a:focus {
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-      outline: none;
-    }
-
-    /* Video Container */
-    .video-container {
-      margin: var(--space-sm) 0;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-      box-shadow: var(--shadow-md);
-      position: relative;
-      background: #000;
-    }
-
-    .video-container::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: linear-gradient(45deg, var(--primary-green), var(--accent-gold));
-      opacity: 0;
-      transition: var(--transition-normal);
-      z-index: 1;
-      pointer-events: none;
-    }
-
-    .video-container:hover::before {
-      opacity: 0.1;
-    }
-
-    .video-container iframe,
-    .video-container video {
-      width: 100%;
-      height: auto;
-      min-height: 200px;
-      border: none;
-      display: block;
-    }
-
-    /* Image Styles */
-    .bubble img {
-      max-width: 100%;
-      height: auto;
-      border-radius: var(--radius-sm);
-      margin: var(--space-sm) 0;
-    }
-
-    /* Typing Indicator */
-    .typing {
-      display: flex;
-      gap: var(--space-xs);
-      padding: var(--space-sm) 0;
-      align-items: center;
-    }
-
-    .typing .dot {
-      width: 8px;
-      height: 8px;
-      background: var(--primary-green);
-      border-radius: var(--radius-full);
-      animation: typing 1.4s infinite ease-in-out;
-    }
-
-    .typing .dot:nth-child(2) {
-      animation-delay: 0.2s;
-    }
-
-    .typing .dot:nth-child(3) {
-      animation-delay: 0.4s;
-    }
-
-    @keyframes typing {
-      0%, 60%, 100% {
-        transform: translateY(0);
-        opacity: 0.4;
-      }
-      30% {
-        transform: translateY(-10px);
-        opacity: 1;
-      }
-    }
-
-    /* Input Bar */
-    .inputbar {
-      display: flex;
-      align-items: center;
-      padding: var(--space-md) var(--space-lg);
-      background: var(--bg-white);
-      border-top: 1px solid rgba(0, 0, 0, 0.1);
-      gap: var(--space-md);
-      box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
-      min-height: 72px;
-    }
-
-    .inputbar.hidden {
-      display: none;
-    }
-
-    .inputbar input {
-      flex: 1;
-      border: 2px solid var(--primary-green-alpha);
-      border-radius: var(--radius-xl);
-      padding: var(--space-md) var(--space-lg);
-      font-size: var(--font-size-base);
-      outline: none;
-      transition: var(--transition-fast);
-      background: var(--bg-chat);
-      min-height: 48px;
-      font-family: var(--font-family);
-    }
-
-    .inputbar input:focus {
-      border-color: var(--primary-green);
-      background: var(--bg-white);
-      box-shadow: 0 0 0 3px var(--primary-green-alpha);
-    }
-
-    .inputbar input::placeholder {
-      color: var(--text-muted);
-    }
-
-    .inputbar button {
-      background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
-      color: var(--text-white);
-      border: none;
-      width: 48px;
-      height: 48px;
-      border-radius: var(--radius-full);
-      cursor: pointer;
-      transition: var(--transition-normal);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: var(--shadow-sm);
-      flex-shrink: 0;
-    }
-
-    .inputbar button:hover,
-    .inputbar button:focus {
-      transform: scale(1.05);
-      box-shadow: var(--shadow-md);
-      outline: none;
-    }
-
-    .inputbar button svg {
-      width: 20px;
-      height: 20px;
-    }
-
-    /* Trust Indicators */
-    .trust-indicators {
-      position: fixed;
-      bottom: calc(72px + var(--space-lg)); /* Input bar height + spacing */
-      left: 50%;
-      transform: translateX(-50%);
-      display: flex;
-      gap: var(--space-md);
-      z-index: var(--z-dropdown);
-      pointer-events: none;
-      max-width: calc(100vw - 32px);
-      justify-content: center;
-    }
-
-    /* Hide trust indicators on very small screens to prevent overlap */
-    @media (max-height: 600px) {
-      .trust-indicators {
-        display: none;
-      }
-    }
-
-    .security-badge,
-    .users-badge {
-      background: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      padding: var(--space-sm) var(--space-md);
-      border-radius: var(--radius-xl);
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      font-size: var(--font-size-xs);
-      font-weight: 500;
-      color: var(--text-secondary);
-      box-shadow: var(--shadow-sm);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
-
-    .security-badge svg,
-    .users-badge svg {
-      width: 16px;
-      height: 16px;
-      color: var(--primary-green);
-    }
-
-    /* Responsive Design - Tablet */
-    @media (min-width: 768px) {
-      .app {
-        max-width: 480px;
-        margin: var(--space-lg) auto;
-        border-radius: var(--radius-lg);
-        min-height: calc(100vh - 48px);
-      }
-      
-      .messages {
-        padding: var(--space-xl) var(--space-lg);
-      }
-      
-      .bubble {
-        max-width: 320px;
-      }
-      
-      .video-container iframe,
-      .video-container video {
-        min-height: 240px;
-      }
-      
-      .trust-indicators {
-        bottom: calc(72px + var(--space-xl)); /* Maintain spacing from input bar */
-      }
-    }
-
-    /* Responsive Design - Desktop */
-    @media (min-width: 1024px) {
-      .app {
-        max-width: 520px;
-      }
-      
-      .bubble {
-        max-width: 360px;
-      }
-      
-      .video-container iframe,
-      .video-container video {
-        min-height: 280px;
-      }
-    }
-
-    /* High DPI Displays */
-    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
-      .avatar,
-      .thumb img {
-        image-rendering: -webkit-optimize-contrast;
-        image-rendering: crisp-edges;
-      }
-    }
-
-    /* Reduced Motion */
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-      }
-      
-      .status-indicator {
-        animation: none;
-      }
-      
-      .typing .dot {
-        animation: none;
-      }
-    }
-
-    /* Dark Mode Support */
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg-main: #1a1a1a;
-        --bg-chat: #2a2a2a;
-        --bg-white: #333333;
-        --text-primary: #ffffff;
-        --text-secondary: #cccccc;
-        --text-muted: #999999;
-      }
-      
-      .row.left .bubble {
-        background: var(--bg-white);
-        color: var(--text-primary);
-        border-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .inputbar {
-        background: var(--bg-white);
-        border-top-color: rgba(255, 255, 255, 0.1);
-      }
-      
-      .inputbar input {
-        background: var(--bg-chat);
-        color: var(--text-primary);
-      }
-      
-      .inputbar input:focus {
-        background: var(--bg-white);
-      }
-    }
-
-    /* Print Styles */
-    @media print {
-      .wpp-header,
-      .inputbar,
-      .trust-indicators {
-        display: none;
-      }
-      
-      .app {
-        box-shadow: none;
-        max-width: none;
-        margin: 0;
-      }
-      
-      .messages {
-        background: white;
-        padding: 0;
-      }
-      
-      .bubble {
-        box-shadow: none;
-        border: 1px solid #ccc;
-      }
-    }
-  </style>
+  /* Line Heights */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.5;
+  --line-height-relaxed: 1.75;
   
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "SoftwareApplication",
-    "name": "Reveal Poker",
-    "description": "Advanced poker software that reveals opponents' hole cards in real-time",
-    "applicationCategory": "GameApplication",
-    "operatingSystem": "Windows, macOS",
-    "offers": {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "USD"
-    },
-    "aggregateRating": {
-      "@type": "AggregateRating",
-      "ratingValue": "4.8",
-      "reviewCount": "2900"
-    }
+  /* Transitions */
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-slow: 500ms cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* Z-Index Scale */
+  --z-dropdown: 1000;
+  --z-sticky: 1020;
+  --z-fixed: 1030;
+  --z-modal: 1040;
+  --z-popover: 1050;
+  --z-tooltip: 1060;
+}
+
+/* Reset and Base Styles */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
+  background: linear-gradient(135deg, var(--bg-main) 0%, #d4c5b9 100%);
+  min-height: 100vh;
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background: transparent;
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Screen Reader Only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* App Container */
+.app {
+  max-width: 420px;
+  margin: 0 auto;
+  background: var(--bg-white);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-xl);
+  position: relative;
+  overflow: hidden;
+}
+
+.app::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary-green), var(--accent-gold), var(--primary-green));
+  z-index: var(--z-sticky);
+}
+
+/* Header Styles */
+.wpp-header {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+  color: var(--text-white);
+  padding: var(--space-md) var(--space-lg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  z-index: var(--z-sticky);
+  min-height: 72px;
+}
+
+.wpp-header .left {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+  flex: 1;
+  min-width: 0;
+}
+
+.wpp-header .back {
+  background: none;
+  border: none;
+  color: var(--text-white);
+  cursor: pointer;
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.wpp-header .back:hover,
+.wpp-header .back:focus {
+  background: rgba(255, 255, 255, 0.1);
+  transform: translateX(-2px);
+  outline: none;
+}
+
+.wpp-header .back svg {
+  width: 20px;
+  height: 20px;
+}
+
+.avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-full);
+  border: 3px solid var(--text-white);
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  flex-shrink: 0;
+}
+
+.avatar:hover {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+}
+
+.meta {
+  min-width: 0;
+  flex: 1;
+}
+
+.meta .name {
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  margin-bottom: 2px;
+  line-height: var(--line-height-tight);
+}
+
+.meta .status {
+  font-size: var(--font-size-sm);
+  opacity: 0.9;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  line-height: var(--line-height-tight);
+}
+
+.status-indicator {
+  width: 8px;
+  height: 8px;
+  background: #4ade80;
+  border-radius: var(--radius-full);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale(1);
   }
-  </script>
+  50% { 
+    opacity: 0.5; 
+    transform: scale(0.95);
+  }
+}
+
+.wpp-header .right {
+  display: flex;
+  gap: var(--space-xs);
+  flex-shrink: 0;
+}
+
+.icon-btn {
+  background: none;
+  border: none;
+  color: var(--text-white);
+  padding: var(--space-sm);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.icon-btn:hover,
+.icon-btn:focus {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+  outline: none;
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Messages Area */
+.messages {
+  flex: 1;
+  padding: var(--space-lg) var(--space-md);
+  overflow-y: auto;
+  background: linear-gradient(to bottom, #fafafa 0%, var(--bg-chat) 100%);
+  position: relative;
+  scroll-behavior: smooth;
+}
+
+.messages::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-image: 
+    radial-gradient(circle at 20% 50%, var(--primary-green-alpha) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(244, 196, 48, 0.03) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* Message Rows */
+.row {
+  display: flex;
+  margin-bottom: var(--space-md);
+  align-items: flex-end;
+  gap: var(--space-sm);
+  animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.row.right {
+  flex-direction: row-reverse;
+}
+
+.thumb {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-full);
+  overflow: hidden;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+}
+
+.thumb:hover {
+  transform: scale(1.1);
+}
+
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Message Bubbles */
+.bubble {
+  max-width: min(280px, calc(100vw - 120px));
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  position: relative;
+  box-shadow: var(--shadow-sm);
+  transition: var(--transition-normal);
+  word-wrap: break-word;
+  line-height: var(--line-height-normal);
+}
+
+.bubble:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+}
+
+.row.left .bubble {
+  background: var(--bg-white);
+  color: var(--text-primary);
+  border-bottom-left-radius: var(--radius-sm);
+  border: 1px solid var(--primary-green-alpha);
+}
+
+.row.right .bubble {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-light) 100%);
+  color: var(--text-white);
+  border-bottom-right-radius: var(--radius-sm);
+}
+
+.bubble.enter {
+  animation: bubbleEnter 0.3s ease-out;
+}
+
+@keyframes bubbleEnter {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Message Meta Information */
+.bubble-meta {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--space-sm);
+  margin-top: var(--space-sm);
+  font-size: var(--font-size-xs);
+  opacity: 0.7;
+}
+
+.time {
+  color: var(--text-secondary);
+}
+
+.checks {
+  color: var(--primary-green);
+  transition: var(--transition-fast);
+}
+
+.checks.seen {
+  color: var(--accent-gold);
+}
+
+/* Quick Reply Chips */
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+  margin-top: var(--space-md);
+}
+
+.chip {
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--text-primary);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-xl);
+  cursor: pointer;
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  border: none;
+  transition: var(--transition-normal);
+  box-shadow: var(--shadow-sm);
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+}
+
+.chip:hover,
+.chip:focus {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(135deg, var(--accent-gold-dark) 0%, var(--accent-gold) 100%);
+  outline: none;
+}
+
+.chip:active {
+  transform: translateY(0);
+}
+
+/* CTA Button */
+.cta {
+  margin-top: var(--space-md);
+}
+
+.cta a {
+  display: inline-block;
+  background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+  color: var(--text-primary);
+  text-decoration: none;
+  padding: var(--space-lg) var(--space-xl);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+  font-size: var(--font-size-base);
+  transition: var(--transition-normal);
+  box-shadow: var(--shadow-md);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  min-height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cta a::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transition: left var(--transition-slow);
+}
+
+.cta a:hover::before {
+  left: 100%;
+}
+
+.cta a:hover,
+.cta a:focus {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  outline: none;
+}
+
+/* Video Container */
+.video-container {
+  margin: var(--space-sm) 0;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+  position: relative;
+  background: #000;
+}
+
+.video-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, var(--primary-green), var(--accent-gold));
+  opacity: 0;
+  transition: var(--transition-normal);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.video-container:hover::before {
+  opacity: 0.1;
+}
+
+.video-container iframe,
+.video-container video {
+  width: 100%;
+  height: auto;
+  min-height: 200px;
+  border: none;
+  display: block;
+}
+
+/* Image Styles */
+.bubble img {
+  max-width: 100%;
+  height: auto;
+  border-radius: var(--radius-sm);
+  margin: var(--space-sm) 0;
+}
+
+/* Typing Indicator */
+.typing {
+  display: flex;
+  gap: var(--space-xs);
+  padding: var(--space-sm) 0;
+  align-items: center;
+}
+
+.typing .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--primary-green);
+  border-radius: var(--radius-full);
+  animation: typing 1.4s infinite ease-in-out;
+}
+
+.typing .dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.typing .dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typing {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  30% {
+    transform: translateY(-10px);
+    opacity: 1;
+  }
+}
+
+/* Input Bar */
+.inputbar {
+  display: flex;
+  align-items: center;
+  padding: var(--space-md) var(--space-lg);
+  background: var(--bg-white);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  gap: var(--space-md);
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  min-height: 72px;
+}
+
+.inputbar.hidden {
+  display: none;
+}
+
+.inputbar input {
+  flex: 1;
+  border: 2px solid var(--primary-green-alpha);
+  border-radius: var(--radius-xl);
+  padding: var(--space-md) var(--space-lg);
+  font-size: var(--font-size-base);
+  outline: none;
+  transition: var(--transition-fast);
+  background: var(--bg-chat);
+  min-height: 48px;
+  font-family: var(--font-family);
+}
+
+.inputbar input:focus {
+  border-color: var(--primary-green);
+  background: var(--bg-white);
+  box-shadow: 0 0 0 3px var(--primary-green-alpha);
+}
+
+.inputbar input::placeholder {
+  color: var(--text-muted);
+}
+
+.inputbar button {
+  background: linear-gradient(135deg, var(--primary-green) 0%, var(--primary-green-dark) 100%);
+  color: var(--text-white);
+  border: none;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: var(--transition-normal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-sm);
+  flex-shrink: 0;
+}
+
+.inputbar button:hover,
+.inputbar button:focus {
+  transform: scale(1.05);
+  box-shadow: var(--shadow-md);
+  outline: none;
+}
+
+.inputbar button svg {
+  width: 20px;
+  height: 20px;
+}
+
+/* Responsive Design - Tablet */
+@media (min-width: 768px) {
+  .app {
+    max-width: 480px;
+    margin: var(--space-lg) auto;
+    border-radius: var(--radius-lg);
+    min-height: calc(100vh - 48px);
+  }
+  
+  .messages {
+    padding: var(--space-xl) var(--space-lg);
+  }
+  
+  .bubble {
+    max-width: 320px;
+  }
+  
+  .video-container iframe,
+  .video-container video {
+    min-height: 240px;
+  }
+}
+
+/* Responsive Design - Desktop */
+@media (min-width: 1024px) {
+  .app {
+    max-width: 520px;
+  }
+  
+  .bubble {
+    max-width: 360px;
+  }
+  
+  .video-container iframe,
+  .video-container video {
+    min-height: 280px;
+  }
+}
+
+/* High DPI Displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .avatar,
+  .thumb img {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .status-indicator {
+    animation: none;
+  }
+  
+  .typing .dot {
+    animation: none;
+  }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg-main: #1a1a1a;
+    --bg-chat: #2a2a2a;
+    --bg-white: #333333;
+    --text-primary: #ffffff;
+    --text-secondary: #cccccc;
+    --text-muted: #999999;
+  }
+  
+  .row.left .bubble {
+    background: var(--bg-white);
+    color: var(--text-primary);
+    border-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .inputbar {
+    background: var(--bg-white);
+    border-top-color: rgba(255, 255, 255, 0.1);
+  }
+  
+  .inputbar input {
+    background: var(--bg-chat);
+    color: var(--text-primary);
+  }
+  
+  .inputbar input:focus {
+    background: var(--bg-white);
+  }
+}
+
+/* Print Styles */
+@media print {
+  .wpp-header,
+  .inputbar {
+    display: none;
+  }
+  
+  .app {
+    box-shadow: none;
+    max-width: none;
+    margin: 0;
+  }
+  
+  .messages {
+    background: white;
+    padding: 0;
+  }
+  
+  .bubble {
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}
+</style>
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Reveal Poker",
+  "description": "Advanced poker software that reveals opponents' hole cards in real-time",
+  "applicationCategory": "GameApplication",
+  "operatingSystem": "Windows, macOS",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "2900"
+  }
+}
+</script>
 </head>
 <body>
-  <div class="app" role="main">
-    <!-- Header -->
-    <header class="wpp-header" role="banner">
-      <div class="left">
-        <button class="back" aria-label="Back to previous page" title="Back">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" fill="none"/>
-          </svg>
-        </button>
-        
-        <img
-          class="avatar"
-          id="avatar"
-          src="https://i.pravatar.cc/40?img=12"
-          alt="Alex - Poker Expert"
-          width="40"
-          height="40"
-          decoding="async"
-          fetchpriority="high"
-          onload="this.classList.add('is-loaded')"
-        />
-        
-        <div class="meta">
-          <div class="name" id="contact-name">Alex</div>
-          <div class="status" id="status">
-            <span class="status-indicator" aria-label="Online"></span>
-            Online
-          </div>
-        </div>
-      </div>
-      
-      <div class="right">
-        <button class="icon-btn" aria-label="Video call" title="Video Call">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M23 7l-7 5 7 5V7z" fill="currentColor"/>
-            <rect x="1" y="5" width="15" height="14" rx="2" ry="2" fill="currentColor"/>
-          </svg>
-        </button>
-        <button class="icon-btn" aria-label="Voice call" title="Voice Call">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="currentColor"/>
-          </svg>
-        </button>
-        <button class="icon-btn" aria-label="More options" title="More Options">
-          <svg viewBox="0 0 24 24" aria-hidden="true">
-            <circle cx="12" cy="12" r="1" fill="currentColor"/>
-            <circle cx="12" cy="5" r="1" fill="currentColor"/>
-            <circle cx="12" cy="19" r="1" fill="currentColor"/>
-          </svg>
-        </button>
-      </div>
-    </header>
-    
-    <!-- Messages Area -->
-    <main id="messages" class="messages" role="main" aria-live="polite" aria-label="Chat conversation">
-      <!-- Messages will be dynamically inserted here -->
-    </main>
-    
-    <!-- Input Bar -->
-    <form id="chat-form" class="inputbar" autocomplete="off" role="form">
-      <label for="chat-input" class="sr-only">Type your message</label>
-      <input 
-        id="chat-input" 
-        type="text" 
-        placeholder="Type your message..." 
-        aria-label="Message input"
-        maxlength="500"
-      />
-      <button type="submit" aria-label="Send message" title="Send">
+<div class="app" role="main">
+  <!-- Header -->
+  <header class="wpp-header" role="banner">
+    <div class="left">
+      <button class="back" aria-label="Back to previous page" title="Back">
         <svg viewBox="0 0 24 24" aria-hidden="true">
-          <line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2"/>
-          <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor"/>
+          <path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" fill="none"/>
         </svg>
       </button>
-    </form>
-  </div>
-  
-  <!-- Trust Indicators -->
-  <div class="trust-indicators" aria-label="Security and trust indicators">
-    <div class="security-badge">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" fill="currentColor"/>
-      </svg>
-      <span>Secure & Undetectable</span>
+      
+      <img
+        class="avatar"
+        id="avatar"
+        src="https://i.pravatar.cc/40?img=12"
+        alt="Alex - Poker Expert"
+        width="40"
+        height="40"
+        decoding="async"
+        fetchpriority="high"
+        onload="this.classList.add('is-loaded')"
+      />
+      
+      <div class="meta">
+        <div class="name" id="contact-name">Alex</div>
+        <div class="status" id="status">
+          <span class="status-indicator" aria-label="Online"></span>
+          Online
+        </div>
+      </div>
     </div>
-    <div class="users-badge">
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="2" fill="none"/>
-        <circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
-        <path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="2" fill="none"/>
-        <path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="2" fill="none"/>
-      </svg>
-      <span>2,900+ Active Users</span>
-    </div>
-  </div>
-  
-  <!-- Screen Reader Only Content -->
-  <div class="sr-only">
-    <h1>Reveal Poker - Advanced Poker Software</h1>
-    <p>Gain the ultimate advantage in online poker by seeing your opponents' hole cards in real-time. Compatible with PokerStars, GGPoker, and 12+ other platforms.</p>
-  </div>
-  
-  <!-- Internal Scripts -->
-  <script>
-    // Reveal Poker - Enhanced Chat Interface with State Saving
-    // Mobile-first, performance-optimized, and conversion-focused
-
-    // ===== Configuration =====
-    const SETTINGS = {
-      contactName: "Alex",
-      avatar: "https://i.pravatar.cc/40?img=12",
-      checkoutURL: "https://www.revealpoker.top",
-
-      preName: [
-        { type: "text", text: "Hey! I noticed you're interested in poker. I need your name to continue, please type it below." },
-        { type: "wait", wait: "name" }
-      ],
-
-      afterName: [
-        { type: "text", text: "Perfect! So tell me, {name} - what's your biggest frustration when playing online poker?" },
-        { type: "quick", options: ["Bad beats from fish", "Never knowing what they have", "Feels like pure luck"], side: "right", asUser: true },
-
-        { type: "text", text: "I totally get that. It's maddening when you make the 'right' play and still lose, right?" },
-        { type: "text", text: "But what if I told you there's a way to eliminate that uncertainty completely?" },
-        { type: "quick", options: ["I'm listening...", "Sounds impossible"], side: "right", asUser: true },
-
-        { type: "text", text: "It's called Reveal Poker, and it literally shows you your opponents' hole cards before you make any decision." },
-        { type: "text", text: "Imagine never having to guess again. Every fold, every call, every bluff - you'll know exactly what they're holding." },
-        { type: "quick", options: ["How is that possible?", "Is this legal?"], side: "right", asUser: true },
-
-        { type: "text", text: "It works by intercepting the game's data packets in real-time and decrypting them using advanced algorithms." },
-        { type: "text", text: "And yes, it's completely safe. It doesn't modify any game files, so it's 100% undetectable by poker sites." },
-        { type: "text", text: "Want to see it in action? Check out this demonstration:" },
-        { type: "quick", options: ["Show me!", "I'm still skeptical"], side: "right", asUser: true },
-
-        { type: "text", text: "Here's a live demonstration showing the exact advantage you'll have:" },
-        { type: "video", src: "https://www.youtube-nocookie.com/embed/dUW9mVVhJ-0" },
-        { type: "text", text: "Pretty incredible, right? That's the power of seeing your opponents' cards in real-time." },
-        
-        { type: "text", text: "But don't just take my word for it. Here's what one of our users achieved in just his first week:" },
-        { type: "localvideo", src: "testimonial.mp4" },
-        
-        { type: "text", text: "That could be you, {name}. Imagine turning your poker sessions from stressful gambling into consistent profit." },
-        { type: "text", text: "Over 2,900 players are already using this to dominate tables on PokerStars, GGPoker, UPOKER, and 12+ other platforms." },
-        { type: "text", text: "They're making $500-$2000+ per day while others are still playing blind." },
-        { type: "quick", options: ["How much does it cost?", "I want to try it"], side: "right", asUser: true },
-
-        { type: "text", text: "Here's the thing - this tool pays for itself in just one session. Most users recover their investment within hours." },
-        { type: "text", text: "And right now, I can get you access for a fraction of what others pay." },
-        { type: "text", text: "But this offer won't last long. We limit access to maintain exclusivity and avoid detection." },
-        { type: "quick", options: ["What's the price?", "I need this now"], side: "right", asUser: true },
-
-        { type: "text", text: "Ready to stop guessing and start winning consistently? Join the elite group of players who never lose." },
-
-        { type: "cta", id: "final_cta", text: "🚀 Join 2,900+ Winning Players - Get Your Unfair Advantage Now", buttonText: "Get Reveal Poker Now" }
-      ]
-    };
-
-    const TIMINGS = {
-      baseGap: 1000,
-      typingPerCharMin: 30,
-      typingPerCharMax: 50,
-      typingMin: 1000,
-      typingMax: 4000,
-      afterUserGap: 2000
-    };
-
-    const $messages = document.getElementById("messages");
-    const $form = document.getElementById("chat-form");
-    const $input = document.getElementById("chat-input");
-    const $status = document.getElementById("status");
-
-    document.getElementById("contact-name").textContent = SETTINGS.contactName;
-    document.getElementById("avatar").src = SETTINGS.avatar;
-
-    // ===== State Management =====
-    let chatState = {
-        leadName: "",
-        currentFlow: 'preName',
-        currentIndex: 0,
-        historyHtml: "",
-        completionTimestamp: null,
-        followUpSent: false
-    };
-
-    const saveState = () => {
-        chatState.historyHtml = $messages.innerHTML;
-        localStorage.setItem('pokerChatState', JSON.stringify(chatState));
-    };
-
-    const loadState = () => {
-        const savedState = localStorage.getItem('pokerChatState');
-        if (savedState) {
-            chatState = JSON.parse(savedState);
-        }
-    };
-
-    // ===== Sound System =====
-    let userInteracted = false;
-    const enableSound = () => { userInteracted = true; };
-    ['pointerdown', 'keydown', 'touchstart'].forEach(evt => window.addEventListener(evt, enableSound, { once: true }));
-
-    const botDing = (() => {
-      try {
-        const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT");
-        audio.volume = 0.2;
-        return () => userInteracted && audio.play().catch(() => {});
-      } catch (e) {
-        return () => {};
-      }
-    })();
     
-    // ===== Utility Functions =====
-    const now = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-    const scrollToBottom = (smooth = true) => {
-        requestAnimationFrame(() => $messages.scrollTo({ top: $messages.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }));
-    };
+    <div class="right">
+      <button class="icon-btn" aria-label="Video call" title="Video Call">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M23 7l-7 5 7 5V7z" fill="currentColor"/>
+          <rect x="1" y="5" width="15" height="14" rx="2" ry="2" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="Voice call" title="Voice Call">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" fill="currentColor"/>
+        </svg>
+      </button>
+      <button class="icon-btn" aria-label="More options" title="More Options">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="1" fill="currentColor"/>
+          <circle cx="12" cy="5" r="1" fill="currentColor"/>
+          <circle cx="12" cy="19" r="1" fill="currentColor"/>
+        </svg>
+      </button>
+    </div>
+  </header>
+  
+  <!-- Messages Area -->
+  <main id="messages" class="messages" role="main" aria-live="polite" aria-label="Chat conversation">
+    <!-- Messages will be dynamically inserted here -->
+  </main>
+  
+  <!-- Input Bar -->
+  <form id="chat-form" class="inputbar" autocomplete="off" role="form">
+    <label for="chat-input" class="sr-only">Type your message</label>
+    <input 
+      id="chat-input" 
+      type="text" 
+      placeholder="Type your message..." 
+      aria-label="Message input"
+      maxlength="500"
+    />
+    <button type="submit" aria-label="Send message" title="Send">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <line x1="22" y1="2" x2="11" y2="13" stroke="currentColor" stroke-width="2"/>
+        <polygon points="22,2 15,22 11,13 2,9 22,2" fill="currentColor"/>
+      </svg>
+    </button>
+  </form>
+</div>
 
-    // ===== Message Creation Functions =====
-    const createMessageRow = (side = "left") => {
-      const row = document.createElement("div");
-      row.className = `row ${side}`;
-      if (side === "left") {
-        row.innerHTML = `<div class="thumb"><img src="${SETTINGS.avatar}" alt="${SETTINGS.contactName}" width="36" height="36"></div>`;
+<!-- Screen Reader Only Content -->
+<div class="sr-only">
+  <h1>Reveal Poker - Advanced Poker Software</h1>
+  <p>Gain the ultimate advantage in online poker by seeing your opponents' hole cards in real-time. Compatible with PokerStars, GGPoker, and 12+ other platforms.</p>
+</div>
+
+<!-- Internal Scripts -->
+<script>
+// Reveal Poker - Enhanced Chat Interface with State Saving
+// Mobile-first, performance-optimized, and conversion-focused
+document.addEventListener("DOMContentLoaded", () => {
+  // ===== Configuration =====
+  const SETTINGS = {
+    contactName: "Alex",
+    avatar: "https://i.pravatar.cc/40?img=12",
+    checkoutURL: "https://www.revealpoker.top",
+
+    preName: [
+      { type: "text", text: "Hey! I noticed you're interested in poker. I need your name to continue, please type it below." },
+      { type: "wait", wait: "name" }
+    ],
+
+    afterName: [
+      { type: "text", text: "Perfect! So tell me, {name} - what's your biggest frustration when playing online poker?" },
+      { type: "quick", options: ["Bad beats from fish", "Never knowing what they have", "Feels like pure luck"], side: "right", asUser: true },
+
+      { type: "text", text: "I totally get that. It's maddening when you make the 'right' play and still lose, right?" },
+      { type: "text", text: "But what if I told you there's a way to eliminate that uncertainty completely?" },
+      { type: "quick", options: ["I'm listening...", "Sounds impossible"], side: "right", asUser: true },
+
+      { type: "text", text: "It's called Reveal Poker, and it literally shows you your opponents' hole cards before you make any decision." },
+      { type: "text", text: "Imagine never having to guess again. Every fold, every call, every bluff - you'll know exactly what they're holding." },
+      { type: "quick", options: ["How is that possible?", "Is this legal?"], side: "right", asUser: true },
+
+      { type: "text", text: "It works by intercepting the game's data packets in real-time and decrypting them using advanced algorithms." },
+      { type: "text", text: "And yes, it's completely safe. It doesn't modify any game files, so it's 100% undetectable by poker sites." },
+      { type: "text", text: "Want to see it in action? Check out this demonstration:" },
+      { type: "quick", options: ["Show me!", "I'm still skeptical"], side: "right", asUser: true },
+
+      { type: "text", text: "Here's a live demonstration showing the exact advantage you'll have:" },
+      { type: "video", src: "https://www.youtube-nocookie.com/embed/dUW9mVVhJ-0" },
+      { type: "text", text: "Pretty incredible, right? That's the power of seeing your opponents' cards in real-time." },
+      
+      { type: "text", text: "But don't just take my word for it. Here's what one of our users achieved in just his first week:" },
+      { type: "localvideo", src: "testimonial.mp4" },
+      
+      { type: "text", text: "That could be you, {name}. Imagine turning your poker sessions from stressful gambling into consistent profit." },
+      { type: "text", text: "Over 2,900 players are already using this to dominate tables on PokerStars, GGPoker, UPOKER, and 12+ other platforms." },
+      { type: "text", text: "They're making $500-$2000+ per day while others are still playing blind." },
+      { type: "quick", options: ["How much does it cost?", "I want to try it"], side: "right", asUser: true },
+
+      { type: "text", text: "Here's the thing - this tool pays for itself in just one session. Most users recover their investment within hours." },
+      { type: "text", text: "And right now, I can get you access for a fraction of what others pay." },
+      { type: "text", text: "But this offer won't last long. We limit access to maintain exclusivity and avoid detection." },
+      { type: "quick", options: ["What's the price?", "I need this now"], side: "right", asUser: true },
+
+      { type: "text", text: "Ready to stop guessing and start winning consistently? Join the elite group of players who never lose." },
+
+      { type: "cta", id: "final_cta", text: "🚀 Join 2,900+ Winning Players - Get Your Unfair Advantage Now", buttonText: "Get Reveal Poker Now" }
+    ]
+  };
+
+  const TIMINGS = {
+    baseGap: 1000,
+    typingPerCharMin: 30,
+    typingPerCharMax: 50,
+    typingMin: 1000,
+    typingMax: 4000,
+    afterUserGap: 2000
+  };
+
+  const $messages = document.getElementById("messages");
+  const $form = document.getElementById("chat-form");
+  const $input = document.getElementById("chat-input");
+  const $status = document.getElementById("status");
+
+  // ===== State Management =====
+  let chatState = {
+      leadName: "",
+      currentFlow: 'preName',
+      currentIndex: 0,
+      historyHtml: "",
+      completionTimestamp: null,
+      followUpSent: false
+  };
+
+  const saveState = () => {
+      chatState.historyHtml = $messages.innerHTML;
+      localStorage.setItem('pokerChatState', JSON.stringify(chatState));
+  };
+
+  const loadState = () => {
+      const savedState = localStorage.getItem('pokerChatState');
+      if (savedState) {
+          chatState = JSON.parse(savedState);
       }
-      return row;
-    };
+  };
 
-    const createBubble = (content = "", side = "left") => {
-      const bubble = document.createElement("div");
-      bubble.className = `bubble ${side}`;
-      bubble.innerHTML = content;
-      requestAnimationFrame(() => bubble.classList.add("enter"));
-      return bubble;
-    };
+  // ===== Sound System =====
+  let userInteracted = false;
+  const enableSound = () => { userInteracted = true; };
+  ['pointerdown', 'keydown', 'touchstart'].forEach(evt => window.addEventListener(evt, enableSound, { once: true }));
 
-    const createMeta = (time = now()) => {
-      const meta = document.createElement("div");
-      meta.className = "bubble-meta";
-      meta.innerHTML = `<span class="time">${time}</span><span class="checks">✓✓</span>`;
-      return meta;
-    };
+  const botDing = (() => {
+    try {
+      const audio = new Audio("data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT");
+      audio.volume = 0.2;
+      return () => userInteracted && audio.play().catch(() => {});
+    } catch (e) {
+      return () => {};
+    }
+  })();
+  
+  // ===== Utility Functions =====
+  const now = () => new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+  const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+  const scrollToBottom = (smooth = true) => {
+      requestAnimationFrame(() => $messages.scrollTo({ top: $messages.scrollHeight, behavior: smooth ? 'smooth' : 'auto' }));
+  };
 
-    const showTyping = () => {
-      const row = createMessageRow("left");
-      const bubble = createBubble('<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>', "left");
-      bubble.classList.add("typing-bubble");
+  // ===== Message Creation Functions =====
+  const createMessageRow = (side = "left") => {
+    const row = document.createElement("div");
+    row.className = `row ${side}`;
+    if (side === "left") {
+      row.innerHTML = `<div class="thumb"><img src="${SETTINGS.avatar}" alt="${SETTINGS.contactName}" width="36" height="36"></div>`;
+    }
+    return row;
+  };
+
+  const createBubble = (content = "", side = "left") => {
+    const bubble = document.createElement("div");
+    bubble.className = `bubble ${side}`;
+    bubble.innerHTML = content;
+    requestAnimationFrame(() => bubble.classList.add("enter"));
+    return bubble;
+  };
+
+  const createMeta = (time = now()) => {
+    const meta = document.createElement("div");
+    meta.className = "bubble-meta";
+    meta.innerHTML = `<span class="time">${time}</span><span class="checks">✓✓</span>`;
+    return meta;
+  };
+
+  const showTyping = () => {
+    const row = createMessageRow("left");
+    const bubble = createBubble('<div class="typing"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>', "left");
+    bubble.classList.add("typing-bubble");
+    row.appendChild(bubble);
+    $messages.appendChild(row);
+    scrollToBottom();
+    return row;
+  };
+
+  const addMessage = (content, side = "left", options = {}) => {
+    return new Promise((resolve) => {
+      const row = createMessageRow(side);
+      const bubble = createBubble(content, side);
+      if (!options.noMeta) bubble.appendChild(createMeta());
+      row.appendChild(bubble);
+      $messages.appendChild(row);
+      if (side === "left") botDing();
+      scrollToBottom();
+      setTimeout(() => { saveState(); resolve(); }, 300);
+    });
+  };
+
+  const addQuickReplies = (options, continueFlow) => {
+      const row = createMessageRow("right");
+      const bubble = createBubble("", "right");
+      bubble.classList.add("quick-replies");
+      const chips = document.createElement("div");
+      chips.className = "chips";
+      options.forEach(option => {
+          const chip = document.createElement("button");
+          chip.className = "chip";
+          chip.textContent = option;
+          chip.addEventListener("click", () => {
+              chips.remove();
+              addMessage(option, "right", { noMeta: true }).then(() => {
+                  sleep(TIMINGS.afterUserGap).then(continueFlow);
+              });
+          }, { once: true });
+          chips.appendChild(chip);
+      });
+      bubble.appendChild(chips);
       row.appendChild(bubble);
       $messages.appendChild(row);
       scrollToBottom();
-      return row;
-    };
+      saveState();
+  };
 
-    const addMessage = (content, side = "left", options = {}) => {
-      return new Promise((resolve) => {
-        const row = createMessageRow(side);
-        const bubble = createBubble(content, side);
-        if (!options.noMeta) bubble.appendChild(createMeta());
-        row.appendChild(bubble);
-        $messages.appendChild(row);
-        if (side === "left") botDing();
-        scrollToBottom();
-        setTimeout(() => { saveState(); resolve(); }, 300);
-      });
-    };
+  // ===== Media Handling =====
+  const addVideo = (src) => new Promise(r => addMessage(`<div class="video-container"><iframe src="${src}" title="Demonstration video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`, "left").then(r));
+  const addLocalVideo = (src) => new Promise(r => addMessage(`<div class="video-container"><video controls preload="metadata"><source src="${src}" type="video/mp4"></video></div>`, "left").then(r));
+  const addCTA = (text, buttonText) => new Promise(r => addMessage(`<div class="cta"><a href="${SETTINGS.checkoutURL}" target="_blank" rel="noopener noreferrer">${text}</a></div>`, "left").then(r));
 
-    const addQuickReplies = (options, continueFlow) => {
-        const row = createMessageRow("right");
-        const bubble = createBubble("", "right");
-        bubble.classList.add("quick-replies");
-        const chips = document.createElement("div");
-        chips.className = "chips";
-        options.forEach(option => {
-            const chip = document.createElement("button");
-            chip.className = "chip";
-            chip.textContent = option;
-            chip.addEventListener("click", () => {
-                chips.remove();
-                addMessage(option, "right", { noMeta: true }).then(() => {
-                    sleep(TIMINGS.afterUserGap).then(continueFlow);
-                });
-            }, { once: true });
-            chips.appendChild(chip);
-        });
-        bubble.appendChild(chips);
-        row.appendChild(bubble);
-        $messages.appendChild(row);
-        scrollToBottom();
-        saveState();
-    };
+  // ===== Message Processing =====
+  const processMessage = async (msg, continueFlow) => {
+      const text = msg.text || "";
+      const typingTime = Math.max(1000, Math.min(4000, text.length * 50));
+      
+      if (text) {
+        const typingRow = showTyping();
+        await sleep(typingTime);
+        typingRow.remove();
+      }
 
-    // ===== Media Handling =====
-    const addVideo = (src) => new Promise(r => addMessage(`<div class="video-container"><iframe src="${src}" title="Demonstration video" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe></div>`, "left").then(r));
-    const addLocalVideo = (src) => new Promise(r => addMessage(`<div class="video-container"><video controls preload="metadata"><source src="${src}" type="video/mp4"></video></div>`, "left").then(r));
-    const addCTA = (text, buttonText) => new Promise(r => addMessage(`<div class="cta"><a href="${SETTINGS.checkoutURL}" target="_blank" rel="noopener noreferrer">${text}</a></div>`, "left").then(r));
+      switch (msg.type) {
+          case "text":
+              await addMessage(msg.text.replace(/\{name\}/g, chatState.leadName || "friend"));
+              continueFlow();
+              break;
+          case "quick":
+              addQuickReplies(msg.options, continueFlow);
+              break;
+          case "video":
+              await addVideo(msg.src);
+              continueFlow();
+              break;
+          case "localvideo":
+              await addLocalVideo(msg.src);
+              continueFlow();
+              break;
+          case "cta":
+              await addCTA(msg.text, msg.buttonText);
+              chatState.completionTimestamp = Date.now();
+              chatState.currentFlow = null; // Mark as complete
+              saveState();
+              break;
+          case "wait":
+              if (msg.wait === "name") promptForName();
+              break;
+      }
+  };
+  
+  const promptForName = () => {
+      $input.placeholder = "Please type your name...";
+      $input.focus();
+      $form.addEventListener("submit", handleNameSubmit, { once: true });
+  };
 
-    // ===== Message Processing =====
-    const processMessage = async (msg, continueFlow) => {
-        const text = msg.text || "";
-        const typingTime = Math.max(1000, Math.min(4000, text.length * 50));
-        
-        if (text) {
-          const typingRow = showTyping();
-          await sleep(typingTime);
-          typingRow.remove();
-        }
+  const handleNameSubmit = (e) => {
+      e.preventDefault();
+      const name = $input.value.trim();
+      if (name) {
+          $input.value = "";
+          $input.placeholder = "Type your message...";
+          addMessage(name, "right", { noMeta: true }).then(() => {
+              chatState.leadName = name;
+              chatState.currentFlow = 'afterName';
+              chatState.currentIndex = 0;
+              saveState();
+              runConversation();
+          });
+      } else {
+          promptForName(); // Re-prompt if name is empty
+      }
+  };
+  
+  // ===== Conversation Flow =====
+  const runConversation = async () => {
+      if (!chatState.currentFlow) return;
 
-        switch (msg.type) {
-            case "text":
-                await addMessage(msg.text.replace(/\{name\}/g, chatState.leadName || "friend"));
-                continueFlow();
-                break;
-            case "quick":
-                addQuickReplies(msg.options, continueFlow);
-                break;
-            case "video":
-                await addVideo(msg.src);
-                continueFlow();
-                break;
-            case "localvideo":
-                await addLocalVideo(msg.src);
-                continueFlow();
-                break;
-            case "cta":
-                await addCTA(msg.text, msg.buttonText);
-                chatState.completionTimestamp = Date.now();
-                chatState.currentFlow = null; // Mark as complete
-                saveState();
-                break;
-            case "wait":
-                 if (msg.wait === "name") promptForName();
-                break;
-        }
-    };
+      const messages = SETTINGS[chatState.currentFlow];
+      if (!messages || chatState.currentIndex >= messages.length) {
+          chatState.currentFlow = null; // End of flow
+          saveState();
+          return;
+      }
+      
+      const msg = messages[chatState.currentIndex];
+      const continueFlow = () => {
+          chatState.currentIndex++;
+          saveState();
+          runConversation();
+      };
+
+      await processMessage(msg, continueFlow);
+  };
+
+  // ===== Initialization =====
+  const init = () => {
+    document.getElementById("contact-name").textContent = SETTINGS.contactName;
+    document.getElementById("avatar").src = SETTINGS.avatar;
     
-    const promptForName = () => {
-        $input.placeholder = "Please type your name...";
-        $input.focus();
-        $form.addEventListener("submit", handleNameSubmit, { once: true });
-    };
+    loadState();
+    $status.innerHTML = '<span class="status-indicator"></span>Online';
 
-    const handleNameSubmit = (e) => {
-        e.preventDefault();
-        const name = $input.value.trim();
-        if (name) {
-            $input.value = "";
-            $input.placeholder = "Type your message...";
-            addMessage(name, "right", { noMeta: true }).then(() => {
-                chatState.leadName = name;
-                chatState.currentFlow = 'afterName';
-                chatState.currentIndex = 0;
+    if (chatState.historyHtml) {
+        $messages.innerHTML = chatState.historyHtml;
+        scrollToBottom(false);
+    }
+
+    // Check for follow-up message
+    if (chatState.completionTimestamp && !chatState.followUpSent) {
+        const twentyMinutes = 20 * 60 * 1000;
+        if (Date.now() - chatState.completionTimestamp > twentyMinutes) {
+            setTimeout(() => {
+                addMessage("Have you got it yet? What do you think of the app? I imagine you're already making a lot of profit.");
+                chatState.followUpSent = true;
                 saveState();
-                runConversation();
-            });
+            }, 2000);
+            return; // Don't continue conversation if sending follow-up
+        }
+    }
+    
+    if (chatState.currentFlow) {
+        // If the last state was waiting for a name, re-initiate the prompt
+        const lastMsg = SETTINGS[chatState.currentFlow][chatState.currentIndex];
+        if (lastMsg && lastMsg.type === 'wait' && lastMsg.wait === 'name') {
+            promptForName();
         } else {
-            promptForName(); // Re-prompt if name is empty
-        }
-    };
-    
-    // ===== Conversation Flow =====
-    const runConversation = async () => {
-        if (!chatState.currentFlow) return;
-
-        const messages = SETTINGS[chatState.currentFlow];
-        if (!messages || chatState.currentIndex >= messages.length) {
-            chatState.currentFlow = null; // End of flow
-            saveState();
-            return;
-        }
-        
-        const msg = messages[chatState.currentIndex];
-        const continueFlow = () => {
-            chatState.currentIndex++;
-            saveState();
             runConversation();
-        };
-
-        await processMessage(msg, continueFlow);
-    };
-
-    // ===== Initialization =====
-    const init = () => {
-        loadState();
-        $status.innerHTML = '<span class="status-indicator"></span>Online';
-
-        if (chatState.historyHtml) {
-            $messages.innerHTML = chatState.historyHtml;
-            scrollToBottom(false);
         }
+    }
+  };
 
-        // Check for follow-up message
-        if (chatState.completionTimestamp && !chatState.followUpSent) {
-            const twentyMinutes = 20 * 60 * 1000;
-            if (Date.now() - chatState.completionTimestamp > twentyMinutes) {
-                setTimeout(() => {
-                    addMessage("Have you got it yet? What do you think of the app? I imagine you're already making a lot of profit.");
-                    chatState.followUpSent = true;
-                    saveState();
-                }, 2000);
-                return; // Don't continue conversation if sending follow-up
-            }
-        }
-        
-        if (chatState.currentFlow) {
-            // If the last state was waiting for a name, re-initiate the prompt
-            const lastMsg = SETTINGS[chatState.currentFlow][chatState.currentIndex];
-            if (lastMsg && lastMsg.type === 'wait' && lastMsg.wait === 'name') {
-                 promptForName();
-            } else {
-                 runConversation();
-            }
-        }
-    };
-
-    document.addEventListener("DOMContentLoaded", init);
-  </script>
+  init();
+});
+</script>
 </body>
 </html>
+
